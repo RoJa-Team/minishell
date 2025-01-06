@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:50:32 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/06 21:13:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/06 21:19:33 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@ main(argc, argv, env[]):
 init tudo + env (copia do env bash)
 shell loop
 	[] sinais
-	[] input
+	[] input 
+		[]- readline
 		[] parsing
 			[] tokenization
 				[] space
 				[] ""
 				[] ' '
 				[] symbol ls a"wc"
-				ec"ho " hello < dasasfda  | cat << eof | pwd | echo abc | ls
+				ec"ho " hello < dasasfda  | cat << eof | pwd | echo abc | ls < cat
 			[] sintax error
 			[] expansao
 				[] remove quote
