@@ -6,16 +6,20 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:50:32 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/06 21:19:33 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:38:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <minishell.h>
 
 int	main(int argc, char **argv)
 {
-	write(1, "afe d hello\n", 12);
-	write(1, "af d hllo\n", 10);
+	if (argc != 1)
+		return (ft_printf("Error: invalid number of arguments."));
+	while (1)
+	{
+
+	}
 }
 /* 
 main(argc, argv, env[]):
