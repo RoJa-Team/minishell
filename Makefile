@@ -6,19 +6,23 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/01/09 19:45:34 by rafasant         ###   ########.fr        #
+#    Updated: 2025/01/10 17:50:41 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -lreadline -lhistory
+CFLAGS	= -Wall -Wextra -Werror -g
+RL		= -lreadline -lhistory
 NAME 	= minishell
 LIBFT 	= libft/libft.a
-SRCS 	= srcs/minishell.c
-OBJS	= ${SRCS:.c=.o}
+SRCS_DIR= srcs/
+OBJS_DIR= objs/
+SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c error.c \
+			parse_input.c)
+OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM		= /bin/rm -f
 
-%.o: %.c
+${OBJS_DIR}%.o: ${SRCS_DIR}%.c
 	@${CC} ${CFLAGS} -c $< -o $@
 
 all: ${LIBFT} ${NAME}
@@ -27,7 +31,7 @@ ${LIBFT} :
 	@make -C libft --silent
 	@echo "Libft compiled!"
 ${NAME} : ${OBJS}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
+	@${CC} ${CFLAGS} ${RL} ${OBJS} ${LIBFT} -o ${NAME}
 	@echo "Compiled $(NAME)."
 
 clean: 

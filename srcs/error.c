@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/10 17:53:00 by rafasant         ###   ########.fr       */
+/*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
+/*   Updated: 2025/01/10 17:37:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	main(int argc, char **argv)
+void	deallocate(char *message)
 {
-	char	*input;
-
-	(void)argv;
-	if (argc != 1)
-		return (ft_printf("Error: Invalid number of arguments.\n"));
-	while (1)
-	{
-		input = readline("$minishell>");
-		parse_input(input);
-		ft_printf("input>%s\n", input);
-		if (!ft_strncmp(input, "Exit", 4))
-			break ;
-	}
+	exit(ft_printf(message));
 }
