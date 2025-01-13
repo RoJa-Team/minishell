@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/10 17:48:54 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/13 22:39:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,18 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+typedef struct s_cmd
+{
+	char			**cmd;
+	// char			**arg;
+	char			*fd_in;
+	char			*fd_out;
+	int				append;
+}				t_cmd;
 typedef struct s_ms
 {
-	
+	t_cmd	*cmd;
+
 }				t_ms;
 
 /*********************************************/
