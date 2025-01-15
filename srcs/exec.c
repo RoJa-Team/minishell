@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/01/15 02:42:01 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/01/15 04:40:23 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	is_builtin(char **arg)
 {
+	(void)arg;
 	return (0);	
 }
 
@@ -29,12 +30,15 @@ void	exec_cmd(t_ms *ms)
 		cmd = ms->cmd[i]->arg[0];
 		arg = ms->cmd[i]->arg;
 		if (is_builtin(arg) == 1)
+		{
+			i++;
 			continue ;
+		}
 		else if (fork() == 0)
 		{
 			// execve not in use
-			if (execvp(cmd, arg) == -1);
-				fprintf(stderr, "(execve) Error executing \"%s\"\n", cmd); 
+			if (execvp(cmd, arg) == -1)
+				deallocate("Error executing execve.\n"); 
 		}
 		else
 			wait(NULL);
@@ -46,7 +50,7 @@ int	main()
 {
 	t_ms	ms;
 	static char *args1[] = {"echo", "hello world", NULL};
-	static char *args2[] = {"ls", "-a", NULL};
+	static char *args2[] = {"la", "-a", NULL};
 
 	int cmd_count = 2;
 
@@ -54,7 +58,6 @@ int	main()
 	for (int i = 0; i < cmd_count; i++)
 		ms.cmd[i] = malloc(sizeof(t_cmd));
 	
-
 	ms.cmd[0]->arg = args1;
 	ms.cmd[1]->arg = args2;
 	ms.cmd[cmd_count] = NULL;
