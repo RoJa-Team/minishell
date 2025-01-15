@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/13 22:39:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/15 01:36:34 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,23 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <stdio.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
 
 typedef struct s_cmd
 {
-	char			**cmd;
-	// char			**arg;
+	//char			**cmd;
+	char			**arg;
 	char			*fd_in;
 	char			*fd_out;
 	int				append;
 }				t_cmd;
+
 typedef struct s_ms
 {
-	t_cmd	*cmd;
-
+	t_cmd	**cmd;
 }				t_ms;
 
 /*********************************************/

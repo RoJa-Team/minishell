@@ -6,14 +6,14 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/13 22:39:30 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/15 00:34:47 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
 // echo 123 | cat -e | wc -l
-
+/*
 int	main(int argc, char **argv)
 {
 	char	*input;
@@ -31,4 +31,4 @@ int	main(int argc, char **argv)
 		if (!ft_strncmp(input, "exit", 4))
 			break ;
 	}
-}
+}*/
