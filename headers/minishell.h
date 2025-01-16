@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/15 04:36:36 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/01/16 03:47:14 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,13 @@ void	quote_validator(char *str);
 /*                                           */
 /*********************************************/
 
-/**/
+/*exec.c*/
+void	exec_cmd(t_ms *ms);
+char	*find_path(char *cmd);
+int	is_builtin(t_ms *ms, int i);
+
+/*built-ins*/
+int	ft_echo(t_cmd *cmd);
 
 /*********************************************/
 /*                                           */
