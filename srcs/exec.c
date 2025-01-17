@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/01/16 03:58:13 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/01/17 18:01:21 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	is_builtin(t_ms *ms, int i)
 
 	arg = ms->cmd[i]->arg;
 	if (ft_strncmp(arg[0], "echo", 5) == 0)
-		return (ft_echo(ms->cmd[i]));
+		return (ft_echo(ms));
 	/*
 	else if (arg[0] == "cd")
 		ft_cd(ms);
@@ -115,7 +115,7 @@ void	exec_cmd(t_ms *ms)
 int	main()
 {
 	t_ms	ms;
-	static char *args1[] = {"echo", "yeahhhh", "hello world", NULL};
+	static char *args1[] = {"echo", "$PATH", NULL};
 	static char *args2[] = {"la", "-a", NULL};
 
 	int cmd_count = 2;
