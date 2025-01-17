@@ -59,7 +59,13 @@ void	quote_validator(char *str);
 /*                                           */
 /*********************************************/
 
-/**/
+/*exec.c*/
+void	exec_cmd(t_ms *ms);
+char	*find_path(char *cmd);
+int	is_builtin(t_ms *ms, int i);
+
+/*built-ins*/
+int	ft_echo(t_cmd *cmd);
 
 /*********************************************/
 /*                                           */
