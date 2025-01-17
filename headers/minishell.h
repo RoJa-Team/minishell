@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/17 18:01:42 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/01/17 18:20:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ typedef struct s_cmd
 	//char			**cmd;
 	char			**arg;
 	char			*fd_in;
+	int				heredoc;
 	char			*fd_out;
 	int				append;
 }				t_cmd;
 
 typedef struct s_ms
 {
-	t_cmd	**cmd;
+	char		**my_env;
+	t_cmd		**cmd;
 }				t_ms;
 
 /*********************************************/
@@ -42,9 +44,13 @@ typedef struct s_ms
 /*                                           */
 /*********************************************/
 
+/* init_ms.c */
+t_ms	*init_ms(char **env);
+void	copy_env(t_ms *ms, char **env);
+
 /* parse_input.c */
 int		pipe_counter(char *str);
-void	parse_input(char *str);
+void	parse_input(t_ms *ms, char *str);
 void	quote_validator(char *str);
 
 /*********************************************/
