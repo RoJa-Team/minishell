@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/15 21:51:06 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/24 22:38:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void	copy_env(t_ms *ms, char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	ms->my_env = malloc(sizeof(char *) * i + 1);
-	if (!ms->my_env)
+	ms->ms_env = malloc(sizeof(char *) * i + 1);
+	if (!ms->ms_env)
 		deallocate("Error> copy_env");
 	i = 0;
 	while (env[i])
 	{
-		ms->my_env[i] = ft_strdup(env[i]);
-		if (!ms->my_env[i])
+		ms->ms_env[i] = ft_strdup(env[i]);
+		if (!ms->ms_env[i])
 			deallocate("Error> copy_env");
 		i++;
 	}
@@ -39,6 +39,9 @@ t_ms	*init_ms(char **env)
 	ms = malloc(sizeof(t_ms));
 	if (!ms)
 		deallocate("Error> failed memory allocation for t_ms.");
+	ms->cmd = NULL;
+	ms->env_lst = NULL;
+	ms->parse = NULL;
 	copy_env(ms, env);
 	return (ms);
 }

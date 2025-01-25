@@ -6,13 +6,11 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/15 21:51:07 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:19:16 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-// echo 123 | cat -e | wc -l
 
 int	main(int argc, char **argv, char **env)
 {
@@ -27,10 +25,10 @@ int	main(int argc, char **argv, char **env)
 	{
 		input = readline("$minishell>");
 		parse_input(ms, input);
-		ft_printf("input>%s\n", input);
 		add_history(input);
 		//execute();
-		if (!ft_strncmp(input, "exit", 4))
+		if (input && !ft_strncmp(input, "exit", 4))
 			break ;
 	}
+	return (0);
 }

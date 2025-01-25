@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/17 18:20:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/24 22:27:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,72 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+typedef struct s_redir
+{
+	int				del;
+	char			*file;
+	struct s_redir	*next;
+}				t_redir;
+
+typedef struct s_arg
+{
+	char	*str;
+	char	*env_key;
+}				t_arg;
+
 typedef struct s_cmd
 {
-	//char			**cmd;
-	char			**arg;
-	char			*fd_in;
-	int				heredoc;
-	char			*fd_out;
-	int				append;
+	t_arg	**arg;
+	t_redir	*fd_in;
+	t_redir	*fd_out;
 }				t_cmd;
 
-typedef struct s_ms
+typedef struct s_env
 {
-	char		**my_env;
-	t_cmd		**cmd;
+	int				invis;
+	int				modified;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}				t_env;
+
+// export -> modified = 0 or 1 && invis = 0
+// cd -> modified = 0 && invis = invis
+// unset -> invis = 1
+
+// OLDPWD = 42
+// modified = 0
+// unset OLDPWD -> invis = 0
+// cd $OLDPWD -> cd 42
+
+// OLDPWD = 42
+// export OLDPWD=batata -> modified = 1
+// unset OLDPWD -> invis = 1
+// cd $OLDPWD -> cd NULL
+
+// OLDPWD = 42
+// modified = 0
+// unset OLDPWD -> invis = 1
+// cd $OLDPWD -> cd 42
+
+// OLDPWD = 42
+// export OLDPWD=batata -> modified = 1
+// invis = 0
+// cd $OLDPWD -> cd batata
+
+typedef struct s_parse
+{
+	int				quotes; // 0 1 2
+	char			*token;
+	struct s_parse	*next;
+}				t_parse;
+
+typedef struct s_ms
+{	
+	char	**ms_env;
+	t_env	*env_lst;
+	t_parse	*parse;
+	t_cmd	**cmd;
 }				t_ms;
 
 /*********************************************/
