@@ -113,11 +113,24 @@ void	quote_validator(char *str);
 
 /*exec.c*/
 void	exec_cmd(t_ms *ms);
-char	*find_path(char *cmd);
+char	*find_path(t_env *env_lst, char *cmd);
 int	is_builtin(t_ms *ms, int i);
+char	*get_value(t_env *env, char *key);
+char	**convert_args_to_char(t_ms *ms, int h);
 
-/*built-ins*/
-int	ft_echo(t_cmd *cmd);
+/*ft_echo.c*/
+int	ft_echo(t_ms *ms, int i);
+
+/*ft_cd.c*/
+int	ft_cd(t_ms *ms, int i);
+char	*get_pwd(t_env *env);
+char	*get_home(t_env *env);
+void	update_env_lst(t_env *env, char *key, char *new_value);
+void	update_ms_env(t_ms *ms);
+char	*get_home_til(t_ms *ms);
+char	*print_oldpwd(t_env *env);
+char	*get_oldpwd(t_env *env);
+void	free_args(char **arg);
 
 /*********************************************/
 /*                                           */
