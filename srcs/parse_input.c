@@ -107,14 +107,14 @@ int	pipe_counter(char *str)
 // 	ms->cmd[i] = NULL;
 // }
 
-t_parse	*new_token(char **str)
+t_parse	*new_token(char *str)
 {
 	t_parse	*token;
 
 	token = malloc(sizeof(t_parse));
 	if (!token)
 		deallocate("Error> new_token");
-	token->token = *str;
+	token->token = ft_strdup(str);
 	token->quotes = 0;
 	token->next = NULL;
 	return (token);
@@ -132,16 +132,17 @@ void	parse_tokens(t_ms *ms, char *str) // simplified version, needs to be more s
 	while (tokensv1[i] != NULL)
 	{
 		if (!ms->parse)
-			ms->parse = new_token(&tokensv1[i]);
+			ms->parse = new_token(tokensv1[i]);
 		else
 		{
 			temp = ms->parse;
 			while (temp->next != NULL)
 				temp = temp->next;
-			temp->next = new_token(&tokensv1[i]);
+			temp->next = new_token(tokensv1[i]);
 		}
 		i++;
 	}
+	//free_array(tokensv1);
 }
 
 void	new_cmd(t_ms *ms)
@@ -158,6 +159,7 @@ void	new_cmd(t_ms *ms)
 		i++;
 		temp = temp->next;
 	}
+	ft_printf("i: %d\n", i);
 	ms->cmd[0]->arg = malloc(sizeof(t_arg *) * (i + 1));
 	if (!ms->cmd[0]->arg)
 		deallocate("Error> new_cmd");
@@ -168,13 +170,12 @@ void	new_cmd(t_ms *ms)
 		ms->cmd[0]->arg[i] = malloc(sizeof(t_arg));
 		if (!ms->cmd[0]->arg[i])
 			deallocate("Error> new_cmd");
-		ms->cmd[0]->arg[i]->str = temp->token;
+		ms->cmd[0]->arg[i]->str = ft_strdup(temp->token);
 		ms->cmd[0]->arg[i]->env_key = NULL;
 		temp = temp->next;
 		i++;
 	}
 	ms->cmd[0]->arg[i] = NULL;
-	ms->cmd[1] = NULL;
 }
 
 void	parse_cmd(t_ms *ms)
@@ -183,6 +184,7 @@ void	parse_cmd(t_ms *ms)
 	if (!ms->cmd)
 		deallocate("Error> parse_cmd");
 	new_cmd(ms);
+	ms->cmd[1] = NULL;
 	// int		pipes;
 	// t_parse	*temp;
 

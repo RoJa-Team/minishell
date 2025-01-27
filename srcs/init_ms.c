@@ -32,6 +32,42 @@ void	copy_env(t_ms *ms, char **env)
 	}
 }
 
+void	create_env_lst(t_ms *ms)
+{
+	int		i;
+	char	**env;
+	t_env	*new_env;
+	t_env	*temp;
+
+	i = 0;
+	while (ms->ms_env[i] != NULL)
+	{
+		new_env = malloc(sizeof(t_env));
+		if (!new_env)
+			deallocate("Error> create_env_lst");
+		env = ft_split(ms->ms_env[i], '=');
+		if (ft_strncmp(env[0], "HOME=", 6) == 0)
+			ms->og_home = ft_strdup(env[1]);
+		new_env->key = ft_strdup(env[0]);
+		new_env->value = NULL;
+		if (env[1])
+			new_env->value = ft_strdup(env[1]);
+		new_env->invis = 0;
+		new_env->next = NULL;
+		if (!ms->env_lst)
+			ms->env_lst = new_env;
+		else
+		{
+			temp = ms->env_lst;
+			while (temp->next != NULL)
+				temp = temp->next;
+			temp->next = new_env;
+		}
+		free_array(env);
+		i++;
+	}
+}
+
 t_ms	*init_ms(char **env)
 {
 	t_ms *ms;
@@ -43,5 +79,12 @@ t_ms	*init_ms(char **env)
 	ms->env_lst = NULL;
 	ms->parse = NULL;
 	copy_env(ms, env);
+	create_env_lst(ms);
+	// t_env *temp = ms->env_lst;
+	// while (temp != NULL)
+	// {
+	// 	ft_printf("Key: %s - Value: %s\n", temp->key, temp->value);
+	// 	temp = temp->next;
+	// }
 	return (ms);
 }
