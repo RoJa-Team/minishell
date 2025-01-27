@@ -17,7 +17,8 @@ NAME 	= minishell
 LIBFT 	= libft/libft.a
 SRCS_DIR= srcs/
 OBJS_DIR= objs/
-SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c parse_input.c)
+SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c \
+			list_functions.c print_functions.c parse_input.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM		= /bin/rm -f
 
