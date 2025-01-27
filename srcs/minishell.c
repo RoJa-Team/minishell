@@ -27,6 +27,8 @@ int	main(int argc, char **argv, char **env)
 		parse_input(ms, input);
 		add_history(input);
 		//execute();
+		clean_parse(ms);
+		clean_cmd(ms);
 		if (input && !ft_strncmp(input, "exit", 4))
 			break ;
 	}

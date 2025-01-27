@@ -45,7 +45,6 @@ typedef struct s_cmd
 typedef struct s_env
 {
 	int				invis;
-	int				modified;
 	char			*key;
 	char			*value;
 	struct s_env	*next;
@@ -84,6 +83,7 @@ typedef struct s_parse
 
 typedef struct s_ms
 {	
+	char	*og_home;
 	char	**ms_env;
 	t_env	*env_lst;
 	t_parse	*parse;
@@ -126,6 +126,9 @@ int	ft_echo(t_cmd *cmd);
 /*********************************************/
 
 /* error.c */
+void	free_array(char	**array);
+void	clean_parse(t_ms *ms);
+void	clean_cmd(t_ms *ms);
 void	deallocate(char *message);
 
 #endif
