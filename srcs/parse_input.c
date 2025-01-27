@@ -142,7 +142,7 @@ void	parse_tokens(t_ms *ms, char *str) // simplified version, needs to be more s
 		}
 		i++;
 	}
-	//free_array(tokensv1);
+	free_array(tokensv1);
 }
 
 void	new_cmd(t_ms *ms)
@@ -213,15 +213,4 @@ void	parse_input(t_ms *ms, char *str)
 	parse_tokens(ms, str);
 	parse_cmd(ms);
 	//parse_pipes(ms, str, pipe_counter(str));
-	int	i = 0;
-	while (ms->cmd[i])
-	{
-		int	j = 0;
-		while (ms->cmd[i]->arg[j])
-		{
-			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]->str);
-			j++;
-		}
-		i++;
-	}
 }

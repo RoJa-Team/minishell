@@ -80,11 +80,5 @@ t_ms	*init_ms(char **env)
 	ms->parse = NULL;
 	copy_env(ms, env);
 	create_env_lst(ms);
-	// t_env *temp = ms->env_lst;
-	// while (temp != NULL)
-	// {
-	// 	ft_printf("Key: %s - Value: %s\n", temp->key, temp->value);
-	// 	temp = temp->next;
-	// }
 	return (ms);
 }

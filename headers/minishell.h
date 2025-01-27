@@ -121,6 +121,27 @@ int	ft_echo(t_cmd *cmd);
 
 /*********************************************/
 /*                                           */
+/*             List functions                */
+/*                                           */
+/*********************************************/
+
+size_t	get_offset(void *struct_ptr, void *member_ptr);
+void	*get_last_node(void *node, size_t next_offset);
+void	free_list(void *node, size_t next_offset);
+
+
+/*********************************************/
+/*                                           */
+/*             Printing functions            */
+/*                                           */
+/*********************************************/
+
+void	print_ms_env(t_ms *ms);
+void	print_env_lst(t_ms *ms);
+void	print_cmd(t_ms *ms);
+
+/*********************************************/
+/*                                           */
 /*          Miscellanious functions          */
 /*                                           */
 /*********************************************/
