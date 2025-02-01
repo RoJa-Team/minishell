@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/25 19:18:31 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/30 05:01:09 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void	new_cmd(t_ms *ms)
 		i++;
 		temp = temp->next;
 	}
-	ft_printf("i: %d\n", i);
+//	ft_printf("i: %d\n", i);
 	ms->cmd[0]->arg = malloc(sizeof(t_arg *) * (i + 1));
 	if (!ms->cmd[0]->arg)
 		deallocate("Error> new_cmd");
@@ -219,7 +219,7 @@ void	parse_input(t_ms *ms, char *str)
 		int	j = 0;
 		while (ms->cmd[i]->arg[j])
 		{
-			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]->str);
+//			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]->str);
 			j++;
 		}
 		i++;

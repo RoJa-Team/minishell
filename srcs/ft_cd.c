@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/01/27 20:50:42 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/01 03:07:36 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*get_pwd(t_env *env)
 char	*get_home(t_env *env)
 {
 	t_env	*temp;
+	char	*home;
 
 	temp = env;
 	while (temp != NULL)
@@ -40,14 +41,21 @@ char	*get_home(t_env *env)
 		if (ft_strncmp(temp->key, "HOME", 4) == 0)
 		{
 			if (temp->invis == 0)
-				return(ft_strdup(temp->value)); // check for allocation fail
+			{
+				home = ft_strdup(temp->value);
+				if (!home)
+					return (NULL);
+				else
+					return(home); // check for allocation fail
+			}
 			else
 			{
 				ft_printf("cd: HOME not set\n");
 				return (NULL);
 			}
+		
 		}
-		temp = temp->next;
+		temp = temp->next;	
 	}
 	ft_printf("cd: HOME not set\n");
 	return (NULL);
@@ -61,10 +69,13 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 	while (temp != NULL)
 	{
 		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
-		{	
-			temp->value = new_value;
+		{
+			free(temp->value);	
+			temp->value = ft_strdup(new_value);
+			//printf("%s=%s\n", temp->key, temp->value);
+			return ;
 		}
-		env = env->next;
+		temp = temp->next;
 	}
 }
 
@@ -135,6 +146,7 @@ char	*print_oldpwd(t_env *env)
 			if (temp->invis == 0)
 			{
 				ft_putstr_fd(temp->value, fd);
+				ft_putchar_fd('\n', fd);
 				return(ft_strdup(temp->value)); // check for allocation fail
 			}
 			else
@@ -155,11 +167,13 @@ int	ft_cd(t_ms *ms, int i)
 	char	*oldpwd;
 	char	*newpwd;
 	char	**arg;
+	int	count;
 
 	arg = convert_args_to_char(ms, i);
+	count = arg_count(arg);
 	if (!arg)
 		return (1);
-	if (arg[2])
+	if (count > 2)
 	{
 		ft_printf("cd: too many arguments\n");
 		free(arg);
@@ -172,28 +186,73 @@ int	ft_cd(t_ms *ms, int i)
 	// handle ~ that takes to home if visible, else takes to original home
 	// handle OLDPWD: it doesn't take visibility into account and check modified flag
 	// handle - same as OLDPWD but prints path to FD and has custom "not set" messag and takes invisibility into account
-	if (!arg[1])
+	if (count < 2)
+	{
 		newpwd = get_home(temp);
-	else if (ft_strncmp(ms->cmd[i]->arg[1]->str, "~", 1) == 0)
+		printf("%s\n", newpwd);
+	}
+	else if (ft_strncmp(arg[1], "~", 1) == 0)
+	{
 		newpwd = get_home_til(ms);
-	else if (ft_strncmp(ms->cmd[i]->arg[1]->str, "-", 1) == 0)
+		printf("%s\n", newpwd);
+	}
+	else if (ft_strncmp(arg[1], "-", 1) == 0)
+	{
 		newpwd = print_oldpwd(temp);
+		printf("%s\n", newpwd);
+	}
 	else
-		newpwd = ft_strdup(arg[1]);
+	{
+		newpwd = get_ab_path(oldpwd, arg[1]);
+		printf("%s\n", newpwd);
+	}
+	//printf("Before cd: oldpwd=%s\n", oldpwd ? oldpwd : "NULL");
 	if (newpwd && chdir(newpwd) != 0)
-		ft_printf("cd: %s: No such file or directory\n", ms->cmd[i]->arg[1]);
+		ft_printf("cd: %s: No such file or directory\n", newpwd);//ms->cmd[i]->arg[1]->str);
 	else if (newpwd)
 	{
-		update_env_lst(temp, "PWD", newpwd);
 		update_env_lst(temp, "OLDPWD", oldpwd);
+		update_env_lst(temp, "PWD", newpwd);
 		update_ms_env(ms);
 	}
+	//printf("After cd: newpwd=%s\n", get_value(ms->env_lst, "OLDPWD"));
 	if (oldpwd)
 		free(oldpwd);
 	if (newpwd)
 		free(newpwd);
 	free_args(arg);
 	return (1);
+}
+
+
+// TBC
+char	*get_ab_path(char *ab_path, char *next_dir)
+{
+	char	*new_ab_path;
+	char	*temp;
+	int	i;
+
+	i = 0;
+	if (!next_dir || !ab_path)
+		return (NULL);
+	if (next_dir[0] == '/')
+		return (ft_strdup(next_dir));
+	if (ft_strncmp(next_dir, "..", 2) == 0)
+	{
+		temp = ft_strdup(ab_path);
+		i = ft_strlen(temp);
+		while (i > 0 && temp[i] != '/')
+			i--;
+		temp[i] = '\0';
+		return (temp);
+	}
+	if (ft_strncmp(next_dir, ".", 2) == 0)
+		return (ft_strdup(ab_path));
+	if (ab_path[ft_strlen(ab_path) - 1] != '/')
+		temp = ft_strjoin(ab_path, "/");
+	new_ab_path = ft_strjoin(temp, next_dir);
+	free(temp);
+	return (new_ab_path);
 }
 
 void	free_args(char **arg)
@@ -208,7 +267,6 @@ void	free_args(char **arg)
 	}
 	free(arg);
 }
-/*
 
 int	arg_count(char **arg)
 {
@@ -219,4 +277,3 @@ int	arg_count(char **arg)
 		i++;
 	return (i);
 }
-*/

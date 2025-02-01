@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/01/27 18:52:54 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/01 02:55:43 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int	is_builtin(t_ms *ms, int i)
 	else if (arg[0] == "exit")
 		ft_exit(ms);
 	*/
-		
 	return (0);	
 }
 
 char	*get_value(t_env *env, char *key)
 {
 	t_env	*temp;
+	char	*value;
 
 	temp = env;
 	while (temp != NULL)
@@ -47,7 +47,13 @@ char	*get_value(t_env *env, char *key)
 		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
 		{
 			if (temp->invis == 0)
-				return(ft_strdup(temp->value)); // check for malloc fail
+			{
+				value = ft_strdup(temp->value);
+				if (!value)
+					return(NULL);
+			       	else
+					return (value);
+			}
 			else
 				return (NULL);
 		}
@@ -55,7 +61,6 @@ char	*get_value(t_env *env, char *key)
 	}
 	return (NULL);
 }
-
 // TBC add ft_getenv ; add t_env to check for visibility
 char	*find_path(t_env *env_lst, char *cmd)
 {
@@ -90,7 +95,7 @@ char	*find_path(t_env *env_lst, char *cmd)
 	return (NULL);
 }
 
-int	arg_count(t_arg **arg)
+int	node_count(t_arg **arg)
 {
 	int	i;
 
@@ -122,7 +127,7 @@ void	exec_cmd(t_ms *ms)
 			path = find_path(ms->env_lst, cmd);
 			if (!path)
 			{
-				printf("%s: No such file or directory\n", arg[0]);
+				printf("%s: command not found\n", arg[0]);
 				return ;
 			}
 			if (execve(path, arg, ms->ms_env) == -1) // my_env in use
@@ -176,10 +181,12 @@ char	**convert_args_to_char(t_ms *ms, int h)
 		}
 		i++;
 	}
+	//printf ("%d\n", j);
 	result[j] = NULL;
 	return (result);
 }
 
+/*
 int	main()
 {
 	t_ms	ms;
@@ -233,4 +240,4 @@ int	main()
 	}	
 	free(ms.cmd);
 	return (0);
-}
+}*/

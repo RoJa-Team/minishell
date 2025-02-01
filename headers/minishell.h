@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/24 22:27:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/01/30 05:21:15 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char	*find_path(t_env *env_lst, char *cmd);
 int	is_builtin(t_ms *ms, int i);
 char	*get_value(t_env *env, char *key);
 char	**convert_args_to_char(t_ms *ms, int h);
+int	node_count(t_arg **arg);
 
 /*ft_echo.c*/
 int	ft_echo(t_ms *ms, int i);
@@ -129,8 +130,10 @@ void	update_env_lst(t_env *env, char *key, char *new_value);
 void	update_ms_env(t_ms *ms);
 char	*get_home_til(t_ms *ms);
 char	*print_oldpwd(t_env *env);
+char	*get_ab_path(char *ab_path, char *next_dir);
 char	*get_oldpwd(t_env *env);
 void	free_args(char **arg);
+int	arg_count(char **arg);
 
 /*********************************************/
 /*                                           */
