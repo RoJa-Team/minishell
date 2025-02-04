@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/04 04:28:26 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/04 03:14:15 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ int	ft_cd(t_ms *ms, int i)
 	if (newpwd && chdir(newpwd) != 0)
 		ft_printf("cd: %s: No such file or directory\n", ms->cmd[i]->arg[1]->str);
 	else if (newpwd)
-15  int     ft_pwd(t_ms *ms, int i)	{
+	{
 		update_env_lst(temp, "OLDPWD", oldpwd);
 		update_env_lst(temp, "PWD", newpwd);
 		update_ms_env(ms);

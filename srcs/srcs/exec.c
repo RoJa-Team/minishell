@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/04 04:21:58 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/01 02:55:43 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	is_builtin(t_ms *ms, int i)
 		return (ft_echo(ms, i));
 	else if (ft_strncmp(arg[0]->str, "cd", 2) == 0)
 		return (ft_cd(ms, i));
-	else if (ft_strncmp(arg[0]->str, "pwd", 3) == 0)
-		return (ft_pwd(ms));
 	/*
+	else if (arg[0] == "pwd")
+		ft_pwd(ms);
 	else if (arg[0] == "export")
 		ft_export(ms);
 	else if (arg[0] == "unset")

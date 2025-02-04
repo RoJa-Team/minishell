@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/30 05:21:15 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/04 04:22:07 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,9 @@ char	*get_ab_path(char *ab_path, char *next_dir);
 char	*get_oldpwd(t_env *env);
 void	free_args(char **arg);
 int	arg_count(char **arg);
+
+/*ft_pwd.c*/
+int     ft_pwd(t_ms *ms);
 
 /*********************************************/
 /*                                           */

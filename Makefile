@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/01/27 22:27:13 by joafern2         ###   ########.fr        #
+#    Updated: 2025/02/04 04:21:21 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME 	= minishell
 LIBFT 	= libft/libft.a
 SRCS_DIR= srcs/
 OBJS_DIR= objs/
-SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c parse_input.c exec.c ft_echo.c ft_cd.c)
+SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c parse_input.c exec.c ft_echo.c ft_cd.c ft_pwd.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM		= /bin/rm -f
 
