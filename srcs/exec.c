@@ -1,12 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                           if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
+    return;
+                             :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/04 04:21:58 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:29:48 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +16,26 @@
 
 int	is_builtin(t_ms *ms, int i)
 {
-	t_arg **arg;
+	char **arg;
 
+	printf("checking if is built-in\n");
+	fflush(stdout);
 	arg = ms->cmd[i]->arg;
-	if (ft_strncmp(arg[0]->str, "echo", 5) == 0)
+	printf("got the arg: %s\n", arg[0]);
+	fflush(stdout);
+	if (ft_strncmp(arg[0], "echo", 5) == 0)
+	{
+		printf("got to the execution\n");
+		fflush(stdout);
 		return (ft_echo(ms, i));
-	else if (ft_strncmp(arg[0]->str, "cd", 2) == 0)
+	}
+	else if (ft_strncmp(arg[0], "cd", 3) == 0)
 		return (ft_cd(ms, i));
-	else if (ft_strncmp(arg[0]->str, "pwd", 3) == 0)
-		return (ft_pwd(ms));
+	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
+		return (ft_pwd());
+	else if (ft_strncmp(arg[0], "export", 7) == 0)
+		return (ft_export(ms, i));
 	/*
-	else if (arg[0] == "export")
-		ft_export(ms);
 	else if (arg[0] == "unset")
 		ft_unset(ms);
 	else if (arg[0] == "env")
@@ -33,6 +43,8 @@ int	is_builtin(t_ms *ms, int i)
 	else if (arg[0] == "exit")
 		ft_exit(ms);
 	*/
+	printf("it's not built-in\n");
+	fflush(stdout);
 	return (0);	
 }
 
@@ -44,7 +56,7 @@ char	*get_value(t_env *env, char *key)
 	temp = env;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0)
 		{
 			if (temp->invis == 0)
 			{
@@ -94,8 +106,8 @@ char	*find_path(t_env *env_lst, char *cmd)
 	free(path_dir);
 	return (NULL);
 }
-
-int	node_count(t_arg **arg)
+/*
+int	arg_count(char **arg)
 {
 	int	i;
 
@@ -104,18 +116,30 @@ int	node_count(t_arg **arg)
 		i++;
 	return (i);
 }
-
+*/
 void	exec_cmd(t_ms *ms)
 {
 	int	i;
 	char	*cmd;
-	char	**arg;
+	//char	**arg;
 	char	*path;
 
 	i = 0;
+	printf("got to the execution\n");
+	fflush(stdout);
+	if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
+	{
+		printf("no command\n");
+		fflush(stdout);
+    		return ;
+	}
 	while (ms->cmd[i])
 	{
-		cmd = ms->cmd[i]->arg[0]->str;
+		printf("got to the exec loop\n");
+		fflush(stdout);
+		cmd = ms->cmd[i]->arg[0];
+		printf("got the cmd\n");
+		fflush(stdout);
 		if (is_builtin(ms, i) == 1)
 		{
 			i++;
@@ -123,20 +147,22 @@ void	exec_cmd(t_ms *ms)
 		}
 		else if (fork() == 0)
 		{
-			arg = convert_args_to_char(ms, i);
+			//arg = convert_args_to_char(ms, i);
+			printf("got to not built-in\n");
+			fflush(stdout);
 			path = find_path(ms->env_lst, cmd);
 			if (!path)
 			{
-				printf("%s: command not found\n", arg[0]);
+				printf("%s: command not found\n", ms->cmd[i]->arg[0]);
 				return ;
 			}
-			if (execve(path, arg, ms->ms_env) == -1) // my_env in use
+			if (execve(path, ms->cmd[i]->arg, ms->ms_env) == -1) // my_env in use
 			{
 				deallocate("Error executing execve.\n");
 				free(path);
 			}
 			free(path);
-			free(arg);
+			//free(arg);
 		}
 		else
 		{
@@ -156,9 +182,11 @@ char	**convert_args_to_char(t_ms *ms, int h)
 
 	i = 0;
 	count = 0;
+	if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
+    		return (NULL);
 	while (ms->cmd[h]->arg[i])
 	{
-		if (ms->cmd[h]->arg[i]->str)
+		if (ms->cmd[h]->arg[i])
 			count++;
 		i++;
 	}
@@ -169,16 +197,20 @@ char	**convert_args_to_char(t_ms *ms, int h)
 	j = 0;
 	while (ms->cmd[h]->arg[i])
 	{
-		if (ms->cmd[h]->arg[i]->str)
+		if (ms->cmd[h]->arg[i])
 		{
-			result[j] = ft_strdup(ms->cmd[h]->arg[i]->str);
+			result[j] = ft_strdup(ms->cmd[h]->arg[i]);
+			if (!result[j])
+				deallocate("memory allocation failed\n");
 			j++;
 		}
-		else if (ft_strncmp(ms->cmd[h]->arg[i]->env_key, "OLDPWD", 6) == 0)
+		/*
+		else if (ft_strncmp(ms->cmd[h]->arg[i]->env_key, "OLDPWD", 7) == 0)
 		{
 			result[j] = get_value(ms->env_lst, "OLDPWD");
 			j++;
 		}
+		*/
 		i++;
 	}
 	//printf ("%d\n", j);

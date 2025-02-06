@@ -6,16 +6,28 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/04 04:22:14 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:17:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_pwd(t_ms *ms)
+int	ft_pwd()
 {
+	char	*cwd;
+	size_t	buffer_size;
 	int	fd = 1;
 
+	buffer_size = 1024;
+	cwd = malloc(sizeof(char) * buffer_size);
+	if (getcwd(cwd, buffer_size) != NULL)
+	{
+		ft_putstr_fd(cwd, fd);
+		ft_putchar_fd('\n', fd);
+	}
+	else
+		perror("getcwd() error\n");
+	/*
 	while (ms->env_lst != NULL)
 	{
 		if (ft_strncmp(ms->env_lst->key, "PWD", 3) == 0)
@@ -26,5 +38,6 @@ int	ft_pwd(t_ms *ms)
 		}
 		ms->env_lst = ms->env_lst->next;
 	}
+	*/
 	return (1);
 }

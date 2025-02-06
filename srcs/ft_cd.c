@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/04 04:28:26 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:17:06 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_pwd(t_env *env)
 
 	while (env != NULL)
 	{
-		if (ft_strncmp(env->key, "PWD", 3) == 0)
+		if (ft_strncmp(env->key, "PWD", 4) == 0)
 		{
 			pwd = ft_strdup(env->value);
 			if (!pwd)
@@ -38,7 +38,7 @@ char	*get_home(t_env *env)
 	temp = env;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->key, "HOME", 4) == 0)
+		if (ft_strncmp(temp->key, "HOME", 5) == 0)
 		{
 			if (temp->invis == 0)
 			{
@@ -68,7 +68,7 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 	temp = env;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0)
 		{
 			free(temp->value);	
 			temp->value = ft_strdup(new_value);
@@ -120,7 +120,7 @@ char	*get_home_til(t_ms *ms)
 	temp = ms->env_lst;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->key, "HOME", 4) == 0)
+		if (ft_strncmp(temp->key, "HOME", 5) == 0)
 		{
 			if (temp->invis == 0)
 				return(ft_strdup(temp->value)); // check for allocation fail
@@ -141,7 +141,7 @@ char	*print_oldpwd(t_env *env)
 	temp = env;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->key, "OLDPWD", 4) == 0)
+		if (ft_strncmp(temp->key, "OLDPWD", 7) == 0)
 		{
 			if (temp->invis == 0)
 			{
@@ -187,30 +187,20 @@ int	ft_cd(t_ms *ms, int i)
 	// handle OLDPWD: it doesn't take visibility into account and check modified flag
 	// handle - same as OLDPWD but prints path to FD and has custom "not set" messag and takes invisibility into account
 	if (count < 2)
-	{
 		newpwd = get_home(temp);
-		printf("%s\n", newpwd);
-	}
-	else if (ft_strncmp(arg[1], "~", 1) == 0)
-	{
+	/*
+	else if (ft_strncmp(arg[1], "~", 2) == 0)
 		newpwd = get_home_til(ms);
-		printf("%s\n", newpwd);
-	}
-	else if (ft_strncmp(arg[1], "-", 1) == 0)
-	{
+	else if (ft_strncmp(arg[1], "-", 2) == 0)
 		newpwd = print_oldpwd(temp);
-		printf("%s\n", newpwd);
-	}
+	*/
 	else
-	{
 		newpwd = get_ab_path(oldpwd, arg[1]);
-		printf("%s\n", newpwd);
-	}
 	//printf("Before cd: oldpwd=%s\n", oldpwd ? oldpwd : "NULL");
 	if (newpwd && chdir(newpwd) != 0)
-		ft_printf("cd: %s: No such file or directory\n", ms->cmd[i]->arg[1]->str);
+		ft_printf("cd: %s: No such file or directory\n", ms->cmd[i]->arg[1]);
 	else if (newpwd)
-15  int     ft_pwd(t_ms *ms, int i)	{
+	{
 		update_env_lst(temp, "OLDPWD", oldpwd);
 		update_env_lst(temp, "PWD", newpwd);
 		update_ms_env(ms);
@@ -237,7 +227,9 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 		return (NULL);
 	if (next_dir[0] == '/')
 		return (ft_strdup(next_dir));
-	if (ft_strncmp(next_dir, "..", 2) == 0)
+	if (next_dir[ft_strlen(next_dir) - 1] == '/')
+		next_dir[ft_strlen(next_dir) - 1] = '\0';
+	if (ft_strncmp(next_dir, "..", 3) == 0)
 	{
 		temp = ft_strdup(ab_path);
 		i = ft_strlen(temp);
