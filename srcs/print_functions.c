@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:00:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/27 23:04:03 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:49:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	print_cmd(t_ms *ms)
 		j = 0;
 		while (ms->cmd[i]->arg[j])
 		{
-			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]->str);
+			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]);
 			j++;
 		}
 		i++;

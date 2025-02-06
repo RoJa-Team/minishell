@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/24 22:27:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:37:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,9 @@ typedef struct s_redir
 	struct s_redir	*next;
 }				t_redir;
 
-typedef struct s_arg
-{
-	char	*str;
-	char	*env_key;
-}				t_arg;
-
 typedef struct s_cmd
 {
-	t_arg	**arg;
+	char	**arg;
 	t_redir	*fd_in;
 	t_redir	*fd_out;
 }				t_cmd;
@@ -83,7 +77,6 @@ typedef struct s_parse
 
 typedef struct s_ms
 {	
-	char	*og_home;
 	char	**ms_env;
 	t_env	*env_lst;
 	t_parse	*parse;

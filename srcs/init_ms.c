@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/27 23:04:08 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/05 20:37:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ void	create_env_lst(t_ms *ms)
 		if (!new_env)
 			deallocate("Error> create_env_lst");
 		env = ft_split(ms->ms_env[i], '=');
-		if (ft_strncmp(env[0], "HOME=", 6) == 0)
-			ms->og_home = ft_strdup(env[1]);
 		new_env->key = ft_strdup(env[0]);
 		new_env->value = NULL;
 		if (env[1])
