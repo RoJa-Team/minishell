@@ -21,11 +21,14 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (ft_printf("Error: Invalid number of arguments.\n"));
 	ms = init_ms(env);
+	//print_ms_env(ms);
+	//print_env_lst(ms);
 	while (1)
 	{
 		input = readline("$minishell>");
+		if (input[0] != ' ')
+			add_history(input);
 		parse_input(ms, input);
-		add_history(input);
 		exec_cmd(ms);
 		clean_parse(ms);
 		clean_cmd(ms);
