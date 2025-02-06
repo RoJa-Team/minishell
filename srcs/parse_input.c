@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/25 19:18:31 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:13:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,42 +107,161 @@ int	pipe_counter(char *str)
 // 	ms->cmd[i] = NULL;
 // }
 
-t_parse	*new_token(char *str)
+t_parse	*new_token(char *str, int len, char c)
 {
 	t_parse	*token;
 
 	token = malloc(sizeof(t_parse));
 	if (!token)
 		deallocate("Error> new_token");
-	token->token = ft_strdup(str);
+	token->token = ft_strndup(str, len);
 	token->quotes = 0;
+	if (c == '\'')
+		token->quotes = 1;
+	else if (c == '\"')
+		token->quotes = 2;
 	token->next = NULL;
 	return (token);
 }
 
-void	parse_tokens(t_ms *ms, char *str) // simplified version, needs to be more specific - handle quotes and redirections
+void	insert_new_token(t_ms *ms, t_parse *new_token)
 {
-	char	**tokensv1;
 	t_parse	*temp;
 
-	tokensv1 = ft_split(str, ' ');
-	if (!tokensv1)
-		deallocate("Error> split tokensv1");
-	int	i = 0;
-	while (tokensv1[i] != NULL)
+	if (!ms->parse)
+		ms->parse = new_token;
+	else
 	{
-		if (!ms->parse)
-			ms->parse = new_token(tokensv1[i]);
+		temp = ms->parse;
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new_token;
+	}
+}
+
+void	parse_tokens(t_ms *ms, char *str) // simplified version, needs to be more specific - handle quotes and redirections
+{
+	int		i;
+	int		len;
+	char	c;
+
+	i = 0;
+	while (str[i])
+	{
+		while (ft_isspace(str[i]))
+			i++;
+		len = 0;
+		while (str[i + len] && str[i + len] != ' ')
+		{
+			if (str[i + len] == '\"' || str[i + len] == '\'')
+			{
+				c = str[i + len];
+				len++;
+				while (str[i + len] != c)
+					len++;
+			}
+			len++;
+		}
+		insert_new_token(ms, new_token(&str[i], len, c));
+		i = i + len;
+	}
+	// char	**tokensv1;
+	// t_parse	*temp;
+
+	// tokensv1 = ft_split(str, ' ');
+	// if (!tokensv1)
+	// 	deallocate("Error> split tokensv1");
+	// int	i = 0;
+	// while (tokensv1[i] != NULL)
+	// {
+	// 	if (!ms->parse)
+	// 		ms->parse = new_token(tokensv1[i]);
+	// 	else
+	// 	{
+	// 		temp = ms->parse;
+	// 		while (temp->next != NULL)
+	// 			temp = temp->next;
+	// 		temp->next = new_token(tokensv1[i]);
+	// 	}
+	// 	i++;
+	// }
+	// free_array(tokensv1);
+}
+
+char	*expand_token(t_ms *ms, t_parse *token)
+{
+	int		i;
+	int		len;
+	int		new_len;
+	int		total;
+	char	*exp;
+	t_env	*temp;
+
+	i = 0;
+	new_len = ft_strlen(token->token);
+	while (token->token[i])
+	{
+		if (token->token[i] == '$' && (token->quotes == 2 || token->quotes == 0))
+		{
+			len = 0;
+			i++;
+			while (ft_isalnum(token->token[i + len]))
+				len++;
+			temp = ms->env_lst;
+			while (temp != NULL)
+			{
+				if (!ft_strncmp(&token->token[i], temp->key, len))
+					break;
+				temp = temp->next;
+			}
+			if (temp)
+				new_len = new_len + ft_strlen(temp->value) - (len + 1);
+			else
+				new_len = new_len - len;
+			i = i + len;
+		}
+		else
+			i++;
+	}
+	exp = malloc(sizeof(char) * new_len + 1);
+	if (!exp)
+		deallocate ("Error> expand_token");
+	i = 0;
+	total = 0;
+	int	j;
+	while (token->token[i])
+	{
+		if (token->token[i] == '$' && (token->quotes == 2 || token->quotes == 0))
+		{
+			len = 0;
+			i++;
+			while (ft_isalnum(token->token[i + len]))
+				len++;
+			temp = ms->env_lst;
+			while (temp != NULL)
+			{
+				if (!ft_strncmp(&token->token[i], temp->key, len))
+					break;
+				temp = temp->next;
+			}
+			j = 0;
+			while (temp && temp->value[j])
+			{
+				exp[total] = temp->value[j];
+				j++;
+				total++;
+			}
+			i = i + len;
+		}
 		else
 		{
-			temp = ms->parse;
-			while (temp->next != NULL)
-				temp = temp->next;
-			temp->next = new_token(tokensv1[i]);
+			exp[total] = token->token[i];
+			total++;
+			i++;
 		}
-		i++;
 	}
-	//free_array(tokensv1);
+	exp[total] = '\0';
+	return (exp);
 }
 
 void	new_cmd(t_ms *ms)
@@ -159,19 +278,14 @@ void	new_cmd(t_ms *ms)
 		i++;
 		temp = temp->next;
 	}
-	ft_printf("i: %d\n", i);
-	ms->cmd[0]->arg = malloc(sizeof(t_arg *) * (i + 1));
+	ms->cmd[0]->arg = malloc(sizeof(char *) * (i + 1));
 	if (!ms->cmd[0]->arg)
 		deallocate("Error> new_cmd");
 	temp = ms->parse;
 	i = 0;
 	while (temp != NULL)
 	{
-		ms->cmd[0]->arg[i] = malloc(sizeof(t_arg));
-		if (!ms->cmd[0]->arg[i])
-			deallocate("Error> new_cmd");
-		ms->cmd[0]->arg[i]->str = ft_strdup(temp->token);
-		ms->cmd[0]->arg[i]->env_key = NULL;
+		ms->cmd[0]->arg[i] = expand_token(ms, temp);
 		temp = temp->next;
 		i++;
 	}
@@ -212,16 +326,6 @@ void	parse_input(t_ms *ms, char *str)
 {
 	parse_tokens(ms, str);
 	parse_cmd(ms);
+	print_cmd(ms);
 	//parse_pipes(ms, str, pipe_counter(str));
-	int	i = 0;
-	while (ms->cmd[i])
-	{
-		int	j = 0;
-		while (ms->cmd[i]->arg[j])
-		{
-			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]->str);
-			j++;
-		}
-		i++;
-	}
 }
