@@ -1,38 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/01/27 22:35:56 by joafern2         ###   ########.fr       */
+/*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
+/*   Updated: 2025/02/06 20:17:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_echo(t_ms *ms, int j)
+int	ft_pwd()
 {
-	int	i;
-	int	n_flag;
-	char	**arg;
-	int	fd = 1; // temporary implementation
+	char	*cwd;
+	size_t	buffer_size;
+	int	fd = 1;
 
-	arg = convert_args_to_char(ms, j);
-	if (!arg)
-		deallocate("Memory allocation failure\n");
-	n_flag = 0;
-	if (arg[1] && ft_strncmp(arg[1], "-n", 3) == 0)
-		n_flag = 1;
-	i = n_flag + 1;
-	while (arg[i])
+	buffer_size = 1024;
+	cwd = malloc(sizeof(char) * buffer_size);
+	if (getcwd(cwd, buffer_size) != NULL)
 	{
-		ft_putstr_fd(arg[i], fd);
-		i++;
-	}
-	if (!n_flag)
+		ft_putstr_fd(cwd, fd);
 		ft_putchar_fd('\n', fd);
-	free_args(arg);
+	}
+	else
+		perror("getcwd() error\n");
+	/*
+	while (ms->env_lst != NULL)
+	{
+		if (ft_strncmp(ms->env_lst->key, "PWD", 3) == 0)
+		{	
+			ft_putstr_fd(ms->env_lst->value, fd);
+			ft_putchar_fd('\n', fd);
+			break ;
+		}
+		ms->env_lst = ms->env_lst->next;
+	}
+	*/
 	return (1);
 }
