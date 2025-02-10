@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/06 19:37:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/10 10:37:19 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ typedef struct s_parse
 {
 	int				quotes; // 0 1 2
 	char			*token;
+	// char			**expansions;
+	// int				*positions;
+	// int				*lengths;
 	struct s_parse	*next;
 }				t_parse;
 
