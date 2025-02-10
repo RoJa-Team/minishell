@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/06 20:16:39 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/10 20:02:26 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,8 @@ void	parse_tokens(t_ms *ms, char *str) // simplified version, needs to be more s
 			}
 			len++;
 		}
-		insert_new_token(ms, new_token(&str[i], len, c));
+		if (len != 0)
+			insert_new_token(ms, new_token(&str[i], len, c));
 		i = i + len;
 	}
 	// char	**tokensv1;
