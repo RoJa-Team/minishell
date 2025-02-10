@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **env)
 		if (input[0] != '\0')
 		{
 			parse_input(ms, input);
-			//execute();
+			exec_cmd(ms);
 			clean_parse(ms);
 			clean_cmd(ms);
 			if (input && !ft_strncmp(input, "exit", 4))
