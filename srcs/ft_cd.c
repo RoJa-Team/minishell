@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/06 20:17:06 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:30:23 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,14 @@ void	update_ms_env(t_ms *ms)
 	{
 		if (!temp2->invis)
 		{
-			temp3 = ft_strjoin(temp2->key, "=");
-			ms->ms_env[i] = ft_strjoin(temp3, temp2->value);
-			free(temp3);
+			if (temp2->value)
+			{
+				temp3 = ft_strjoin(temp2->key, "=");
+				ms->ms_env[i] = ft_strjoin(temp3, temp2->value);
+				free(temp3);
+			}
+			else
+				ms->ms_env[i] = ft_strdup(temp2->key);
 			i++;
 		}
 		temp2 = temp2->next;
@@ -112,7 +117,7 @@ void	update_ms_env(t_ms *ms)
 	ms->ms_env[i] = NULL;
 
 }
-
+/*
 char	*get_home_til(t_ms *ms)
 {
 	t_env	*temp;
@@ -131,7 +136,7 @@ char	*get_home_til(t_ms *ms)
 	}
 	return (ft_strdup(ms->og_home));
 }
-
+*/
 char	*print_oldpwd(t_env *env)
 {
 	t_env	*temp;

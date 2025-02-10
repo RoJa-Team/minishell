@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/06 20:12:02 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:31:27 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	update_or_add_env_key(t_env **env, char *key, char *value)
 	{
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0)
 		{
-			if (temp->value)
-			{
+			if (temp->value && value)
 				free(temp->value);
-				temp->value = NULL;
-			}
 			if (value)	
 				temp->value = ft_strdup(value);
+			else
+				temp->value = NULL;
+			temp->invis = 0;
 			//printf("%s=%s\n", temp->key, temp->value);
 			return ;
 		}
@@ -85,10 +85,12 @@ void	update_or_add_env_key(t_env **env, char *key, char *value)
 	if (!new_node)
 		deallocate("Error adding new env key\n");
 	new_node->key = ft_strdup(key);
+	//printf("new key is \"%s\"\n", new_node->key);
 	if (value)
 		new_node->value = ft_strdup(value);
 	else
 		new_node->value = NULL;
+	//printf("new value is \"%s\"\n", new_node->value);
 	new_node->invis = 0;
 	new_node->next = *env;
 	*env = new_node;
@@ -145,6 +147,7 @@ void	print_export_fd(t_ms *ms)
 	{
 		ft_putstr_fd("declare -x ", fd);
 		equal = ft_strchr(env[i], '=');
+	//	printf("%s\n", env[i]);
 		if (equal)
 		{
 			write(fd, env[i], equal - env[i]);
@@ -157,9 +160,6 @@ void	print_export_fd(t_ms *ms)
 			ft_putstr_fd(env[i], fd);
 			ft_putchar_fd('\n', fd);
 		}
-		i++;
-		write(fd, env[i], ft_strlen(env[i]));
-		ft_putchar_fd('\n', fd);
 		i++;
 	}
 }
@@ -189,8 +189,6 @@ int	ft_export(t_ms *ms, int i)
 			free_key_and_value(key, value);
 			j++;
 		}
-		printf("next up is update ms_env\n");
-		fflush(stdout);
 		update_ms_env(ms);
 	}
 	return (1);

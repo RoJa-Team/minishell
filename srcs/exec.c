@@ -18,17 +18,9 @@ int	is_builtin(t_ms *ms, int i)
 {
 	char **arg;
 
-	printf("checking if is built-in\n");
-	fflush(stdout);
 	arg = ms->cmd[i]->arg;
-	printf("got the arg: %s\n", arg[0]);
-	fflush(stdout);
 	if (ft_strncmp(arg[0], "echo", 5) == 0)
-	{
-		printf("got to the execution\n");
-		fflush(stdout);
 		return (ft_echo(ms, i));
-	}
 	else if (ft_strncmp(arg[0], "cd", 3) == 0)
 		return (ft_cd(ms, i));
 	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
@@ -43,8 +35,6 @@ int	is_builtin(t_ms *ms, int i)
 	else if (arg[0] == "exit")
 		ft_exit(ms);
 	*/
-	printf("it's not built-in\n");
-	fflush(stdout);
 	return (0);	
 }
 
@@ -125,21 +115,13 @@ void	exec_cmd(t_ms *ms)
 	char	*path;
 
 	i = 0;
-	printf("got to the execution\n");
-	fflush(stdout);
 	if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
 	{
-		printf("no command\n");
-		fflush(stdout);
     		return ;
 	}
 	while (ms->cmd[i])
 	{
-		printf("got to the exec loop\n");
-		fflush(stdout);
 		cmd = ms->cmd[i]->arg[0];
-		printf("got the cmd\n");
-		fflush(stdout);
 		if (is_builtin(ms, i) == 1)
 		{
 			i++;
@@ -148,8 +130,6 @@ void	exec_cmd(t_ms *ms)
 		else if (fork() == 0)
 		{
 			//arg = convert_args_to_char(ms, i);
-			printf("got to not built-in\n");
-			fflush(stdout);
 			path = find_path(ms->env_lst, cmd);
 			if (!path)
 			{
