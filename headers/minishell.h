@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/06 20:13:03 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/10 19:30:04 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ int	is_valid_key(char *key);
 void	free_key_and_value(char *key, char *value);
 void	update_or_add_env_key(t_env **env, char *key, char *value);
 void	print_export_fd(t_ms *ms);
+
+/*ft_unset.c*/
+int	ft_unset(t_ms *ms, int i);
 
 /*********************************************/
 /*                                           */
