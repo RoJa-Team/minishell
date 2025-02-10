@@ -29,9 +29,9 @@ int	is_builtin(t_ms *ms, int i)
 		return (ft_export(ms, i));
 	else if (ft_strncmp(arg[0], "unset", 6) == 0)
 		return (ft_unset(ms, i));
+	else if (ft_strncmp(arg[0], "env", 4) == 0)
+		return (ft_env(ms, i));
 	/*
-	else if (arg[0] == "env")
-		ft_env(ms);
 	else if (arg[0] == "exit")
 		ft_exit(ms);
 	*/

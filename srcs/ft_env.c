@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/10 21:40:08 by joafern2         ###   ########.fr       */
+/*   Created: 2025/02/10 21:47:29 by joafern2          #+#    #+#             */
+/*   Updated: 2025/02/10 22:21:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_echo(t_ms *ms, int j)
+int	ft_env(t_ms *ms, int i)
 {
-	int	i;
-	int	n_flag;
+	int	j;
+	int	fd = 1;
 	char	**arg;
-	int	fd = 1; // temporary implementation
 
-	arg = convert_args_to_char(ms, j);
-	if (!arg)
-		deallocate("Memory allocation failure\n");
-	n_flag = 0;
-	if (arg[1] && ft_strncmp(arg[1], "-n", 3) == 0)
-		n_flag = 1;
-	i = n_flag + 1;
-	while (arg[i])
+	j = 0;
+	arg = ms->cmd[i]->arg;
+	if (arg[1])
+		ft_printf("env: '%s: No such file or directory\n", arg[1]);
+	else
 	{
-		ft_putstr_fd(arg[i], fd);
-		ft_putchar_fd(' ', fd);
-		i++;
+		while (ms->ms_env[j])
+		{
+			ft_putstr_fd(ms->ms_env[j], fd);
+			ft_putchar_fd('\n', fd);
+			j++;
+		}
 	}
-	if (!n_flag)
-		ft_putchar_fd('\n', fd);
-	free_args(arg);
-	return (1);
+	return (1);	
 }
