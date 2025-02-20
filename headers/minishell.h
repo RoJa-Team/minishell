@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/10 10:37:19 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/14 04:39:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,38 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+# define APPEND 2
+# define HEREDOC 2
+# define OUT 1
+# define IN 1
+// cat << 1 | cat << 2 | cat << 3 | cat << 4 | cat << 5 | cat << 6 | cat << 7 | cat << 8 | cat << 9 | cat << 10 | cat << 11 | cat << 12 | cat << 13 | cat << 14 | cat << 15 | cat << 16 | cat << 17 | cat << 18 | cat << 19 | cat << 20 
+// cat << here > out | lsl | cat < out | wc
+typedef struct s_heredoc
+{
+	char				*str;
+	struct s_heredoc	*next;
+}				t_heredoc;
+
 typedef struct s_redir
 {
-	int				del;
+	int				type;
 	char			*file;
 	struct s_redir	*next;
 }				t_redir;
 
+typedef struct s_parse
+{
+	char			*token;
+	struct s_parse	*next;
+}				t_parse;
+
 typedef struct s_cmd
 {
-	char	**arg;
-	t_redir	*fd_in;
-	t_redir	*fd_out;
+	char			**arg;
+	t_parse			*token;
+	t_redir			*fd_in;
+	t_redir			*fd_out;
+	struct s_cmd	*next;
 }				t_cmd;
 
 typedef struct s_env
@@ -44,45 +64,11 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-// export -> modified = 0 or 1 && invis = 0
-// cd -> modified = 0 && invis = invis
-// unset -> invis = 1
-
-// OLDPWD = 42
-// modified = 0
-// unset OLDPWD -> invis = 0
-// cd $OLDPWD -> cd 42
-
-// OLDPWD = 42
-// export OLDPWD=batata -> modified = 1
-// unset OLDPWD -> invis = 1
-// cd $OLDPWD -> cd NULL
-
-// OLDPWD = 42
-// modified = 0
-// unset OLDPWD -> invis = 1
-// cd $OLDPWD -> cd 42
-
-// OLDPWD = 42
-// export OLDPWD=batata -> modified = 1
-// invis = 0
-// cd $OLDPWD -> cd batata
-
-typedef struct s_parse
-{
-	int				quotes; // 0 1 2
-	char			*token;
-	// char			**expansions;
-	// int				*positions;
-	// int				*lengths;
-	struct s_parse	*next;
-}				t_parse;
-
 typedef struct s_ms
 {	
 	char	**ms_env;
 	t_env	*env_lst;
-	t_parse	*parse;
+	t_cmd	*cmds;
 	t_cmd	**cmd;
 }				t_ms;
 
@@ -100,6 +86,13 @@ void	copy_env(t_ms *ms, char **env);
 int		pipe_counter(char *str);
 void	parse_input(t_ms *ms, char *str);
 void	quote_validator(char *str);
+
+/* tokens.c */
+void	insert_new_token(t_ms *ms, t_parse *new_token);
+t_parse	*new_token(char *str, int len);
+void	parse_tokens(t_ms *ms, char *str);
+char	*expand_token(t_ms *ms, t_parse *token);
+
 
 /*********************************************/
 /*                                           */
