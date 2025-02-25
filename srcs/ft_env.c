@@ -6,13 +6,13 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 21:47:29 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/10 22:21:54 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/20 01:00:11 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_env(t_ms *ms, int i)
+void	ft_env(t_ms *ms, int i)
 {
 	int	j;
 	int	fd = 1;
@@ -31,5 +31,4 @@ int	ft_env(t_ms *ms, int i)
 			j++;
 		}
 	}
-	return (1);	
 }

@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/10 18:31:27 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/20 01:00:36 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	print_export_fd(t_ms *ms)
 	}
 }
 
-int	ft_export(t_ms *ms, int i)
+void	ft_export(t_ms *ms, int i)
 {
 	char	**arg;
 	char	*key;
@@ -191,5 +191,4 @@ int	ft_export(t_ms *ms, int i)
 		}
 		update_ms_env(ms);
 	}
-	return (1);
 }
