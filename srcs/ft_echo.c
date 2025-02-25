@@ -6,13 +6,13 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/01/27 22:35:56 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/20 00:59:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_echo(t_ms *ms, int j)
+void	ft_echo(t_ms *ms, int j)
 {
 	int	i;
 	int	n_flag;
@@ -29,10 +29,10 @@ int	ft_echo(t_ms *ms, int j)
 	while (arg[i])
 	{
 		ft_putstr_fd(arg[i], fd);
+		ft_putchar_fd(' ', fd);
 		i++;
 	}
 	if (!n_flag)
 		ft_putchar_fd('\n', fd);
 	free_args(arg);
-	return (1);
 }

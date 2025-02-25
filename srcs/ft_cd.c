@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/10 18:30:23 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/20 00:59:24 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ char	*print_oldpwd(t_env *env)
 	return (NULL);
 }
 
-int	ft_cd(t_ms *ms, int i)
+void	ft_cd(t_ms *ms, int i)
 {
 	t_env	*temp;
 	char	*oldpwd;
@@ -177,12 +177,12 @@ int	ft_cd(t_ms *ms, int i)
 	arg = convert_args_to_char(ms, i);
 	count = arg_count(arg);
 	if (!arg)
-		return (1);
+		return ;
 	if (count > 2)
 	{
 		ft_printf("cd: too many arguments\n");
 		free(arg);
-		return (1);
+		return ;
 	}
 	temp = ms->env_lst;
 	newpwd = NULL;
@@ -216,7 +216,6 @@ int	ft_cd(t_ms *ms, int i)
 	if (newpwd)
 		free(newpwd);
 	free_args(arg);
-	return (1);
 }
 
 

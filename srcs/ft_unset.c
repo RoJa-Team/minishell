@@ -6,13 +6,13 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:38:02 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/10 19:41:51 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/20 01:01:23 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_unset(t_ms *ms, int i)
+void	ft_unset(t_ms *ms, int i)
 {
 	t_env	*temp;
 	t_env	*prev;
@@ -23,7 +23,7 @@ int	ft_unset(t_ms *ms, int i)
 	arg = ms->cmd[i]->arg;
 	temp = ms->env_lst;
 	if (!temp || !temp->key)
-		return (1);
+		return ;
 	while (arg[j])
 	{
 		prev = NULL;
@@ -47,5 +47,4 @@ int	ft_unset(t_ms *ms, int i)
 		j++;
 	}
 	update_ms_env(ms);
-	return (1);
 }

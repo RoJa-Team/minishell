@@ -1,42 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/20 01:00:50 by joafern2         ###   ########.fr       */
+/*   Created: 2025/02/10 21:47:29 by joafern2          #+#    #+#             */
+/*   Updated: 2025/02/20 01:00:11 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_pwd()
+void	ft_env(t_ms *ms, int i)
 {
-	char	*cwd;
-	size_t	buffer_size;
+	int	j;
 	int	fd = 1;
+	char	**arg;
 
-	buffer_size = 1024;
-	cwd = malloc(sizeof(char) * buffer_size);
-	if (getcwd(cwd, buffer_size) != NULL)
-	{
-		ft_putstr_fd(cwd, fd);
-		ft_putchar_fd('\n', fd);
-	}
+	j = 0;
+	arg = ms->cmd[i]->arg;
+	if (arg[1])
+		ft_printf("env: '%s: No such file or directory\n", arg[1]);
 	else
-		perror("getcwd() error\n");
-	/*
-	while (ms->env_lst != NULL)
 	{
-		if (ft_strncmp(ms->env_lst->key, "PWD", 3) == 0)
-		{	
-			ft_putstr_fd(ms->env_lst->value, fd);
+		while (ms->ms_env[j])
+		{
+			ft_putstr_fd(ms->ms_env[j], fd);
 			ft_putchar_fd('\n', fd);
-			break ;
+			j++;
 		}
-		ms->env_lst = ms->env_lst->next;
 	}
-	*/
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/14 04:39:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/20 01:02:22 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,10 @@ char	**convert_args_to_char(t_ms *ms, int h);
 int	arg_count(char **arg);
 
 /*ft_echo.c*/
-int	ft_echo(t_ms *ms, int i);
+void	ft_echo(t_ms *ms, int i);
 
 /*ft_cd.c*/
-int	ft_cd(t_ms *ms, int i);
+void	ft_cd(t_ms *ms, int i);
 char	*get_pwd(t_env *env);
 char	*get_home(t_env *env);
 void	update_env_lst(t_env *env, char *key, char *new_value);
@@ -125,10 +125,10 @@ void	free_args(char **arg);
 int	arg_count(char **arg);
 
 /*ft_pwd.c*/
-int     ft_pwd();
+void    ft_pwd();
 
 /*ft_export.c*/
-int	ft_export(t_ms *ms, int i);
+void	ft_export(t_ms *ms, int i);
 void	get_key_and_value(char *arg, char **key, char **value);
 int	is_valid_key(char *key);
 void	free_key_and_value(char *key, char *value);
@@ -136,7 +136,10 @@ void	update_or_add_env_key(t_env **env, char *key, char *value);
 void	print_export_fd(t_ms *ms);
 
 /*ft_unset.c*/
-int	ft_unset(t_ms *ms, int i);
+void	ft_unset(t_ms *ms, int i);
+
+/*ft_env.c*/
+void	ft_env(t_ms *ms, int i);
 
 /*********************************************/
 /*                                           */

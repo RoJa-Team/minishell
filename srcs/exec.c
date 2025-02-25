@@ -1,14 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                           if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
-    return;
-                             :::      ::::::::   */
+/*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/06 20:29:48 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/20 01:15:53 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +18,45 @@ int	is_builtin(t_ms *ms, int i)
 
 	arg = ms->cmd[i]->arg;
 	if (ft_strncmp(arg[0], "echo", 5) == 0)
-		return (ft_echo(ms, i));
+		return (1);
 	else if (ft_strncmp(arg[0], "cd", 3) == 0)
-		return (ft_cd(ms, i));
+		return (1);
 	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
-		return (ft_pwd());
+		return (1);
 	else if (ft_strncmp(arg[0], "export", 7) == 0)
-		return (ft_export(ms, i));
+		return (1);
 	else if (ft_strncmp(arg[0], "unset", 6) == 0)
-		return (ft_unset(ms, i));
+		return (1);
+	else if (ft_strncmp(arg[0], "env", 4) == 0)
+		return (1);
 	/*
-	else if (arg[0] == "env")
-		ft_env(ms);
 	else if (arg[0] == "exit")
 		ft_exit(ms);
 	*/
 	return (0);	
+}
+
+void	execute_builtin(t_ms *ms, int i)
+{
+	char **arg;
+
+	arg = ms->cmd[i]->arg;
+	if (ft_strncmp(arg[0], "echo", 5) == 0)
+		ft_echo(ms, i);
+	else if (ft_strncmp(arg[0], "cd", 3) == 0)
+		ft_cd(ms, i);
+	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
+		ft_pwd();
+	else if (ft_strncmp(arg[0], "export", 7) == 0)
+		ft_export(ms, i);
+	else if (ft_strncmp(arg[0], "unset", 6) == 0)
+		ft_unset(ms, i);
+	else if (ft_strncmp(arg[0], "env", 4) == 0)
+		ft_env(ms, i);
+	/*
+	else if (arg[0] == "exit")
+		ft_exit(ms);
+	*/
 }
 
 char	*get_value(t_env *env, char *key)
@@ -63,7 +84,7 @@ char	*get_value(t_env *env, char *key)
 	}
 	return (NULL);
 }
-// TBC add ft_getenv ; add t_env to check for visibility
+
 char	*find_path(t_env *env_lst, char *cmd)
 {
 	char	*path_env;
@@ -110,47 +131,64 @@ int	arg_count(char **arg)
 void	exec_cmd(t_ms *ms)
 {
 	int	i;
+	int	prev_fd;
+	int	fd[2];
+	pid_t	pid;
 	char	*cmd;
-	//char	**arg;
 	char	*path;
 
 	i = 0;
+	prev_fd = -1;
 	if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
-	{
     		return ;
-	}
 	while (ms->cmd[i])
 	{
 		cmd = ms->cmd[i]->arg[0];
-		if (is_builtin(ms, i) == 1)
+		if (cmd[i + 1])
+			pipe(fd);
+		if (is_builtin(ms, i) == 1 && !cmd[i + 1])
 		{
-			i++;
-			continue ;
+			execute_builtin(ms, i);
+			return ;
 		}
-		else if (fork() == 0)
+		pid = fork();
+		if (pid == 0)
 		{
-			//arg = convert_args_to_char(ms, i);
+			if (prev_fd != -1)
+			{
+				dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+			}
+			if (cmd[i + 1])
+			{
+				dup2(fd[1], STDOUT_FILENO);
+				close(fd[1]);
+				close(fd[0]);
+			}
 			path = find_path(ms->env_lst, cmd);
 			if (!path)
 			{
 				printf("%s: command not found\n", ms->cmd[i]->arg[0]);
 				return ;
 			}
-			if (execve(path, ms->cmd[i]->arg, ms->ms_env) == -1) // my_env in use
-			{
+			if (is_builtin(ms, i))
+				execute_builtin(ms, i);
+			else if (execve(path, ms->cmd[i]->arg, ms->ms_env) == -1)
 				deallocate("Error executing execve.\n");
-				free(path);
-			}
+				
 			free(path);
-			//free(arg);
 		}
+		if (prev_fd != -1)
+			close(prev_fd);
+		if (cmd[i + 1])
+			close(fd[1]);
+		if (cmd[i + 1])
+			prev_fd = fd[0];
 		else
-		{
-			// check for herededoc
-			wait(NULL);
-		}
+			prev_fd = -1;
 		i++;
 	}
+	while (wait(NULL) > 0);
 }
 
 char	**convert_args_to_char(t_ms *ms, int h)

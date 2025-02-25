@@ -20,7 +20,7 @@ OBJS_DIR= objs/
 SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c \
 			list_functions.c print_functions.c parse_input.c tokens.c \
 			ft_echo.c ft_cd.c ft_pwd.c ft_export.c ft_unset.c \
-			exec.c)
+			ft_env.c exec.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM		= /bin/rm -f
 
