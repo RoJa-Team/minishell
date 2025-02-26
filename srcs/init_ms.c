@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/05 20:37:47 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:58:44 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_ms	*init_ms(char **env)
 		deallocate("Error> failed memory allocation for t_ms.");
 	ms->cmd = NULL;
 	ms->env_lst = NULL;
-	ms->parse = NULL;
 	copy_env(ms, env);
 	create_env_lst(ms);
 	return (ms);

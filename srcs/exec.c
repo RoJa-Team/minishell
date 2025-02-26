@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/20 01:15:53 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:41:22 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int	is_builtin(t_ms *ms, int i)
 void	execute_builtin(t_ms *ms, int i)
 {
 	char **arg;
+	int	save_out;
 
+	save_out = dup(STDOUT_FILENO);
 	arg = ms->cmd[i]->arg;
 	if (ft_strncmp(arg[0], "echo", 5) == 0)
 		ft_echo(ms, i);
@@ -53,6 +55,9 @@ void	execute_builtin(t_ms *ms, int i)
 		ft_unset(ms, i);
 	else if (ft_strncmp(arg[0], "env", 4) == 0)
 		ft_env(ms, i);
+	
+	dup2(save_out, STDOUT_FILENO);
+	close(save_out);
 	/*
 	else if (arg[0] == "exit")
 		ft_exit(ms);
@@ -140,27 +145,35 @@ void	exec_cmd(t_ms *ms)
 	i = 0;
 	prev_fd = -1;
 	if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
+	{
+		printf("EXITING\n");
     		return ;
+	}
 	while (ms->cmd[i])
 	{
 		cmd = ms->cmd[i]->arg[0];
-		if (cmd[i + 1])
-			pipe(fd);
 		if (is_builtin(ms, i) == 1 && !cmd[i + 1])
 		{
+		 	printf("DEBUG: Executing command: %s\n", cmd);
 			execute_builtin(ms, i);
 			return ;
 		}
+		if (ms->cmd[i + 1])
+			pipe(fd);
 		pid = fork();
 		if (pid == 0)
 		{
+			printf("DEBUG: Inside child process.\n");
 			if (prev_fd != -1)
 			{
+				printf("DEBUG: No more pipes.\n");
 				dup2(prev_fd, STDIN_FILENO);
 				close(prev_fd);
 			}
-			if (cmd[i + 1])
+			if (ms->cmd[i + 1])
 			{
+				printf("DEBUG: There are more pipes.\n");
+				printf("DEBUG: Next cmd is %s\n", ms->cmd[i + 1]->arg[0]);
 				dup2(fd[1], STDOUT_FILENO);
 				close(fd[1]);
 				close(fd[0]);
@@ -172,20 +185,29 @@ void	exec_cmd(t_ms *ms)
 				return ;
 			}
 			if (is_builtin(ms, i))
+			{
+				//printf("DEBUG: Executing builtin.\n");
 				execute_builtin(ms, i);
+				exit (0);
+			}
 			else if (execve(path, ms->cmd[i]->arg, ms->ms_env) == -1)
 				deallocate("Error executing execve.\n");
-				
-			free(path);
+			else
+				printf("DEBUG: Executed execve.\n");
+			// free(path);
 		}
 		if (prev_fd != -1)
+		{
 			close(prev_fd);
-		if (cmd[i + 1])
-			close(fd[1]);
-		if (cmd[i + 1])
-			prev_fd = fd[0];
-		else
 			prev_fd = -1;
+		}
+		if (cmd[i + 1])
+		{
+			close(fd[1]);
+			prev_fd = fd[0];
+		}
+		else
+			close(fd[0]);
 		i++;
 	}
 	while (wait(NULL) > 0);
