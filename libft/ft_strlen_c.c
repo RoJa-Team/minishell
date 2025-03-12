@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   ft_strlen_c.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/30 15:43:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/12 21:17:41 by rafasant         ###   ########.fr       */
+/*   Created: 2025/03/12 21:18:30 by rafasant          #+#    #+#             */
+/*   Updated: 2025/03/12 21:18:50 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strndup(char *str, int len)
+size_t	ft_strlen_c(char *str, char c)
 {
-	int		i;
-	char	*new_str;
+	int	i;
 
 	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i] && i < len)
-		i++;
-	new_str = malloc(sizeof(char) * i + 1);
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	while (str[i] && i < len)
+	if (str)
 	{
-		new_str[i] = str[i];
-		i++;
+		while (str[i] != '\0' && str[i] != c)
+			i++;
 	}
-	new_str[i] = '\0';
-	return (new_str);
+	return (i);
 }

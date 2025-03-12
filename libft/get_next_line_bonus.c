@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 17:07:40 by rafasant          #+#    #+#             */
-/*   Updated: 2024/06/16 23:39:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:23:11 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_next_line(int fd)
 		if (read(fd, buffer[fd], BUFFER_SIZE) <= 0)
 			return (NULL);
 	}
-	str = get_str(fd, buffer[fd], NULL);
+	str = gnl_get_str(fd, buffer[fd], NULL);
 	if (!str)
 		return (NULL);
 	return (str);
