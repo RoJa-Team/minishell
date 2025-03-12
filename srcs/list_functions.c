@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:23:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/14 03:37:53 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:59:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,23 @@ void	*get_last_node(void *node, size_t next_offset)
 	while (*(void **)(tmp + next_offset))
 		tmp = *(char **)(tmp + next_offset);
 	return ((void *)tmp);
+}
+
+int	get_list_size(void *node, size_t next_offset)
+{
+	int		size;
+	char	*tmp;
+
+	tmp = (char *)node;
+	if (!tmp)
+		return (0);
+	size = 0;
+	while (*(void **)(tmp + next_offset))
+	{
+		tmp = *(char **)(tmp + next_offset);
+		size++;
+	}
+	return (size);
 }
 
 void	free_list(void *node, size_t next_offset)
