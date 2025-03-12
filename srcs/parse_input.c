@@ -6,23 +6,24 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/14 04:35:31 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/11 22:15:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	within_quotes(char *str, int *i)
+int	within_quotes(char *str)
 {
+	int		i;
 	char	c;
 
-	if (str[*i] == '\"' || str[*i] == '\'')
-	{
-		c = str[*i];
-		(*i)++;
-		while (str[*i] != c)
-			(*i)++;
-	}
+	i = 0;
+	c = str[i];
+	i++;
+	while (str[i] != c)
+		i++;
+	i++;
+	return (i);
 }
 
 int	check_metachar(char c) // ‘|’, ‘&’, ‘;’, ‘(’, ‘)’, ‘<’, ‘>’, space, tab, newline
@@ -44,7 +45,9 @@ void	new_cmd(t_ms *ms)
 	new_cmd->fd_in = NULL;
 	new_cmd->fd_out = NULL;
 	new_cmd->next = NULL;
-	temp = get_last_node(ms->cmds, get_offset(&dummy, &dummy.next));
+	temp = NULL;
+	if (ms->cmds)
+		temp = get_last_node(ms->cmds, get_offset(&dummy, &dummy.next));
 	if (temp)
 		temp->next = new_cmd;
 	else
@@ -53,6 +56,7 @@ void	new_cmd(t_ms *ms)
 
 char	*new_str(char *str, int *i)
 {
+	int		j;
 	int		len;
 	char	*new_str;
 
@@ -60,21 +64,21 @@ char	*new_str(char *str, int *i)
 	while (str[*i + len] && !check_metachar(str[*i + len]))
 	{
 		if (str[*i + len] == '\"' || str[*i + len] == '\'')
-			within_quotes(&str[*i + len], &len);
+			len = len + within_quotes(&str[*i + len]);
 		else
 			len++;
 	}
 	new_str = malloc(sizeof(char) * len + 1);
 	if (!new_str)
 	deallocate("Error> new_str");
-	len = 0;
-	while (str[*i] && !check_metachar(str[*i]))
+	j = 0;
+	while (j < len)
 	{
-		new_str[len] = str[*i];
-		len++;
+		new_str[j] = str[*i];
+		j++;
 		(*i)++;
 	}
-	new_str[len] = '\0';
+	new_str[j] = '\0';
 	return (new_str);
 }
 
@@ -102,12 +106,12 @@ int	expansion_len(t_ms *ms, char *str, int *i)
 	else if (ft_isdigit(str[*i]))
 		deallocate("Error> invalid identifier (envs nao podem comecar com digitos)");
 	else
-		while (!check_metachar(str[*i + len]))
+		while (str[*i + len] && !check_metachar(str[*i + len]) && str[*i + len] != '\'' && str[*i + len] != '\"')
 			len++;
 	temp = ms->env_lst;
 	while (temp != NULL)
 	{
-		if (!ft_strncmp(&str[*i], temp->key, len))
+		if (ft_strlen_c(&str[*i], str[*i + len]) == ft_strlen(temp->key) && !strncmp(&str[*i], temp->key, len))
 			break;
 		temp = temp->next;
 	}
@@ -122,17 +126,53 @@ char	*expansion_value(t_ms *ms, char *str, int *i)
 	int		len;
 	t_env	*temp;
 
-	len = expansion_len(ms, str, i);
+	(*i)++;
+	len = 0;
+	while (str[*i + len] && !check_metachar(str[*i + len]) && str[*i + len] != '\'' && str[*i + len] != '\"')
+		len++;
 	temp = ms->env_lst;
 	while (temp != NULL)
 	{
-		if (!ft_strncmp(&str[*i], temp->key, len))
+		if (ft_strlen_c(&str[*i], str[*i + len]) == ft_strlen(temp->key) && !strncmp(&str[*i], temp->key, len))
 			break;
 		temp = temp->next;
 	}
+	*i = *i + len;
 	if (temp)
 		return (temp->value);
 	return (NULL);
+}
+
+int	ft_abs(int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
+int	exp_len(t_ms *ms, char *str)
+{
+	int	i;
+	int	len;
+	int	quotes;
+
+	i = 0;
+	len = 0;
+	quotes = 0;
+	check_quotes(str[i], &quotes);
+	while (str[i])
+	{
+		if (str[i] == '$' && (quotes == 2 || quotes == 0))
+			len = len + expansion_len(ms, str, &i);
+		else
+		{
+			if (str[i] != '\'' && str[i] != '\"')
+				len++;
+			i++;
+		}
+		check_quotes(str[i], &quotes);
+	}
+	return (len);
 }
 
 char	*expand_str(t_ms *ms, char *str)
@@ -144,6 +184,9 @@ char	*expand_str(t_ms *ms, char *str)
 	char	*exp;
 	char	*value;
 
+	exp = malloc(sizeof(char) * exp_len(ms, str) + 1);
+	if (!exp)
+		deallocate ("Error> expand_token");
 	i = 0;
 	len = 0;
 	quotes = 0;
@@ -151,26 +194,10 @@ char	*expand_str(t_ms *ms, char *str)
 	{
 		check_quotes(str[i], &quotes);
 		if (str[i] == '$' && (quotes == 2 || quotes == 0))
-			len = len + expansion_len(ms, str, &i);
-		else
-		{
-			i++;
-			len++;
-		}
-	}
-	exp = malloc(sizeof(char) * len + 1);
-	if (!exp)
-		deallocate ("Error> expand_token");
-	i = 0;
-	len = 0;
-	while (str[i])
-	{
-		check_quotes(str[i], &quotes);
-		if (str[i] == '$' && (quotes == 2 || quotes == 0))
 		{
 			value = expansion_value(ms, str, &i);
 			j = 0;
-			while (value[j])
+			while (value && value[j])
 			{
 				exp[len] = value[j];
 				j++;
@@ -179,8 +206,11 @@ char	*expand_str(t_ms *ms, char *str)
 		}
 		else
 		{
-			exp[len] = str[i];
-			len++;
+			if (str[i] != '\'' && str[i] != '\"')
+			{
+				exp[len] = str[i];
+				len++;
+			}
 			i++;
 		}
 	}
@@ -268,6 +298,11 @@ void	cmd_to_array(t_ms *ms)
 	ms->cmd[i] = 0;
 }
 
+void	redirections(t_ms *ms, char *str, int *i)
+{
+
+}
+
 void	parse_input(t_ms *ms, char *str)
 {
 	int		i;
@@ -285,11 +320,10 @@ void	parse_input(t_ms *ms, char *str)
 				i++;
 				break;
 			}
-			// else if (str[i] == is_redirection())
-			// 	redirections();
+			else if (str[i] == "<" || str[i] == ">")
+				redirections(ms, str, i);
 			else
 				place_new_arg(ms, new_arg(expand_str(ms, new_str(str, &i))));
-			//ft_printf("i: %d\n", i);
 		}
 		if (str[i] == '\0')
 			break ;

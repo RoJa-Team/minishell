@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/14 04:39:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:59:27 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int	ft_unset(t_ms *ms, int i);
 /*********************************************/
 
 size_t	get_offset(void *struct_ptr, void *member_ptr);
+int		get_list_size(void *node, size_t next_offset);
 void	*get_last_node(void *node, size_t next_offset);
 void	free_list(void *node, size_t next_offset);
 
