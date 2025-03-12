@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:22:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/12 04:00:26 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/12 20:48:55 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value)
 		*key = ft_strdup(arg);
 		copy = find_value(ms->env_lst, *key);
 		if (copy)
-				*value = ft_strdup(copy);
+			*value = ft_strdup(copy);
 	}
 }
 
@@ -79,7 +79,6 @@ void	update_or_add_env_key(t_env **env, char *key, char *value)
 				if (temp->value)
 					free(temp->value);
 				temp->value = ft_strdup(value);
-				ft_printf("value : %s\n", temp->value);
 			}
 			temp->invis = 0;
 			return ;
