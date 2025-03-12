@@ -107,12 +107,16 @@ int	is_builtin(t_ms *ms, int i);
 char	*get_value(t_env *env, char *key);
 char	**convert_args_to_char(t_ms *ms, int h);
 int	arg_count(char **arg);
+void	child_process(t_ms *ms, int prev_fd, int *fd, int i);
+void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i);
+void	execute_execve(t_ms *ms, int i);
+char	*get_full_path(char *path_dir, char *cmd);
 
 /*ft_echo.c*/
-int	ft_echo(t_ms *ms, int i);
+void	ft_echo(t_ms *ms, int i);
 
 /*ft_cd.c*/
-int	ft_cd(t_ms *ms, int i);
+void	ft_cd(t_ms *ms, int i);
 char	*get_pwd(t_env *env);
 char	*get_home(t_env *env);
 void	update_env_lst(t_env *env, char *key, char *new_value);
@@ -125,18 +129,30 @@ void	free_args(char **arg);
 int	arg_count(char **arg);
 
 /*ft_pwd.c*/
-int     ft_pwd();
+void    ft_pwd();
 
 /*ft_export.c*/
-int	ft_export(t_ms *ms, int i);
-void	get_key_and_value(char *arg, char **key, char **value);
-int	is_valid_key(char *key);
-void	free_key_and_value(char *key, char *value);
-void	update_or_add_env_key(t_env **env, char *key, char *value);
+void	ft_export(t_ms *ms, int i);
+void	add_new_key(t_ms *ms, char **arg, int j);
 void	print_export_fd(t_ms *ms);
+void	execute_export(int fd, char *line);
+void	sort_env(char **env);
+
+/*export_utils.c*/
+void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value);
+int	is_valid_key(char *key);
+void	update_or_add_env_key(t_env **env, char *key, char *value);
+void	add_env_key(t_env **env, char *key, char *value);
+void	swap_str(char **a, char **b);
+void	free_key_and_value(char *key, char *value);
+char	*find_value(t_env *env, char *key);
 
 /*ft_unset.c*/
-int	ft_unset(t_ms *ms, int i);
+void	ft_unset(t_ms *ms, int i);
+void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg);
+
+/*ft_env.c*/
+void	ft_env(t_ms *ms, int i);
 
 /*********************************************/
 /*                                           */

@@ -1,14 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                           if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
-    return;
-                             :::      ::::::::   */
+/*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/06 20:29:48 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/27 05:03:14 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +14,53 @@
 
 int	is_builtin(t_ms *ms, int i)
 {
-	char **arg;
+	char	**arg;
 
 	arg = ms->cmd[i]->arg;
 	if (ft_strncmp(arg[0], "echo", 5) == 0)
-		return (ft_echo(ms, i));
+		return (1);
 	else if (ft_strncmp(arg[0], "cd", 3) == 0)
-		return (ft_cd(ms, i));
+		return (1);
 	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
-		return (ft_pwd());
+		return (1);
 	else if (ft_strncmp(arg[0], "export", 7) == 0)
-		return (ft_export(ms, i));
+		return (1);
 	else if (ft_strncmp(arg[0], "unset", 6) == 0)
-		return (ft_unset(ms, i));
+		return (1);
+	else if (ft_strncmp(arg[0], "env", 4) == 0)
+		return (1);
 	/*
-	else if (arg[0] == "env")
-		ft_env(ms);
 	else if (arg[0] == "exit")
 		ft_exit(ms);
 	*/
-	return (0);	
+	return (0);
+}
+
+void	execute_builtin(t_ms *ms, int i)
+{
+	char	**arg;
+	int		save_out;
+
+	save_out = dup(STDOUT_FILENO);
+	arg = ms->cmd[i]->arg;
+	if (ft_strncmp(arg[0], "echo", 5) == 0)
+		ft_echo(ms, i);
+	else if (ft_strncmp(arg[0], "cd", 3) == 0)
+		ft_cd(ms, i);
+	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
+		ft_pwd();
+	else if (ft_strncmp(arg[0], "export", 7) == 0)
+		ft_export(ms, i);
+	else if (ft_strncmp(arg[0], "unset", 6) == 0)
+		ft_unset(ms, i);
+	else if (ft_strncmp(arg[0], "env", 4) == 0)
+		ft_env(ms, i);
+	dup2(save_out, STDOUT_FILENO);
+	close(save_out);
+	/*
+	else if (arg[0] == "exit")
+		ft_exit(ms);
+	*/
 }
 
 char	*get_value(t_env *env, char *key)
@@ -52,8 +77,8 @@ char	*get_value(t_env *env, char *key)
 			{
 				value = ft_strdup(temp->value);
 				if (!value)
-					return(NULL);
-			       	else
+					return (NULL);
+				else
 					return (value);
 			}
 			else
@@ -63,18 +88,17 @@ char	*get_value(t_env *env, char *key)
 	}
 	return (NULL);
 }
-// TBC add ft_getenv ; add t_env to check for visibility
+
 char	*find_path(t_env *env_lst, char *cmd)
 {
 	char	*path_env;
 	char	**path_dir;
 	char	*full_path;
-	char	*temp;
-	int	i;
+	int		i;
 
 	(void)env_lst;
 	i = 0;
-	path_env = get_value(env_lst, "PATH"); // using my_env
+	path_env = get_value(env_lst, "PATH");
 	if (!path_env)
 		return (NULL);
 	path_dir = ft_split(path_env, ':');
@@ -82,77 +106,118 @@ char	*find_path(t_env *env_lst, char *cmd)
 		deallocate("Failed to split $PATH\n");
 	while (path_dir[i])
 	{
-		temp = ft_strjoin(path_dir[i], "/");
-		full_path = ft_strjoin(temp, cmd);
-		if (!full_path)
-			deallocate("Failed to join command to $PATH\n");
-		if (access(full_path, X_OK) == 0)
+		full_path = get_full_path(path_dir[i], cmd);
+		if (full_path != NULL)
 			return (full_path);
-		free(temp);
-		free(full_path);
-		free(path_dir[i]);
 		i++;
 	}
 	free(path_dir);
 	return (NULL);
 }
-/*
-int	arg_count(char **arg)
-{
-	int	i;
 
-	i = 0;
-	while (arg[i])
-		i++;
-	return (i);
+char	*get_full_path(char *path_dir, char *cmd)
+{
+	char	*temp;
+	char	*full_path;
+
+	temp = ft_strjoin(path_dir, "/");
+	full_path = ft_strjoin(temp, cmd);
+	if (!full_path)
+		deallocate("Failed to join command to $PATH\n");
+	if (access(full_path, X_OK) == 0)
+	{
+		free(temp);
+		free(path_dir);
+		return (full_path);
+	}
+	free(temp);
+	free(full_path);
+	free(path_dir);
+	return (NULL);
 }
-*/
+
 void	exec_cmd(t_ms *ms)
 {
-	int	i;
-	char	*cmd;
-	//char	**arg;
-	char	*path;
+	int		i;
+	int		prev_fd;
+	int		fd[2];
+	int		status;
+	pid_t	pid;
 
 	i = 0;
-	if (!ms->cmd || !ms->cmd[i] || !ms->cmd[i]->arg)
-	{
-    		return ;
-	}
+	prev_fd = -1;
 	while (ms->cmd[i])
 	{
-		cmd = ms->cmd[i]->arg[0];
-		if (is_builtin(ms, i) == 1)
-		{
-			i++;
-			continue ;
-		}
-		else if (fork() == 0)
-		{
-			//arg = convert_args_to_char(ms, i);
-			path = find_path(ms->env_lst, cmd);
-			if (!path)
-			{
-				printf("%s: command not found\n", ms->cmd[i]->arg[0]);
-				return ;
-			}
-			if (execve(path, ms->cmd[i]->arg, ms->ms_env) == -1) // my_env in use
-			{
-				deallocate("Error executing execve.\n");
-				free(path);
-			}
-			free(path);
-			//free(arg);
-		}
-		else
-		{
-			// check for herededoc
-			wait(NULL);
-		}
+		if (is_builtin(ms, i) == 1 && !ms->cmd[i + 1])
+			return (execute_builtin(ms, i));
+		if (ms->cmd[i + 1])
+			pipe(fd);
+		pid = fork();
+		if (pid == 0)
+			child_process(ms, prev_fd, fd, i);
+		close_pipe(ms, fd, &prev_fd, i);
+		waitpid(pid, &status, 0);
+		if ((status & 0xFF) == 127)
+			return ;
 		i++;
 	}
+	while (wait(NULL) > 0)
+			continue ;
 }
 
+void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i)
+{
+	if (*prev_fd != -1)
+	{
+		close(*prev_fd);
+		*prev_fd = -1;
+	}
+	if (ms->cmd[i + 1])
+	{
+		close(fd[1]);
+		*prev_fd = fd[0];
+	}
+	else
+		close(fd[0]);
+}
+
+void	child_process(t_ms *ms, int prev_fd, int *fd, int i)
+{
+	if (prev_fd != -1)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	if (ms->cmd[i + 1])
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		close(fd[0]);
+	}
+	if (is_builtin(ms, i))
+	{
+		execute_builtin(ms, i);
+		exit (0);
+	}
+	else
+		execute_execve(ms, i);
+}
+
+void	execute_execve(t_ms *ms, int i)
+{
+	char *path;
+
+	path = find_path(ms->env_lst, ms->cmd[i]->arg[0]);
+	if (!path)
+	{
+		write(2, ms->cmd[i]->arg[0], ft_strlen(ms->cmd[i]->arg[0]));
+		write(2, ": command not found\n", 20);
+		exit(127);
+	}
+	if (execve(path, ms->cmd[i]->arg, ms->ms_env) == -1)
+		deallocate("Error executing execve.\n");
+}
+/*
 char	**convert_args_to_char(t_ms *ms, int h)
 {
 	int	j;
@@ -184,19 +249,18 @@ char	**convert_args_to_char(t_ms *ms, int h)
 				deallocate("memory allocation failed\n");
 			j++;
 		}
-		/*
 		else if (ft_strncmp(ms->cmd[h]->arg[i]->env_key, "OLDPWD", 7) == 0)
 		{
 			result[j] = get_value(ms->env_lst, "OLDPWD");
 			j++;
 		}
-		*/
 		i++;
 	}
 	//printf ("%d\n", j);
 	result[j] = NULL;
 	return (result);
 }
+*/
 
 /*
 int	main()
