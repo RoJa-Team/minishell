@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/26 20:08:00 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/12 20:43:15 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 	int	i;
 
 	i = 0;
+	new_ab_path = NULL;
 	if (!next_dir || !ab_path)
 		return (NULL);
 	if (next_dir[0] == '/')
@@ -245,9 +246,11 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 	if (ft_strncmp(next_dir, ".", 2) == 0)
 		return (ft_strdup(ab_path));
 	if (ab_path[ft_strlen(ab_path) - 1] != '/')
+	{
 		temp = ft_strjoin(ab_path, "/");
-	new_ab_path = ft_strjoin(temp, next_dir);
-	free(temp);
+		new_ab_path = ft_strjoin(temp, next_dir);
+		free(temp);
+	}
 	return (new_ab_path);
 }
 
