@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/11 22:15:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:02:05 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,10 +298,103 @@ void	cmd_to_array(t_ms *ms)
 	ms->cmd[i] = 0;
 }
 
-void	redirections(t_ms *ms, char *str, int *i)
-{
 
+
+char	*get_file(t_parse *token, int *ptr, int *new_len, int type)
+{
+	int		i;
+	int		len;
+	char	*file;
+
+	i = *ptr;
+	i = i + type;
+	if (token->token[i] == '\0')
+		deallocate("Error> get_file\n");
+	while (ft_isspace(token->token[i]))
+		i++;
+	len = 0;
+	while (token->token[i + len] && !ft_isspace(token->token[i + len]))
+		len++;
+	file = malloc(sizeof(char) * len + 1);
+	if (!file)
+		deallocate("Error> malloc get_file\n");
+	len = 0;
+	while (token->token[i + len] && !ft_isspace(token->token[i + len]))
+	{
+		file[len] = token->token[i + len];
+		len++;
+	}
+	file[len] = '\0';
+	*ptr = i + len;
+	*new_len = *new_len - type - len;
+	return (file);
 }
+
+void	new_input(t_ms *ms, char *file, int type)
+{
+	t_cmd	cmd_dummy;
+	t_cmd	*last_cmd;
+	t_redir	redir_dummy;
+	t_redir	*new_redir;
+	t_redir	*temp;
+
+	last_cmd = get_last_node(ms->cmd, get_offset(&cmd_dummy, &cmd_dummy.next));
+	new_redir = malloc(sizeof(t_redir));
+	if (!new_redir)
+		deallocate("Error> new_redir");
+	new_redir->type = type;
+	new_redir->file = file;
+	new_redir->next = NULL;
+	temp = NULL;
+	if (last_cmd->fd_in)
+	{
+		temp = get_last_node(last_cmd->fd_in, get_offset(&redir_dummy, &redir_dummy.next));
+		temp->next = new_redir;
+	}
+	else
+		last_cmd->fd_in = new_redir;
+}
+
+void	new_output(t_ms *ms, char *file, int type)
+{
+	t_cmd	cmd_dummy;
+	t_cmd	*last_cmd;
+	t_redir	redir_dummy;
+	t_redir	*new_redir;
+	t_redir	*temp;
+
+	last_cmd = get_last_node(ms->cmd, get_offset(&cmd_dummy, &cmd_dummy.next));
+	new_redir = malloc(sizeof(t_redir));
+	if (!new_redir)
+		deallocate("Error> new_redir");
+	new_redir->type = type;
+	new_redir->file = file;
+	new_redir->next = NULL;
+	temp = NULL;
+	if (last_cmd->fd_out)
+	{
+		temp = get_last_node(last_cmd->fd_out, get_offset(&redir_dummy, &redir_dummy.next));
+		temp->next = new_redir;
+	}
+	else
+		last_cmd->fd_out = new_redir;
+}
+
+// void	redirections(t_ms *ms, char *str, int *i)
+// {
+// 	if (str[*i + 1] == '|' || (str[*i] == str[*i + 1] && str[*i + 2] == '|'))
+// 		return ("Error> Invalid redirection");
+// 	if (str[*i] == str[*i + 1] && str[*i] == '<')
+// 		ft_printf("Isto seria um heredoc!\n");
+// 	else if (str[*i] == str[*i + 1] && str[*i] == '>')
+// 		new_output(ms, get_file(token, i, new_len, APPEND), APPEND);
+// 	else if (str[*i] == '<' && str[*i + 1] != '>')
+// 		new_input(ms, get_file(token, i, new_len, IN), IN);
+// 	else if (str[*i] == '>' && str[*i + 1] != '<')
+// 		new_output(ms, get_file(token, i, new_len, OUT), OUT);
+// 	else if (str[*i] == str[*i + 1])
+// 		return ((void)ft_printf("Error> Invalid redirection"));
+// }
 
 void	parse_input(t_ms *ms, char *str)
 {
@@ -320,8 +413,8 @@ void	parse_input(t_ms *ms, char *str)
 				i++;
 				break;
 			}
-			else if (str[i] == "<" || str[i] == ">")
-				redirections(ms, str, i);
+			// else if (str[i] == '<' || str[i] == '>')
+			// 	redirections(ms, str, &i);
 			else
 				place_new_arg(ms, new_arg(expand_str(ms, new_str(str, &i))));
 		}

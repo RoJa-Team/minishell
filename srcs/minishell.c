@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/14 04:59:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:02:33 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (ft_printf("Error: Invalid number of arguments.\n"));
 	ms = init_ms(env);
+	print_env_lst(ms);
+	print_ms_env(ms);
 	while (1)
 	{
 		input = readline("$minishell>");
