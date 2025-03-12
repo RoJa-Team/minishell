@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/02/14 03:05:37 by rafasant         ###   ########.fr        #
+#    Updated: 2025/03/11 20:33:05 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ OBJS_DIR= objs/
 SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c \
 			list_functions.c print_functions.c parse_input.c tokens.c \
 			ft_echo.c ft_cd.c ft_pwd.c ft_export.c ft_unset.c \
-			ft_env.c exec.c)
+			ft_env.c exec.c export_utils.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
-RM		= /bin/rm -f
+RM	= /bin/rm -f
 
 ${OBJS_DIR}%.o: ${SRCS_DIR}%.c
 	@${CC} ${CFLAGS} -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/20 01:02:22 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:59:26 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,10 @@ int	is_builtin(t_ms *ms, int i);
 char	*get_value(t_env *env, char *key);
 char	**convert_args_to_char(t_ms *ms, int h);
 int	arg_count(char **arg);
+void	child_process(t_ms *ms, int prev_fd, int *fd, int i);
+void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i);
+void	execute_execve(t_ms *ms, int i);
+char	*get_full_path(char *path_dir, char *cmd);
 
 /*ft_echo.c*/
 void	ft_echo(t_ms *ms, int i);
@@ -129,14 +133,23 @@ void    ft_pwd();
 
 /*ft_export.c*/
 void	ft_export(t_ms *ms, int i);
-void	get_key_and_value(char *arg, char **key, char **value);
-int	is_valid_key(char *key);
-void	free_key_and_value(char *key, char *value);
-void	update_or_add_env_key(t_env **env, char *key, char *value);
+void	add_new_key(t_ms *ms, char **arg, int j);
 void	print_export_fd(t_ms *ms);
+void	execute_export(int fd, char *line);
+void	sort_env(char **env);
+
+/*export_utils.c*/
+void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value);
+int	is_valid_key(char *key);
+void	update_or_add_env_key(t_env **env, char *key, char *value);
+void	add_env_key(t_env **env, char *key, char *value);
+void	swap_str(char **a, char **b);
+void	free_key_and_value(char *key, char *value);
+char	*find_value(t_env *env, char *key);
 
 /*ft_unset.c*/
 void	ft_unset(t_ms *ms, int i);
+void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg);
 
 /*ft_env.c*/
 void	ft_env(t_ms *ms, int i);

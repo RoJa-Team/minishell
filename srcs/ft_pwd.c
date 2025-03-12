@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/20 01:00:50 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:55:41 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ void	ft_pwd()
 		ms->env_lst = ms->env_lst->next;
 	}
 	*/
+	//printf("Sim, é builtin\n");
 }

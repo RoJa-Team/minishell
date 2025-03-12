@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:38:02 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/20 01:01:23 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:46:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,28 @@ void	ft_unset(t_ms *ms, int i)
 	{
 		prev = NULL;
 		temp = ms->env_lst;
-		while (temp != NULL)
-		{
-			if (ft_strncmp(arg[j], temp->key, ft_strlen(temp->key) + 1) == 0)
-			{
-				if (prev)
-					prev->next = temp->next;
-				else
-					ms->env_lst = temp->next;
-				free(temp->key);
-				free(temp->value);
-				free(temp);
-				break ;
-			}
-			prev = temp;
-			temp = temp->next;
-		}
+		remove_key(ms, prev, temp, arg[j]);
 		j++;
 	}
 	update_ms_env(ms);
+}
+
+void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg)
+{
+	while (temp != NULL)
+	{
+		if (ft_strncmp(arg, temp->key, ft_strlen(temp->key) + 1) == 0)
+		{
+			if (prev)
+				prev->next = temp->next;
+			else
+				ms->env_lst = temp->next;
+			free(temp->key);
+			free(temp->value);
+			free(temp);
+			break ;
+		}
+		prev = temp;
+		temp = temp->next;
+	}
 }

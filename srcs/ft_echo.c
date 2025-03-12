@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/20 00:59:54 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:07:03 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_echo(t_ms *ms, int j)
 	char	**arg;
 	int	fd = 1; // temporary implementation
 
-	arg = convert_args_to_char(ms, j);
+	arg = ms->cmd[j]->arg;
 	if (!arg)
 		deallocate("Memory allocation failure\n");
 	n_flag = 0;
@@ -29,7 +29,8 @@ void	ft_echo(t_ms *ms, int j)
 	while (arg[i])
 	{
 		ft_putstr_fd(arg[i], fd);
-		ft_putchar_fd(' ', fd);
+		if (arg[i + 1])
+			ft_putchar_fd(' ', fd);
 		i++;
 	}
 	if (!n_flag)

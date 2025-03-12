@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/02/20 00:59:24 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:08:00 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	ft_cd(t_ms *ms, int i)
 	char	**arg;
 	int	count;
 
-	arg = convert_args_to_char(ms, i);
+	arg = ms->cmd[i]->arg;
 	count = arg_count(arg);
 	if (!arg)
 		return ;
