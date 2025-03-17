@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:22:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/12 20:48:55 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:44:53 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,15 @@ void	add_env_key(t_env **env, char *key, char *value)
 		deallocate("Error adding new env key\n");
 	new_node->key = ft_strdup(key);
 	if (value)
+	{
 		new_node->value = ft_strdup(value);
+		new_node->invis = 0;
+	}
 	else
+	{
 		new_node->value = NULL;
-	new_node->invis = 0;
+		new_node->invis = 1;
+	}
 	new_node->next = *env;
 	*env = new_node;
 }
