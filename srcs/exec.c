@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/18 20:35:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:04:18 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	exec_cmd(t_ms *ms)
 	prev_fd = -1;
 	while (ms->cmd[i])
 	{
+		handle_redirections(ms->cmd[i]);
 		if (is_builtin(ms, i) == 1 && !ms->cmd[i + 1])
 			return (execute_builtin(ms, i));
 		if (ms->cmd[i + 1])
