@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 21:06:57 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:44:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ char	*new_str(char *str, int *i)
 		else
 			len++;
 	}
+	if (len == 0)
+		return (NULL);
 	new_str = malloc(sizeof(char) * len + 1);
 	if (!new_str)
 	deallocate("Error> new_str");
@@ -183,6 +185,8 @@ char	*expand_str(t_ms *ms, char *str)
 	char	*exp;
 	char	*value;
 
+	if (!str)
+		return (NULL);
 	exp = malloc(sizeof(char) * exp_len(ms, str) + 1);
 	if (!exp)
 		deallocate ("Error> expand_token");
@@ -221,6 +225,8 @@ t_parse	*new_arg(char *str)
 {
 	t_parse	*new_arg;
 
+	if (!str)
+		return (NULL);
 	new_arg = malloc(sizeof(t_parse));
 	if (!new_arg)
 		deallocate("Error> new_arg\n");
@@ -234,6 +240,8 @@ void	place_new_arg(t_parse **arg_ll, t_parse *new_arg)
 	t_parse	dummy_arg;
 	t_parse	*temp;
 
+	if (!new_arg)
+		return ;
 	temp = get_last_node(*arg_ll, get_offset(&dummy_arg, &dummy_arg.next));
 	if (temp)
 		temp->next = new_arg;
@@ -413,9 +421,9 @@ void	parse_input(t_ms *ms, char *str)
 
 	i = 0;
 	cmd_ll = NULL;
-	arg_ll = NULL;
 	while (1)
 	{
+		arg_ll = NULL;
 		new_cmd(&cmd_ll);
 		while (str[i])
 		{
