@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 21:44:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:01:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll)
 	ms->cmd[i] = 0;
 }
 
-void	new_input(t_ms *ms, char *file, int type)
+void	new_input(t_cmd *cmd_ll, char *file, int type)
 {
 	t_cmd	cmd_dummy;
 	t_cmd	*last_cmd;
@@ -312,7 +312,7 @@ void	new_input(t_ms *ms, char *file, int type)
 	t_redir	*new_redir;
 	t_redir	*temp;
 
-	last_cmd = get_last_node(ms->cmd, get_offset(&cmd_dummy, &cmd_dummy.next));
+	last_cmd = get_last_node(cmd_ll, get_offset(&cmd_dummy, &cmd_dummy.next));
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		deallocate("Error> new_redir");
@@ -329,7 +329,7 @@ void	new_input(t_ms *ms, char *file, int type)
 		last_cmd->fd_in = new_redir;
 }
 
-void	new_output(t_ms *ms, char *file, int type)
+void	new_output(t_cmd *cmd_ll, char *file, int type)
 {
 	t_cmd	cmd_dummy;
 	t_cmd	*last_cmd;
@@ -337,7 +337,7 @@ void	new_output(t_ms *ms, char *file, int type)
 	t_redir	*new_redir;
 	t_redir	*temp;
 
-	last_cmd = get_last_node(ms->cmd, get_offset(&cmd_dummy, &cmd_dummy.next));
+	last_cmd = get_last_node(cmd_ll, get_offset(&cmd_dummy, &cmd_dummy.next));
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		deallocate("Error> new_redir");
@@ -373,7 +373,6 @@ char	*get_file(char *str, int *i)
 			break ;
 		len++;
 	}
-	ft_printf("len> %d\n", len);
 	file = malloc(sizeof(char) * len + 1);
 	if (!file)
 		deallocate("Error> get_file");
@@ -381,8 +380,6 @@ char	*get_file(char *str, int *i)
 	while (str[*i])
 	{
 		check_quotes(str[*i], &quotes);
-		ft_printf("str here> %s\n", &str[*i + len]);
-
 		if (quotes == 0 && check_metachar(str[*i]))
 			break ;
 		if ((str[*i] != '\'') && (str[*i] != '\"'))
@@ -393,22 +390,21 @@ char	*get_file(char *str, int *i)
 		(*i)++;
 	}
 	file[len] = '\0';
-	ft_printf("file> %s\n", file);
 	return (file);
 }
 
-void	redirections(t_ms *ms, char *str, int *i)
+void	redirections(t_cmd *cmd_ll, char *str, int *i)
 {
 	if (str[*i + 1] == '|' || (str[*i] == str[*i + 1] && str[*i + 2] == '|'))
 		return ((void)ft_printf("Error> Invalid redirection"));
 	if (str[*i] == str[*i + 1] && str[*i] == '<')
-		ft_printf("Isto seria um heredoc!\n");
+		return (*i = *i + 2, (void)ft_printf("Isto seria um heredoc!\n"));
 	else if (str[*i] == str[*i + 1] && str[*i] == '>')
-		new_output(ms, get_file(str, i), APPEND);
+		new_output(cmd_ll, get_file(str, i), APPEND);
 	else if (str[*i] == '<' && str[*i + 1] != '>')
-		new_input(ms, get_file(str, i), IN);
+		new_input(cmd_ll, get_file(str, i), IN);
 	else if (str[*i] == '>' && str[*i + 1] != '<')
-		new_output(ms, get_file(str, i), OUT);
+		new_output(cmd_ll, get_file(str, i), OUT);
 	else if (str[*i] == str[*i + 1])
 		return ((void)ft_printf("Error> Invalid redirection"));
 }
@@ -434,8 +430,8 @@ void	parse_input(t_ms *ms, char *str)
 				i++;
 				break;
 			}
-			// else if (str[i] == '<' || str[i] == '>')
-			// 	redirections(ms, str, &i);
+			else if (str[i] == '<' || str[i] == '>')
+				redirections(cmd_ll, str, &i);
 			else
 				place_new_arg(&arg_ll, new_arg(expand_str(ms, new_str(str, &i))));
 		}
