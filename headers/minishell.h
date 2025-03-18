@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/17 21:07:20 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:53:07 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,12 @@ void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg);
 
 /*ft_env.c*/
 void	ft_env(t_ms *ms, int i);
+
+/*redirections.c*/
+void	handle_redirections(t_cmd *cmd);
+void	handle_input_r(t_redir *r);
+void	handle_output_r(t_redir *r);
+void	handle_heredoc(char *delimiter);
 
 /*********************************************/
 /*                                           */
