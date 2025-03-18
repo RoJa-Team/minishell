@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/12 22:28:30 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:06:57 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_metachar(char c) // ‘|’, ‘&’, ‘;’, ‘(’, ‘)’, ‘<�
 	return (c == '|' || c == '<' || c == '>' || c == '\t' || c == '\n' || c == ' ');
 }
 
-void	new_cmd(t_ms *ms)
+void	new_cmd(t_cmd **cmd_ll)
 {
 	t_cmd	dummy;
 	t_cmd	*new_cmd;
@@ -41,17 +41,16 @@ void	new_cmd(t_ms *ms)
 	if (!new_cmd)
 		deallocate("Error> init_cmd");
 	new_cmd->arg = NULL;
-	new_cmd->token = NULL;
 	new_cmd->fd_in = NULL;
 	new_cmd->fd_out = NULL;
 	new_cmd->next = NULL;
 	temp = NULL;
-	if (ms->cmds)
-		temp = get_last_node(ms->cmds, get_offset(&dummy, &dummy.next));
+	if (*cmd_ll)
+		temp = get_last_node(*cmd_ll, get_offset(&dummy, &dummy.next));
 	if (temp)
 		temp->next = new_cmd;
 	else
-		ms->cmds = new_cmd;
+		*cmd_ll = new_cmd;
 }
 
 char	*new_str(char *str, int *i)
@@ -230,54 +229,54 @@ t_parse	*new_arg(char *str)
 	return (new_arg);
 }
 
-void	place_new_arg(t_ms *ms, t_parse *new_arg)
+void	place_new_arg(t_parse **arg_ll, t_parse *new_arg)
 {
-	t_cmd	dummy_cmd;
 	t_parse	dummy_arg;
-	t_cmd	*last_cmd;
 	t_parse	*temp;
 
-	last_cmd = get_last_node(ms->cmds, get_offset(&dummy_cmd, &dummy_cmd.next));
-	temp = get_last_node(last_cmd->token, get_offset(&dummy_arg, &dummy_arg.next));
+	temp = get_last_node(*arg_ll, get_offset(&dummy_arg, &dummy_arg.next));
 	if (temp)
 		temp->next = new_arg;
 	else
-		last_cmd->token = new_arg;
+		*arg_ll = new_arg;
 }
 
-void	token_to_array(t_cmd *cmd)
+void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll)
 {
 	int		i;
+	t_cmd	dummy_cmd;
+	t_cmd	*last_cmd;
 	t_parse	*temp;
 
 	i = 0;
-	temp = cmd->token;
+	temp = arg_ll;
 	while (temp != NULL)
 	{
 		i++;
 		temp = temp->next;
 	}
-	cmd->arg = malloc(sizeof(char *) * (i + 1));
-	if (!cmd->arg)
+	last_cmd = get_last_node(cmd_ll, get_offset(&dummy_cmd, &dummy_cmd.next));
+	last_cmd->arg = malloc(sizeof(char *) * (i + 1));
+	if (!last_cmd->arg)
 		deallocate("Error> ll_to_array");
-	temp = cmd->token;
+	temp = arg_ll;
 	i = 0;
 	while (temp != NULL)
 	{
-		cmd->arg[i] = temp->token;
+		last_cmd->arg[i] = temp->token;
 		i++;
 		temp = temp->next;
 	}
-	cmd->arg[i] = 0;
+	last_cmd->arg[i] = 0;
 }
 
-void	cmd_to_array(t_ms *ms)
+void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll)
 {
 	int		i;
 	t_cmd	*temp_cmd;
 
 	i = 0;
-	temp_cmd = ms->cmds;
+	temp_cmd = cmd_ll;
 	while (temp_cmd != NULL)
 	{
 		i++;
@@ -286,12 +285,11 @@ void	cmd_to_array(t_ms *ms)
 	ms->cmd = malloc(sizeof(char *) * (i + 1));
 	if (!ms->cmd)
 		deallocate("Error> cmd_to_array");
-	temp_cmd = ms->cmds;
+	temp_cmd = cmd_ll;
 	i = 0;
 	while (temp_cmd != NULL)
 	{
 		ms->cmd[i] = temp_cmd;
-		token_to_array(ms->cmd[i]);
 		i++;
 		temp_cmd = temp_cmd->next;
 	}
@@ -351,38 +349,50 @@ void	new_output(t_ms *ms, char *file, int type)
 char	*get_file(char *str, int *i)
 {
 	int		len;
+	int		quotes;
 	char	*file;
 
 	while (str[*i] == '>' || str[*i] == '<')
 		(*i)++;
-	// i = *ptr;
-	// i = i + type;
-	// if (token->token[i] == '\0')
-	// 	deallocate("Error> get_file\n");
-	// while (ft_isspace(token->token[i]))
-	// 	i++;
-	// len = 0;
-	// while (token->token[i + len] && !ft_isspace(token->token[i + len]))
-	// 	len++;
-	// file = malloc(sizeof(char) * len + 1);
-	// if (!file)
-	// 	deallocate("Error> malloc get_file\n");
-	// len = 0;
-	// while (token->token[i + len] && !ft_isspace(token->token[i + len]))
-	// {
-	// 	file[len] = token->token[i + len];
-	// 	len++;
-	// }
-	// file[len] = '\0';
-	// *ptr = i + len;
-	// *new_len = *new_len - type - len;
+	while (str[*i] == ' ')
+		(*i)++;
+	quotes = 0;
+	len = 0;
+	while (str[*i + len])
+	{
+		check_quotes(str[*i + len], &quotes);
+		if (quotes == 0 && check_metachar(str[*i + len]))
+			break ;
+		len++;
+	}
+	ft_printf("len> %d\n", len);
+	file = malloc(sizeof(char) * len + 1);
+	if (!file)
+		deallocate("Error> get_file");
+	len = 0;
+	while (str[*i])
+	{
+		check_quotes(str[*i], &quotes);
+		ft_printf("str here> %s\n", &str[*i + len]);
+
+		if (quotes == 0 && check_metachar(str[*i]))
+			break ;
+		if ((str[*i] != '\'') && (str[*i] != '\"'))
+		{
+			file[len] = str[*i];
+			len++;
+		}
+		(*i)++;
+	}
+	file[len] = '\0';
+	ft_printf("file> %s\n", file);
 	return (file);
 }
 
 void	redirections(t_ms *ms, char *str, int *i)
 {
 	if (str[*i + 1] == '|' || (str[*i] == str[*i + 1] && str[*i + 2] == '|'))
-		return ("Error> Invalid redirection");
+		return ((void)ft_printf("Error> Invalid redirection"));
 	if (str[*i] == str[*i + 1] && str[*i] == '<')
 		ft_printf("Isto seria um heredoc!\n");
 	else if (str[*i] == str[*i + 1] && str[*i] == '>')
@@ -398,11 +408,15 @@ void	redirections(t_ms *ms, char *str, int *i)
 void	parse_input(t_ms *ms, char *str)
 {
 	int		i;
+	t_cmd	*cmd_ll;
+	t_parse	*arg_ll;
 
 	i = 0;
+	cmd_ll = NULL;
+	arg_ll = NULL;
 	while (1)
 	{
-		new_cmd(ms);
+		new_cmd(&cmd_ll);
 		while (str[i])
 		{
 			while (ft_isspace(str[i]))
@@ -415,12 +429,13 @@ void	parse_input(t_ms *ms, char *str)
 			// else if (str[i] == '<' || str[i] == '>')
 			// 	redirections(ms, str, &i);
 			else
-				place_new_arg(ms, new_arg(expand_str(ms, new_str(str, &i))));
+				place_new_arg(&arg_ll, new_arg(expand_str(ms, new_str(str, &i))));
 		}
+		token_to_array(cmd_ll, arg_ll);
 		if (str[i] == '\0')
 			break ;
 	}
-	cmd_to_array(ms);
+	cmd_to_array(ms, cmd_ll);
 	print_cmd(ms);
 }
 

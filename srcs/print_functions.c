@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:00:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/02/14 04:29:27 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:24:48 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,4 @@ void	print_cmd(t_ms *ms)
 		}
 		i++;
 	}
-
-	// t_cmd	*ll_cmd;
-	// t_parse	*ll_token;
-	// int	i;
-	// int	j;
-
-	// ll_cmd = ms->cmds;
-	// i = 0;
-	// while (ll_cmd != NULL)
-	// {
-	// 	ll_token = ll_cmd->token;
-	// 	j = 0;
-	// 	while (ll_token != NULL)
-	// 	{
-	// 		ft_printf("ll_cmd[%d][%d]: %s\n", i, j, ll_token->token);
-	// 		ll_token = ll_token->next;
-	// 		j++;
-	// 	}
-	// 	i++;
-	// 	ll_cmd = ll_cmd->next;
-	// }
 }
