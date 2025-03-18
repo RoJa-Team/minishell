@@ -6,11 +6,14 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/11 20:55:56 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/17 21:14:58 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+//fazer copia do ms_env para ordenar APENAS quando se printa
+//ajustar print_export_fd para funcionar com a linked linked list
 
 void	sort_env(char **env)
 {
@@ -43,18 +46,74 @@ void	sort_env(char **env)
 void	print_export_fd(t_ms *ms)
 {
 	int		i;
-	char	**env;
+	t_env	*env_lst;
+	char	**env_arr;
 	int		fd;
 
 	fd = 1;
-	env = ms->ms_env;
-	sort_env(env);
+	env_lst = ms->env_lst;
+	env_arr = NULL;
+	env_arr = convert_lst_to_arr(env_lst);
+	sort_env(env_arr);
 	i = 0;
-	while (env[i])
+	while (env_arr[i])
 	{
-		execute_export(fd, env[i]);
+		execute_export(fd, env_arr[i]);
 		i++;
 	}
+	free_args(env_arr);
+}
+
+char	**convert_lst_to_arr(t_env *lst)
+{
+	char	**arr;
+	char	*temp;
+	int	size;
+	int	i;
+
+	temp = NULL;
+	size = env_lst_size(lst);
+	arr = malloc(sizeof(char *) * (size + 1));
+	if (!arr)
+		deallocate("Memory Allocation failed");
+	i = 0;
+	while (lst)
+	{
+		if (lst->value)
+		{
+			temp = ft_strjoin(lst->key, "=");
+			if (!temp)
+				return (NULL);
+			arr[i] = ft_strjoin(temp, lst->value);
+		       	free(temp);
+		}
+		else
+			arr[i] = ft_strdup(lst->key);
+		if (!arr[i])
+		{
+			while (i-- > 0)
+				free(arr[i]);
+			free(arr);
+			return (NULL);
+		}
+		lst = lst->next;
+		i++;
+	}
+	arr[i] = NULL;
+	return (arr);
+}
+
+int	env_lst_size(t_env *env_lst)
+{
+	int	size;
+
+	size = 0;
+	while (env_lst)
+	{
+		size++;
+		env_lst = env_lst->next;
+	}
+	return (size);
 }
 
 void	execute_export(int fd, char *line)

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 21:14:33 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:24:04 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ void	add_new_key(t_ms *ms, char **arg, int j);
 void	print_export_fd(t_ms *ms);
 void	execute_export(int fd, char *line);
 void	sort_env(char **env);
+char	**convert_lst_to_arr(t_env *lst);
+int	env_lst_size(t_env *env_lst);
 
 /*export_utils.c*/
 void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value);
@@ -151,6 +153,12 @@ void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg);
 
 /*ft_env.c*/
 void	ft_env(t_ms *ms, int i);
+
+/*redirections.c*/
+void	handle_redirections(t_cmd *cmd);
+void	handle_input_r(t_redir *r);
+void	handle_output_r(t_redir *r);
+void	handle_heredoc(char *delimiter);
 
 /*********************************************/
 /*                                           */
