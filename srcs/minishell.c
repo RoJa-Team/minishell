@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 21:25:30 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:12:25 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **env)
 			parse_input(ms, input);
 			exec_cmd(ms);
 			clean_cmd(ms);
-			if (input && !ft_strncmp(input, "exit", 4))
+			if (input && !ft_strncmp(input, "exit", 5))
 				break ;
 		}
 	}

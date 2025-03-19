@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/18 22:04:18 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:22:56 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,22 @@ void	exec_cmd(t_ms *ms)
 	int		fd[2];
 	int		status;
 	pid_t	pid;
-
+	int	save_stdout;
+	
+	save_stdout = dup(STDOUT_FILENO);
 	i = 0;
 	prev_fd = -1;
 	while (ms->cmd[i])
 	{
-		handle_redirections(ms->cmd[i]);
+		if (ms->cmd[i]->fd_in || ms->cmd[i]->fd_out)
+			handle_redirections(ms->cmd[i]);
 		if (is_builtin(ms, i) == 1 && !ms->cmd[i + 1])
-			return (execute_builtin(ms, i));
+		{
+			execute_builtin(ms, i);
+			dup2(save_stdout, STDOUT_FILENO);
+			close(save_stdout);
+			return ;
+		}
 		if (ms->cmd[i + 1])
 			pipe(fd);
 		pid = fork();
@@ -162,6 +170,8 @@ void	exec_cmd(t_ms *ms)
 			return ;
 		i++;
 	}
+	dup2(save_stdout, STDOUT_FILENO);
+	close(save_stdout);
 	while (wait(NULL) > 0)
 			continue ;
 }

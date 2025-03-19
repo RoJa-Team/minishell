@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/18 20:53:09 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:23:00 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ void	handle_redirections(t_cmd *cmd)
 	t_redir	*r;
 	
 	r = cmd->fd_in;
-	handle_input_r(r);
+	if (r)
+		handle_input_r(r);
 	r = cmd->fd_out;
-	handle_output_r(r);
+	if (r)
+		handle_output_r(r);
 }
 
 void	handle_input_r(t_redir *r)
@@ -48,7 +50,7 @@ void	handle_output_r(t_redir *r)
 
 	while (r)
 	{
-		if (r->type = 1)
+		if (r->type == 1)
 		{
 			fd = open(r->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
