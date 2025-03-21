@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/19 20:22:56 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 20:21:57 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,10 @@ void	exec_cmd(t_ms *ms)
 	int		status;
 	pid_t	pid;
 	int	save_stdout;
+	int	save_stdin;
 	
 	save_stdout = dup(STDOUT_FILENO);
+	save_stdin = dup(STDIN_FILENO);
 	i = 0;
 	prev_fd = -1;
 	while (ms->cmd[i])
@@ -171,7 +173,9 @@ void	exec_cmd(t_ms *ms)
 		i++;
 	}
 	dup2(save_stdout, STDOUT_FILENO);
+	dup2(save_stdin, STDIN_FILENO);
 	close(save_stdout);
+	close(save_stdin);
 	while (wait(NULL) > 0)
 			continue ;
 }
@@ -188,7 +192,7 @@ void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i)
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
-	else
+	else if (ms->cmd[1])
 		close(fd[0]);
 }
 

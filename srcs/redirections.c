@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/19 20:23:00 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 20:32:13 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	handle_input_r(t_redir *r)
 			close(fd);
 		}
 		else if (r->type == 2)
-			handle_heredoc(r->file);
+			execute_heredoc(r);
 		r = r->next;
 	}
 }
@@ -70,26 +70,13 @@ void	handle_output_r(t_redir *r)
 	}
 }
 
-void	handle_heredoc(char *delimiter)
+void	execute_heredoc(t_redir *r)
 {
-	char	*line;
-	int	fds[2];
+	int	fd;
 
-	if (pipe(fds) == -1)
-		deallocate("error creating pipe");
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
-		{
-			free(line);
-			break;
-		}
-		write(fds[1], line, ft_strlen(line));
-		write(fds[1], "\n", 1);
-		free(line);
-	}
-	close(fds[1]);
-	dup2(fds[0], STDIN_FILENO);
-	close(fds[0]);
+	fd = ft_atoi(r->file);
+	if (fd < 0)
+		deallocate("heredoc error\n");
+	dup2(fd, STDIN_FILENO);
+	close(fd);
 }

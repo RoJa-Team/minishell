@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 21:24:04 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 20:32:07 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	ft_env(t_ms *ms, int i);
 void	handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_redir *r);
 void	handle_output_r(t_redir *r);
-void	handle_heredoc(char *delimiter);
+void	execute_heredoc(t_redir *r);
 
 /*********************************************/
 /*                                           */
