@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 21:04:44 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/21 22:11:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -407,21 +407,14 @@ void	redirections(t_cmd *cmd_ll, char *str, int *i)
 		(*i)++;
 	if (len > 2 || check_metachar(str[*i + len]) || str[*i] == '\0')
 		return ((void)ft_printf("Error> Redirection Syntax error"));
-	// if (str[*i + 1] == '|' || (str[*i] == str[*i + 1] && str[*i + 2] == '|'))
-	// 	return ((void)ft_printf("Error> Invalid redirection"));
 	if (len == 2 && redir == '<')
-	{
 		new_input(cmd_ll, ft_itoa(handle_heredoc(get_delimiter(str, i))), HEREDOC);
-		// return (*i = *i + 2, (void)ft_printf("Isto seria um heredoc!\n"));
-	}
 	else if (len == 2 && redir == '>')
 		new_output(cmd_ll, get_file(str, i), APPEND);
 	else if (len == 1 && redir == '<')
 		new_input(cmd_ll, get_file(str, i), IN);
 	else if (len == 1 && redir == '>')
 		new_output(cmd_ll, get_file(str, i), OUT);
-	// else if (str[*i] == str[*i + 1])
-	// 	return ((void)ft_printf("Error> Invalid redirection"));
 }
 
 void	parse_input(t_ms *ms, char *str)

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 20:22:12 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:19:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 			if (input && !ft_strncmp(input, "exit", 5))
 				break ;
 		}
-		ft_printf("next input \n");
+		// ft_printf("next input \n");
 	}
 	return (0);
 }
