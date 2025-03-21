@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 20:32:07 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:11:00 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ void	copy_env(t_ms *ms, char **env);
 int		pipe_counter(char *str);
 void	parse_input(t_ms *ms, char *str);
 void	quote_validator(char *str);
+int		check_metachar(char c);
+void	check_quotes(char c, int *quotes);
+
 
 /* tokens.c */
 void	insert_new_token(t_ms *ms, t_parse *new_token);
@@ -91,6 +94,9 @@ t_parse	*new_token(char *str, int len);
 void	parse_tokens(t_ms *ms, char *str);
 char	*expand_token(t_ms *ms, t_parse *token);
 
+/* heredoc.c */
+char	*get_delimiter(char *str, int *i);
+int		handle_heredoc(char *delimiter);
 
 /*********************************************/
 /*                                           */
