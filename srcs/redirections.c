@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/18 20:53:09 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 20:23:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,4 @@ void	handle_output_r(t_redir *r)
 		}
 		r = r->next;
 	}
-}
-
-void	handle_heredoc(char *delimiter)
-{
-	char	*line;
-	int	fds[2];
-
-	if (pipe(fds) == -1)
-		deallocate("error creating pipe");
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
-		{
-			free(line);
-			break;
-		}
-		write(fds[1], line, ft_strlen(line));
-		write(fds[1], "\n", 1);
-		free(line);
-	}
-	close(fds[1]);
-	dup2(fds[0], STDIN_FILENO);
-	close(fds[0]);
 }

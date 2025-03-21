@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 21:24:04 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:06:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 // cat << here > out | lsl | cat < out | wc
 typedef struct s_heredoc
 {
-	char				*str;
+	char				*str; // cat >> asd
 	struct s_heredoc	*next;
 }				t_heredoc;
 
@@ -84,6 +84,9 @@ void	copy_env(t_ms *ms, char **env);
 int		pipe_counter(char *str);
 void	parse_input(t_ms *ms, char *str);
 void	quote_validator(char *str);
+int		check_metachar(char c);
+void	check_quotes(char c, int *quotes);
+
 
 /* tokens.c */
 void	insert_new_token(t_ms *ms, t_parse *new_token);
@@ -91,6 +94,9 @@ t_parse	*new_token(char *str, int len);
 void	parse_tokens(t_ms *ms, char *str);
 char	*expand_token(t_ms *ms, t_parse *token);
 
+/* heredoc.c */
+char	*get_delimiter(char *str, int *i);
+int		handle_heredoc(char *delimiter);
 
 /*********************************************/
 /*                                           */
@@ -158,7 +164,6 @@ void	ft_env(t_ms *ms, int i);
 void	handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_redir *r);
 void	handle_output_r(t_redir *r);
-void	handle_heredoc(char *delimiter);
 
 /*********************************************/
 /*                                           */
