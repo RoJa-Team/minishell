@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 21:11:00 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/24 22:19:25 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ typedef struct s_parse
 	struct s_parse	*next;
 }				t_parse;
 
+typedef struct s_exec
+{
+	int	prev_fd;
+}				t_exec;
+
 typedef struct s_cmd
 {
 	char			**arg;
@@ -68,6 +73,7 @@ typedef struct s_ms
 	char	**ms_env;
 	t_env	*env_lst;
 	t_cmd	**cmd;
+	t_exec	*exec;
 }				t_ms;
 
 /*********************************************/
@@ -106,6 +112,8 @@ int		handle_heredoc(char *delimiter);
 
 /*exec.c*/
 void	exec_cmd(t_ms *ms);
+void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout);
+void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*find_path(t_env *env_lst, char *cmd);
 int	is_builtin(t_ms *ms, int i);
 char	*get_value(t_env *env, char *key);
@@ -130,7 +138,7 @@ char	*print_oldpwd(t_env *env);
 char	*get_ab_path(char *ab_path, char *next_dir);
 char	*get_oldpwd(t_env *env);
 void	free_args(char **arg);
-int	arg_count(char **arg);
+int		arg_count(char **arg);
 
 /*ft_pwd.c*/
 void    ft_pwd();
@@ -141,15 +149,18 @@ void	add_new_key(t_ms *ms, char **arg, int j);
 void	print_export_fd(t_ms *ms);
 void	execute_export(int fd, char *line);
 void	sort_env(char **env);
-char	**convert_lst_to_arr(t_env *lst);
-int	env_lst_size(t_env *env_lst);
 
 /*export_utils.c*/
 void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value);
-int	is_valid_key(char *key);
+int		is_valid_key(char *key);
 void	update_or_add_env_key(t_env **env, char *key, char *value);
 void	add_env_key(t_env **env, char *key, char *value);
 void	swap_str(char **a, char **b);
+
+/*export_utils_2.c*/
+char	**convert_lst_to_arr(t_env *lst);
+int		env_lst_size(t_env *env_lst);
+int		assign_value_to_array(int *i, t_env *lst, char **arr);
 void	free_key_and_value(char *key, char *value);
 char	*find_value(t_env *env, char *key);
 

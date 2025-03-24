@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/21 20:21:57 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/24 22:19:14 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,74 @@ char	*get_full_path(char *path_dir, char *cmd)
 	return (NULL);
 }
 
+void    exec_cmd(t_ms *ms)
+{
+	int     i;
+	int save_stdout;
+	int save_stdin;
+
+	ms->exec = malloc(sizeof(t_exec));
+	if (!ms->exec)
+		deallocate("Memory allocation fail.\n");
+	ms->exec->prev_fd = -1;
+ 	save_and_restore_std(&save_stdin, &save_stdout, 1);
+	i = 0;
+ 	while (ms->cmd[i])
+ 	{ 
+ 		handle_input(ms, &i, &save_stdin, &save_stdout);
+ 		i++;
+ 	} 
+ 	save_and_restore_std(&save_stdin, &save_stdout, 2);
+  	while (wait(NULL) > 0)
+		continue ; 
+ }
+	
+ void    handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout)
+ {
+ 	int     *prev_fd;
+ 	int     fd[2];
+  	int     status;
+ 	pid_t   pid;
+
+	(void)save_stdin;
+	(void)save_stdout;
+	prev_fd = &ms->exec->prev_fd;
+	if (ms->cmd[*i]->fd_in || ms->cmd[*i]->fd_out)
+		handle_redirections(ms->cmd[*i]);
+	if (is_builtin(ms, *i) == 1 && !ms->cmd[*i + 1])
+ 	{ 
+		execute_builtin(ms, *i);
+		return ; 
+	} 
+	if (ms->cmd[*i + 1])
+		pipe(fd);
+ 	pid = fork();
+ 	if (pid == 0)
+ 		child_process(ms, *prev_fd, fd, *i);
+ 	close_pipe(ms, fd, prev_fd, *i);
+	waitpid(pid, &status, 0);
+	if ((status & 0xFF) == 127)
+	    return ; 
+}
+
+void    save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
+{
+	if (flag == 1)
+	{ 
+		*save_stdout = dup(STDOUT_FILENO);
+		*save_stdin = dup(STDIN_FILENO);
+		if (*save_stdout == -1 || *save_stdin == -1)
+			deallocate("dup failed'\n");
+	}
+	if (flag == 2)
+	{ 
+		dup2(*save_stdout, STDOUT_FILENO);
+		dup2(*save_stdin, STDIN_FILENO);
+		close(*save_stdout);
+		close(*save_stdin);
+	}
+}
+/*
 void	exec_cmd(t_ms *ms)
 {
 	int		i;
@@ -179,21 +247,18 @@ void	exec_cmd(t_ms *ms)
 	while (wait(NULL) > 0)
 			continue ;
 }
-
+*/
 void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i)
 {
 	if (*prev_fd != -1)
-	{
 		close(*prev_fd);
-		*prev_fd = -1;
-	}
 	if (ms->cmd[i + 1])
 	{
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
-	else if (ms->cmd[1])
-		close(fd[0]);
+	else
+		*prev_fd = -1;
 }
 
 void	child_process(t_ms *ms, int prev_fd, int *fd, int i)

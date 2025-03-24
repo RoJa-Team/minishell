@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/03/21 21:11:33 by rafasant         ###   ########.fr        #
+#    Updated: 2025/03/24 19:41:36 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LIBFT 	= libft/libft.a
 SRCS_DIR= srcs/
 OBJS_DIR= objs/
 SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c \
-			list_functions.c print_functions.c parse_input.c tokens.c heredoc.c \
+			list_functions.c print_functions.c parse_input.c tokens.c \
+			heredoc.c export_utils_2.c \
 			ft_echo.c ft_cd.c ft_pwd.c ft_export.c ft_unset.c \
 			ft_env.c exec.c export_utils.c redirections.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}

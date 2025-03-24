@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:38:02 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/11 18:46:51 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:05:57 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_unset(t_ms *ms, int i)
 	t_env	*temp;
 	t_env	*prev;
 	char	**arg;
-	int	j;
+	int		j;
 
 	j = 1;
 	arg = ms->cmd[i]->arg;
