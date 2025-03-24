@@ -6,30 +6,11 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 22:11:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/24 22:18:24 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-int	within_quotes(char *str)
-{
-	int		i;
-	char	c;
-
-	i = 0;
-	c = str[i];
-	i++;
-	while (str[i] != c)
-		i++;
-	i++;
-	return (i);
-}
-
-int	check_metachar(char c) // ‘|’, ‘&’, ‘;’, ‘(’, ‘)’, ‘<’, ‘>’, space, tab, newline
-{
-	return (c == '|' || c == '<' || c == '>' || c == '\t' || c == '\n' || c == ' ');
-}
 
 void	new_cmd(t_cmd **cmd_ll)
 {
@@ -71,350 +52,32 @@ char	*new_str(char *str, int *i)
 		return (NULL);
 	new_str = malloc(sizeof(char) * len + 1);
 	if (!new_str)
-	deallocate("Error> new_str");
+		deallocate("Error> new_str");
 	j = 0;
 	while (j < len)
-	{
-		new_str[j] = str[*i];
-		j++;
-		(*i)++;
-	}
+		new_str[j++] = str[(*i)++];
 	new_str[j] = '\0';
 	return (new_str);
 }
 
-void	check_quotes(char c, int *quotes)
+void	new_arg(t_parse **arg_ll, char *str)
 {
-	if (c == '\'' && *quotes == 1)
-		*quotes = 0;
-	else if (c == '\'' && *quotes == 0)
-		*quotes = 1;
-	else if (c == '\"' && *quotes == 2)
-		*quotes = 0;
-	else if (c == '\"' && *quotes == 0)
-		*quotes = 2;
-}
-
-int	expansion_len(t_ms *ms, char *str, int *i)
-{
-	int		len;
-	t_env	*temp;
-
-	(*i)++;
-	len = 0;
-	if (str[*i] == '?')
-		len++;
-	else if (ft_isdigit(str[*i]))
-		deallocate("Error> invalid identifier (envs nao podem comecar com digitos)");
-	else
-		while (str[*i + len] && !check_metachar(str[*i + len]) && str[*i + len] != '\'' && str[*i + len] != '\"')
-			len++;
-	temp = ms->env_lst;
-	while (temp != NULL)
-	{
-		if (ft_strlen_c(&str[*i], str[*i + len]) == ft_strlen(temp->key) && !strncmp(&str[*i], temp->key, len))
-			break;
-		temp = temp->next;
-	}
-	*i = *i + len;
-	if (temp)
-		return (ft_strlen(temp->value));
-	return (0);
-}
-
-char	*expansion_value(t_ms *ms, char *str, int *i)
-{
-	int		len;
-	t_env	*temp;
-
-	(*i)++;
-	len = 0;
-	while (str[*i + len] && !check_metachar(str[*i + len]) && str[*i + len] != '\'' && str[*i + len] != '\"')
-		len++;
-	temp = ms->env_lst;
-	while (temp != NULL)
-	{
-		if (ft_strlen_c(&str[*i], str[*i + len]) == ft_strlen(temp->key) && !strncmp(&str[*i], temp->key, len))
-			break;
-		temp = temp->next;
-	}
-	*i = *i + len;
-	if (temp)
-		return (temp->value);
-	return (NULL);
-}
-
-int	ft_abs(int n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
-}
-
-int	exp_len(t_ms *ms, char *str)
-{
-	int	i;
-	int	len;
-	int	quotes;
-
-	i = 0;
-	len = 0;
-	quotes = 0;
-	check_quotes(str[i], &quotes);
-	while (str[i])
-	{
-		if (str[i] == '$' && (quotes == 2 || quotes == 0))
-			len = len + expansion_len(ms, str, &i);
-		else
-		{
-			if (str[i] != '\'' && str[i] != '\"')
-				len++;
-			i++;
-		}
-		check_quotes(str[i], &quotes);
-	}
-	return (len);
-}
-
-char	*expand_str(t_ms *ms, char *str)
-{
-	int	i;
-	int	j;
-	int	len;
-	int	quotes;
-	char	*exp;
-	char	*value;
-
-	if (!str)
-		return (NULL);
-	exp = malloc(sizeof(char) * exp_len(ms, str) + 1);
-	if (!exp)
-		deallocate ("Error> expand_token");
-	i = 0;
-	len = 0;
-	quotes = 0;
-	while (str[i])
-	{
-		check_quotes(str[i], &quotes);
-		if (str[i] == '$' && (quotes == 2 || quotes == 0))
-		{
-			value = expansion_value(ms, str, &i);
-			j = 0;
-			while (value && value[j])
-			{
-				exp[len] = value[j];
-				j++;
-				len++;
-			}
-		}
-		else
-		{
-			if (str[i] != '\'' && str[i] != '\"')
-			{
-				exp[len] = str[i];
-				len++;
-			}
-			i++;
-		}
-	}
-	exp[len] = '\0';
-	return (exp);
-}
-
-t_parse	*new_arg(char *str)
-{
+	t_parse	dummy_arg;
+	t_parse	*temp;
 	t_parse	*new_arg;
 
 	if (!str)
-		return (NULL);
+		return ;
 	new_arg = malloc(sizeof(t_parse));
 	if (!new_arg)
 		deallocate("Error> new_arg\n");
 	new_arg->token = str;
 	new_arg->next = NULL;
-	return (new_arg);
-}
-
-void	place_new_arg(t_parse **arg_ll, t_parse *new_arg)
-{
-	t_parse	dummy_arg;
-	t_parse	*temp;
-
-	if (!new_arg)
-		return ;
 	temp = get_last_node(*arg_ll, get_offset(&dummy_arg, &dummy_arg.next));
 	if (temp)
 		temp->next = new_arg;
 	else
 		*arg_ll = new_arg;
-}
-
-void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll)
-{
-	int		i;
-	t_cmd	dummy_cmd;
-	t_cmd	*last_cmd;
-	t_parse	*temp;
-
-	i = 0;
-	temp = arg_ll;
-	while (temp != NULL)
-	{
-		i++;
-		temp = temp->next;
-	}
-	last_cmd = get_last_node(cmd_ll, get_offset(&dummy_cmd, &dummy_cmd.next));
-	last_cmd->arg = malloc(sizeof(char *) * (i + 1));
-	if (!last_cmd->arg)
-		deallocate("Error> ll_to_array");
-	temp = arg_ll;
-	i = 0;
-	while (temp != NULL)
-	{
-		last_cmd->arg[i] = temp->token;
-		i++;
-		temp = temp->next;
-	}
-	last_cmd->arg[i] = 0;
-}
-
-void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll)
-{
-	int		i;
-	t_cmd	*temp_cmd;
-
-	i = 0;
-	temp_cmd = cmd_ll;
-	while (temp_cmd != NULL)
-	{
-		i++;
-		temp_cmd = temp_cmd->next;
-	}
-	ms->cmd = malloc(sizeof(char *) * (i + 1));
-	if (!ms->cmd)
-		deallocate("Error> cmd_to_array");
-	temp_cmd = cmd_ll;
-	i = 0;
-	while (temp_cmd != NULL)
-	{
-		ms->cmd[i] = temp_cmd;
-		i++;
-		temp_cmd = temp_cmd->next;
-	}
-	ms->cmd[i] = 0;
-}
-
-void	new_input(t_cmd *cmd_ll, char *file, int type)
-{
-	t_cmd	cmd_dummy;
-	t_cmd	*last_cmd;
-	t_redir	redir_dummy;
-	t_redir	*new_redir;
-	t_redir	*temp;
-
-	last_cmd = get_last_node(cmd_ll, get_offset(&cmd_dummy, &cmd_dummy.next));
-	new_redir = malloc(sizeof(t_redir));
-	if (!new_redir)
-		deallocate("Error> new_redir");
-	new_redir->type = type;
-	new_redir->file = file;
-	new_redir->next = NULL;
-	temp = NULL;
-	if (last_cmd->fd_in)
-	{
-		temp = get_last_node(last_cmd->fd_in, get_offset(&redir_dummy, &redir_dummy.next));
-		temp->next = new_redir;
-	}
-	else
-		last_cmd->fd_in = new_redir;
-}
-
-void	new_output(t_cmd *cmd_ll, char *file, int type)
-{
-	t_cmd	cmd_dummy;
-	t_cmd	*last_cmd;
-	t_redir	redir_dummy;
-	t_redir	*new_redir;
-	t_redir	*temp;
-
-	last_cmd = get_last_node(cmd_ll, get_offset(&cmd_dummy, &cmd_dummy.next));
-	new_redir = malloc(sizeof(t_redir));
-	if (!new_redir)
-		deallocate("Error> new_redir");
-	new_redir->type = type;
-	new_redir->file = file;
-	new_redir->next = NULL;
-	temp = NULL;
-	if (last_cmd->fd_out)
-	{
-		temp = get_last_node(last_cmd->fd_out, get_offset(&redir_dummy, &redir_dummy.next));
-		temp->next = new_redir;
-	}
-	else
-		last_cmd->fd_out = new_redir;
-}
-
-char	*get_file(char *str, int *i)
-{
-	int		len;
-	int		quotes;
-	char	*file;
-
-	// while (str[*i] == '>' || str[*i] == '<')
-	// 	(*i)++;
-	// while (str[*i] == ' ')
-	// 	(*i)++;
-	quotes = 0;
-	len = 0;
-	while (str[*i + len])
-	{
-		check_quotes(str[*i + len], &quotes);
-		if (quotes == 0 && check_metachar(str[*i + len]))
-			break ;
-		len++;
-	}
-	file = malloc(sizeof(char) * len + 1);
-	if (!file)
-		deallocate("Error> get_file");
-	len = 0;
-	while (str[*i])
-	{
-		check_quotes(str[*i], &quotes);
-		if (quotes == 0 && check_metachar(str[*i]))
-			break ;
-		if ((str[*i] != '\'') && (str[*i] != '\"'))
-		{
-			file[len] = str[*i];
-			len++;
-		}
-		(*i)++;
-	}
-	file[len] = '\0';
-	return (file);
-}
-
-void	redirections(t_cmd *cmd_ll, char *str, int *i)
-{
-	int		len;
-	char	redir;
-
-	len = 0;
-	redir = str[*i];
-	while (str[*i] == str[*i + len] && str[*i] != '\0')
-		len++;
-	*i = *i + len;
-	while (str[*i] == ' ' && str[*i] != '\0')
-		(*i)++;
-	if (len > 2 || check_metachar(str[*i + len]) || str[*i] == '\0')
-		return ((void)ft_printf("Error> Redirection Syntax error"));
-	if (len == 2 && redir == '<')
-		new_input(cmd_ll, ft_itoa(handle_heredoc(get_delimiter(str, i))), HEREDOC);
-	else if (len == 2 && redir == '>')
-		new_output(cmd_ll, get_file(str, i), APPEND);
-	else if (len == 1 && redir == '<')
-		new_input(cmd_ll, get_file(str, i), IN);
-	else if (len == 1 && redir == '>')
-		new_output(cmd_ll, get_file(str, i), OUT);
 }
 
 void	parse_input(t_ms *ms, char *str)
@@ -439,22 +102,15 @@ void	parse_input(t_ms *ms, char *str)
 				break;
 			}
 			else if (str[i] == '<' || str[i] == '>')
-				redirections(cmd_ll, str, &i);
+				new_redir(cmd_ll, str, &i);	
 			else
-				place_new_arg(&arg_ll, new_arg(expand_str(ms, new_str(str, &i))));
+				new_arg(&arg_ll, expand_str(ms, new_str(str, &i)));
 		}
-		token_to_array(cmd_ll, arg_ll);
+		if (arg_ll)
+			token_to_array(cmd_ll, arg_ll);
 		if (str[i] == '\0')
 			break ;
 	}
 	cmd_to_array(ms, cmd_ll);
 	print_cmd(ms);
 }
-
-// void	parse_input(t_ms *ms, char *str)
-// {
-// 	parse_tokens(ms, str);
-// 	parse_cmd(ms);
-// 	print_cmd(ms);
-// 	//parse_pipes(ms, str, pipe_counter(str));
-// }

@@ -1,51 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 22:20:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/24 21:05:19 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-char	*get_delimiter(char *str, int *i)
-{
-	int		len;
-	int		quotes;
-	char	*delimiter;
-
-	len = 0;
-	quotes = 0;
-	while (str[*i + len])
-	{
-		check_quotes(str[*i + len], &quotes);
-		if (quotes == 0 && check_metachar(str[*i + len]))
-			break ;
-		len++;
-	}
-	delimiter = malloc(sizeof(char) * len + 1);
-	if (!delimiter)
-		deallocate("Error> get_file");
-	len = 0;
-	while (str[*i])
-	{
-		check_quotes(str[*i], &quotes);
-		if (quotes == 0 && check_metachar(str[*i]))
-			break ;
-		if ((str[*i] != '\'') && (str[*i] != '\"'))
-		{
-			delimiter[len] = str[*i];
-			len++;
-		}
-		(*i)++;
-	}
-	delimiter[len] = '\0';
-	return (delimiter);
-}
 
 int	handle_heredoc(char *delimiter)
 {

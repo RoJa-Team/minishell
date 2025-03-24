@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/21 21:11:00 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/24 21:04:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+ //TODO remove this
+#define debug(info, x) _Generic((x), int: printInt, char *: printString)(info, x)
+// USAGE: debug(mensagem, variavel);
+
 
 # define APPEND 2
 # define HEREDOC 2
@@ -63,6 +67,15 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
+typedef struct s_dummy
+{
+	t_heredoc	heredoc;
+	t_redir		redir;
+	t_parse		parse;
+	t_cmd		cmd;
+	t_env		env;
+}				t_dummy;
+
 typedef struct s_ms
 {	
 	char	**ms_env;
@@ -81,11 +94,35 @@ t_ms	*init_ms(char **env);
 void	copy_env(t_ms *ms, char **env);
 
 /* parse_input.c */
-int		pipe_counter(char *str);
+void	new_cmd(t_cmd **cmd_ll);
+char	*new_str(char *str, int *i);
+void	new_arg(t_parse **arg_ll, char *str);
 void	parse_input(t_ms *ms, char *str);
-void	quote_validator(char *str);
+
+/* parse_expansions.c */
+int		exp_len(t_ms *ms, char *str);
+char	*expand_str(t_ms *ms, char *str);
+char	*expansion_value(t_ms *ms, char *str, int *i);
+int		expansion_len(t_ms *ms, char *str, int *i);
+
+/* parse_redirections.c */
+int		file_len(char *str, int i);
+char	*get_file(char *str, int *i);
+void	new_output(t_cmd *cmd_ll, char *file, int type);
+void	new_input(t_cmd *cmd_ll, char *file, int type);
+void	new_redir(t_cmd *cmd_ll, char *str, int *i);
+
+/* parse_heredoc.c */
+int		handle_heredoc(char *delimiter);
+
+/* parse_misc.c */
+int		within_quotes(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
+
+/* parse_ll_to_array.c */
+void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll);
+void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll);
 
 
 /* tokens.c */
@@ -93,10 +130,6 @@ void	insert_new_token(t_ms *ms, t_parse *new_token);
 t_parse	*new_token(char *str, int len);
 void	parse_tokens(t_ms *ms, char *str);
 char	*expand_token(t_ms *ms, t_parse *token);
-
-/* heredoc.c */
-char	*get_delimiter(char *str, int *i);
-int		handle_heredoc(char *delimiter);
 
 /*********************************************/
 /*                                           */
@@ -187,6 +220,9 @@ void	free_list(void *node, size_t next_offset);
 void	print_ms_env(t_ms *ms);
 void	print_env_lst(t_ms *ms);
 void	print_cmd(t_ms *ms);
+void	printInt(char *info, int data);
+void	printString(char *info, char *data);
+
 
 /*********************************************/
 /*                                           */
