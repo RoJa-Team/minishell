@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 22:19:25 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 03:18:09 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_env
 }				t_env;
 
 typedef struct s_ms
-{	
+{
 	char	**ms_env;
 	t_env	*env_lst;
 	t_cmd	**cmd;
@@ -93,7 +93,6 @@ void	quote_validator(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
 
-
 /* tokens.c */
 void	insert_new_token(t_ms *ms, t_parse *new_token);
 t_parse	*new_token(char *str, int len);
@@ -113,35 +112,43 @@ int		handle_heredoc(char *delimiter);
 /*exec.c*/
 void	exec_cmd(t_ms *ms);
 void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout);
-void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
-char	*find_path(t_env *env_lst, char *cmd);
-int	is_builtin(t_ms *ms, int i);
-char	*get_value(t_env *env, char *key);
-char	**convert_args_to_char(t_ms *ms, int h);
-int	arg_count(char **arg);
+int		is_builtin(t_ms *ms, int i);
 void	child_process(t_ms *ms, int prev_fd, int *fd, int i);
-void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i);
 void	execute_execve(t_ms *ms, int i);
+void	execute_builtin(t_ms *ms, int i);
+
+/*exec_utils.c*/
+char	*get_value(t_env *env, char *key);
+char	*find_path(t_env *env_lst, char *cmd);
+void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
+void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i);
 
 /*ft_echo.c*/
 void	ft_echo(t_ms *ms, int i);
 
 /*ft_cd.c*/
 void	ft_cd(t_ms *ms, int i);
+char	*print_oldpwd(t_env *env);
+void	assign_to_ms_env(t_ms *ms);
+char	*check_visibility(t_env *temp);
+void	change_directory(t_ms *ms, char *oldpwd, char *newpwd, int i);
+
+/*cd_utils.c*/
 char	*get_pwd(t_env *env);
 char	*get_home(t_env *env);
+char	*get_parent_dir(char *temp, char *ab_path);
+char	*get_ab_path(char *ab_path, char *next_dir);
+
+/*cd_utils_2.c*/
 void	update_env_lst(t_env *env, char *key, char *new_value);
 void	update_ms_env(t_ms *ms);
-char	*get_home_til(t_ms *ms);
-char	*print_oldpwd(t_env *env);
-char	*get_ab_path(char *ab_path, char *next_dir);
-char	*get_oldpwd(t_env *env);
 void	free_args(char **arg);
 int		arg_count(char **arg);
 
+
 /*ft_pwd.c*/
-void    ft_pwd();
+void	ft_pwd(void);
 
 /*ft_export.c*/
 void	ft_export(t_ms *ms, int i);
@@ -187,7 +194,6 @@ size_t	get_offset(void *struct_ptr, void *member_ptr);
 int		get_list_size(void *node, size_t next_offset);
 void	*get_last_node(void *node, size_t next_offset);
 void	free_list(void *node, size_t next_offset);
-
 
 /*********************************************/
 /*                                           */
