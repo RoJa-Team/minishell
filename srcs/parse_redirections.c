@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 21:04:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:59:40 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	new_input(t_cmd *cmd_ll, char *file, int type)
 	temp = NULL;
 	if (last_cmd->fd_in)
 	{
-		temp = get_last_node(last_cmd->fd_in, get_offset(&redir_dummy, &redir_dummy.next));
+		temp = get_last_node(last_cmd->fd_in, get_offset(&redir_dummy, \
+		&redir_dummy.next));
 		temp->next = new_redir;
 	}
 	else

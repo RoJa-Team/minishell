@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/18 20:25:02 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:04:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ void	create_env_lst(t_ms *ms)
 	t_env	*new_env;
 	t_env	*temp;
 
-	i = 0;
-	while (ms->ms_env[i] != NULL)
+	i = -1;
+	while (ms->ms_env[++i] != NULL)
 	{
 		new_env = malloc(sizeof(t_env));
 		if (!new_env)
 			deallocate("Error> create_env_lst");
-		new_env->key = ft_strndup(ms->ms_env[i], ft_strlen_c(ms->ms_env[i], '='));
+		new_env->key = ft_strndup(ms->ms_env[i], \
+		ft_strlen_c(ms->ms_env[i], '='));
 		new_env->value = ft_strdup(ft_strchr(ms->ms_env[i], '=') + 1);
 		new_env->invis = 0;
 		new_env->next = NULL;
@@ -58,13 +59,12 @@ void	create_env_lst(t_ms *ms)
 				temp = temp->next;
 			temp->next = new_env;
 		}
-		i++;
 	}
 }
 
 t_ms	*init_ms(char **env)
 {
-	t_ms *ms;
+	t_ms	*ms;
 
 	ms = malloc(sizeof(t_ms));
 	if (!ms)

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:23:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/11 20:59:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:47:25 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	get_list_size(void *node, size_t next_offset)
 	if (!tmp)
 		return (0);
 	size = 0;
-	while (*(void **)(tmp + next_offset))
+	while (tmp)
 	{
 		tmp = *(char **)(tmp + next_offset);
 		size++;

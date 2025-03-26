@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 22:18:24 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:00:04 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ void	parse_input(t_ms *ms, char *str)
 			if (str[i] == '|')
 			{
 				i++;
-				break;
+				break ;
 			}
 			else if (str[i] == '<' || str[i] == '>')
-				new_redir(cmd_ll, str, &i);	
+				new_redir(cmd_ll, str, &i);
 			else
 				new_arg(&arg_ll, expand_str(ms, new_str(str, &i)));
 		}

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 21:05:19 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:00:37 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	handle_heredoc(char *delimiter)
 		{
 			free(line);
 			write(fds[1], "\n", 1); //TODO shorten this
-			break;
+			break ;
 		}
 		write(fds[1], line, ft_strlen(line));
 		write(fds[1], "\n", 1); //because of this

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/11 18:55:41 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:08:13 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_pwd()
+void	ft_pwd(void)
 {
 	char	*cwd;
 	size_t	buffer_size;

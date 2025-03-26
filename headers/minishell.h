@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 21:04:34 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:08:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,16 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
- //TODO remove this
-#define debug(info, x) _Generic((x), int: printInt, char *: printString)(info, x)
+//TODO remove this
+# define debug(info, x) _Generic((x), int: print_int, char *: print_string)(info, x)
 // USAGE: debug(mensagem, variavel);
-
-
 # define APPEND 2
 # define HEREDOC 2
 # define OUT 1
 # define IN 1
 // cat << 1 | cat << 2 | cat << 3 | cat << 4 | cat << 5 | cat << 6 | cat << 7 | cat << 8 | cat << 9 | cat << 10 | cat << 11 | cat << 12 | cat << 13 | cat << 14 | cat << 15 | cat << 16 | cat << 17 | cat << 18 | cat << 19 | cat << 20 
 // cat << here > out | lsl | cat < out | wc
+
 typedef struct s_heredoc
 {
 	char				*str;
@@ -77,7 +76,7 @@ typedef struct s_dummy
 }				t_dummy;
 
 typedef struct s_ms
-{	
+{
 	char	**ms_env;
 	t_env	*env_lst;
 	t_cmd	**cmd;
@@ -104,6 +103,10 @@ int		exp_len(t_ms *ms, char *str);
 char	*expand_str(t_ms *ms, char *str);
 char	*expansion_value(t_ms *ms, char *str, int *i);
 int		expansion_len(t_ms *ms, char *str, int *i);
+char	*final_str(t_ms *ms, char *str, char *arg, int i);
+
+/* parse_expansions_utils.c */
+char	*find_env_value(t_ms *ms, char *str, int i, int key_len);
 
 /* parse_redirections.c */
 int		file_len(char *str, int i);
@@ -124,13 +127,6 @@ void	check_quotes(char c, int *quotes);
 void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll);
 void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll);
 
-
-/* tokens.c */
-void	insert_new_token(t_ms *ms, t_parse *new_token);
-t_parse	*new_token(char *str, int len);
-void	parse_tokens(t_ms *ms, char *str);
-char	*expand_token(t_ms *ms, t_parse *token);
-
 /*********************************************/
 /*                                           */
 /*                 Executing                 */
@@ -140,10 +136,10 @@ char	*expand_token(t_ms *ms, t_parse *token);
 /*exec.c*/
 void	exec_cmd(t_ms *ms);
 char	*find_path(t_env *env_lst, char *cmd);
-int	is_builtin(t_ms *ms, int i);
+int		is_builtin(t_ms *ms, int i);
 char	*get_value(t_env *env, char *key);
 char	**convert_args_to_char(t_ms *ms, int h);
-int	arg_count(char **arg);
+int		arg_count(char **arg);
 void	child_process(t_ms *ms, int prev_fd, int *fd, int i);
 void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i);
 void	execute_execve(t_ms *ms, int i);
@@ -163,10 +159,10 @@ char	*print_oldpwd(t_env *env);
 char	*get_ab_path(char *ab_path, char *next_dir);
 char	*get_oldpwd(t_env *env);
 void	free_args(char **arg);
-int	arg_count(char **arg);
+int		arg_count(char **arg);
 
 /*ft_pwd.c*/
-void    ft_pwd();
+void	ft_pwd(void);
 
 /*ft_export.c*/
 void	ft_export(t_ms *ms, int i);
@@ -175,11 +171,11 @@ void	print_export_fd(t_ms *ms);
 void	execute_export(int fd, char *line);
 void	sort_env(char **env);
 char	**convert_lst_to_arr(t_env *lst);
-int	env_lst_size(t_env *env_lst);
+int		env_lst_size(t_env *env_lst);
 
 /*export_utils.c*/
 void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value);
-int	is_valid_key(char *key);
+int		is_valid_key(char *key);
 void	update_or_add_env_key(t_env **env, char *key, char *value);
 void	add_env_key(t_env **env, char *key, char *value);
 void	swap_str(char **a, char **b);
@@ -210,7 +206,6 @@ int		get_list_size(void *node, size_t next_offset);
 void	*get_last_node(void *node, size_t next_offset);
 void	free_list(void *node, size_t next_offset);
 
-
 /*********************************************/
 /*                                           */
 /*             Printing functions            */
@@ -220,9 +215,8 @@ void	free_list(void *node, size_t next_offset);
 void	print_ms_env(t_ms *ms);
 void	print_env_lst(t_ms *ms);
 void	print_cmd(t_ms *ms);
-void	printInt(char *info, int data);
-void	printString(char *info, char *data);
-
+void	print_int(char *info, int data);
+void	print_string(char *info, char *data);
 
 /*********************************************/
 /*                                           */

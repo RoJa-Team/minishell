@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:00:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 20:15:00 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:05:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ void	print_cmd(t_ms *ms)
 	}
 }
 
-void	printInt(char *info, int data) //TODO remove this
+void	print_int(char *info, int data) //TODO remove this
 {
 	ft_printf("\n%s: >%d<\n", info, data);
 }
 
-void	printString(char *info, char *data) //TODO remove this
+void	print_string(char *info, char *data) //TODO remove this
 {
 	ft_printf("\n%s: >%s<\n", info, data);
 }

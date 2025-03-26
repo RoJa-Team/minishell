@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 20:50:47 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:59:48 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll)
 	t_parse	*temp;
 
 	last_cmd = get_last_node(cmd_ll, get_offset(&dummy_cmd, &dummy_cmd.next));
-	last_cmd->arg = malloc(sizeof(char *) * (get_list_size(arg_ll, get_offset(&dummy_arg, &dummy_arg.next)) + 1));
+	last_cmd->arg = malloc(sizeof(char *) * (get_list_size(arg_ll, \
+	get_offset(&dummy_arg, &dummy_arg.next)) + 1));
 	if (!last_cmd->arg)
 		deallocate("Error> ll_to_array");
 	temp = arg_ll;
@@ -41,7 +42,8 @@ void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll)
 	t_cmd	dummy_cmd;
 	t_cmd	*temp_cmd;
 
-	ms->cmd = malloc(sizeof(char *) * (get_list_size(cmd_ll, get_offset(&dummy_cmd, &dummy_cmd.next)) + 1));
+	ms->cmd = malloc(sizeof(char *) * (get_list_size(cmd_ll, \
+	get_offset(&dummy_cmd, &dummy_cmd.next)) + 1));
 	if (!ms->cmd)
 		deallocate("Error> cmd_to_array");
 	temp_cmd = cmd_ll;

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:56:58 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 19:31:23 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:59:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	within_quotes(char *str)
 
 int	check_metachar(char c)// ‘|’, ‘&’, ‘;’, ‘(’, ‘)’, ‘<’, ‘>’, ' , \t, \n
 {
-	return (c == '|' || c == '<' || c == '>' || c == '\t' || c == '\n' ||\
-	 c == ' ');
+	return (c == '|' || c == '<' || c == '>' || c == '\t' || c == '\n' || \
+	c == ' ');
 }
 
 void	check_quotes(char c, int *quotes)
