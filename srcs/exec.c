@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 00:20:42 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:02:08 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,10 @@ void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout)
 	(void)save_stdin;
 	(void)save_stdout;
 	prev_fd = &ms->exec->prev_fd;
-	if (ms->cmd[*i]->fd_in || ms->cmd[*i]->fd_out)
-		handle_redirections(ms->cmd[*i]);
 	if (is_builtin(ms, *i) == 1 && !ms->cmd[*i + 1])
 	{
+		if (ms->cmd[*i]->fd_in || ms->cmd[*i]->fd_out)
+			handle_redirections(ms->cmd[*i]);
 		execute_builtin(ms, *i);
 		return ;
 	}
@@ -115,14 +115,16 @@ void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout)
 
 void	child_process(t_ms *ms, int prev_fd, int *fd, int i)
 {
-	if (prev_fd != -1)
-	{
+	if (ms->cmd[i]->fd_in || ms->cmd[i]->fd_out)
+		handle_redirections(ms->cmd[i]);
+	if (prev_fd != -1 && ms->cmd[i]->fd_in == NULL)
 		dup2(prev_fd, STDIN_FILENO);
+	if (prev_fd != -1)
 		close(prev_fd);
-	}
+	if (ms->cmd[i + 1] && ms->cmd[i]->fd_out == NULL)
+		dup2(fd[1], STDOUT_FILENO);
 	if (ms->cmd[i + 1])
 	{
-		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		close(fd[0]);
 	}

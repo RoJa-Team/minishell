@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 03:18:09 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:05:43 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,6 @@ void	update_ms_env(t_ms *ms);
 void	free_args(char **arg);
 int		arg_count(char **arg);
 
-
 /*ft_pwd.c*/
 void	ft_pwd(void);
 
@@ -183,6 +182,10 @@ void	handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_redir *r);
 void	handle_output_r(t_redir *r);
 void	execute_heredoc(t_redir *r);
+
+/*signal.c*/
+void	signal_handler(int signum);
+void	setup_signals(void);
 
 /*********************************************/
 /*                                           */

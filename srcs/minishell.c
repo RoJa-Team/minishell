@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/24 19:43:41 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:06:20 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (ft_printf("Error: Invalid number of arguments.\n"));
 	ms = init_ms(env);
+	setup_signals();
 	input = NULL;
 	while (1)
 	{
 		input = readline("$minishell>");
+		if (!input)
+			break ;
 		if (input[0] != ' ' && input[0] != '\0')
 			add_history(input);
 		if (input[0] != '\0')
@@ -32,8 +35,7 @@ int	main(int argc, char **argv, char **env)
 			parse_input(ms, input);
 			exec_cmd(ms);
 			clean_cmd(ms);
-			if (input && !ft_strncmp(input, "exit", 5))
-				break ;
+			free(input);
 		}
 	}
 	return (0);
