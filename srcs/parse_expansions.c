@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 20:36:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 22:22:55 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,7 @@ char	*expand_str(t_ms *ms, char *str)
 	arg = ft_calloc(sizeof(char), exp_len(ms, str) + 1);
 	if (!arg)
 		deallocate ("Error> expand_token");
-	return (final_str(ms, str, arg, 0));
+	arg = final_str(ms, str, arg, 0);
+	free(str);
+	return (arg);
 }

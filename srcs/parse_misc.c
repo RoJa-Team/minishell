@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:56:58 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 20:59:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 22:06:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,31 @@ void	check_quotes(char c, int *quotes)
 		*quotes = 0;
 	else if (c == '\"' && *quotes == 0)
 		*quotes = 2;
+}
+
+void	verify_quotes(char *str)
+{
+	// int	i;
+
+	// i = 0;
+	// while (str[i])
+	// {
+	// 	if (str[i] == '\"' || str[i] == '\'')
+	// 		i = i + within_quotes(&str[i]);
+	// 	else
+	// 		i++;
+	// }
+
+	int	i;
+	int	quotes;
+
+	i = 0;
+	quotes = 0;
+	while (str[i])
+	{
+		check_quotes(str[i], &quotes);
+		i++;
+	}
+	if (quotes != 0)
+		debug("verify_quotes", quotes);
 }

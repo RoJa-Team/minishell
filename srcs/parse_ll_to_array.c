@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 20:59:48 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/26 22:16:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll)
 	get_offset(&dummy_arg, &dummy_arg.next)) + 1));
 	if (!last_cmd->arg)
 		deallocate("Error> ll_to_array");
-	temp = arg_ll;
 	i = 0;
-	while (temp != NULL)
+	while (arg_ll != NULL)
 	{
-		last_cmd->arg[i] = temp->token;
+		last_cmd->arg[i] = arg_ll->token;
+		temp = arg_ll->next;
+		free(arg_ll);
+		arg_ll = temp;
 		i++;
-		temp = temp->next;
 	}
 	last_cmd->arg[i] = 0;
 }

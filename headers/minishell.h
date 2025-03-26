@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 21:24:15 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 22:06:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int		handle_heredoc(char *delimiter);
 int		within_quotes(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
+void	verify_quotes(char *str);
 
 /* parse_ll_to_array.c */
 void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll);
