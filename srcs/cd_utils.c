@@ -1,0 +1,96 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
+/*   Updated: 2025/03/26 03:27:18 by joafern2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../headers/minishell.h"
+
+char	*get_parent_dir(char *temp, char *ab_path)
+{
+	int		i;
+
+	temp = ft_strdup(ab_path);
+	i = ft_strlen(temp);
+	while (i > 0 && temp[i] != '/')
+		i--;
+	temp[i] = '\0';
+	return (temp);
+}
+
+char	*get_ab_path(char *ab_path, char *next_dir)
+{
+	char	*new_ab_path;
+	char	*temp;
+
+	temp = NULL;
+	new_ab_path = NULL;
+	if (!next_dir || !ab_path)
+		return (NULL);
+	if (next_dir[0] == '/')
+		return (ft_strdup(next_dir));
+	if (next_dir[ft_strlen(next_dir) - 1] == '/')
+		next_dir[ft_strlen(next_dir) - 1] = '\0';
+	if (ft_strncmp(next_dir, "..", 3) == 0)
+		return (get_parent_dir(temp, ab_path));
+	if (ft_strncmp(next_dir, ".", 2) == 0)
+		return (ft_strdup(ab_path));
+	if (ab_path[ft_strlen(ab_path) - 1] != '/')
+	{
+		temp = ft_strjoin(ab_path, "/");
+		new_ab_path = ft_strjoin(temp, next_dir);
+		free(temp);
+	}
+	return (new_ab_path);
+}
+
+char	*get_home(t_env *env)
+{
+	t_env	*temp;
+	char	*home;
+
+	temp = env;
+	while (temp != NULL)
+	{
+		if (ft_strncmp(temp->key, "HOME", 5) == 0)
+		{
+			if (temp->invis == 0)
+			{
+				home = ft_strdup(temp->value);
+				if (!home)
+					return (NULL);
+				else
+					return (home);
+			}
+			else
+				break ;
+		}
+		temp = temp->next;
+	}
+	ft_printf("cd: HOME not set\n");
+	return (NULL);
+}
+
+char	*get_pwd(t_env *env)
+{
+	char	*pwd;
+
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->key, "PWD", 4) == 0)
+		{
+			pwd = ft_strdup(env->value);
+			if (!pwd)
+				deallocate("Memory allocation failed for ft_getcwd\n");
+			return (pwd);
+		}
+		env = env->next;
+	}
+	return (NULL);
+}

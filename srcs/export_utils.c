@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:22:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/12 21:44:53 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:39:31 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,6 @@ void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value)
 		if (copy)
 			*value = ft_strdup(copy);
 	}
-}
-
-char	*find_value(t_env *env, char *key)
-{
-	t_env	*temp;
-
-	temp = env;
-	while (temp != NULL)
-	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0)
-			return (temp->value);
-		temp = temp->next;
-	}
-	return (NULL);
 }
 
 int	is_valid_key(char *key)
@@ -117,12 +103,4 @@ void	swap_str(char **a, char **b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
-}
-
-void	free_key_and_value(char *key, char *value)
-{
-	if (key)
-		free(key);
-	if (value)
-		free(value);
 }

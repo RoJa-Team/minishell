@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/19 20:13:39 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/26 06:57:08 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 void	ft_echo(t_ms *ms, int j)
 {
-	int	i;
-	int	n_flag;
+	int		i;
+	int		n_flag;
 	char	**arg;
-	int	fd = 1; // temporary implementation
 
 	arg = ms->cmd[j]->arg;
 	if (!arg)
@@ -28,12 +27,11 @@ void	ft_echo(t_ms *ms, int j)
 	i = n_flag + 1;
 	while (arg[i])
 	{
-		ft_putstr_fd(arg[i], fd);
+		ft_putstr_fd(arg[i], 1);
 		if (arg[i + 1])
-			ft_putchar_fd(' ', fd);
+			ft_putchar_fd(' ', 1);
 		i++;
 	}
 	if (!n_flag)
-		ft_putchar_fd('\n', fd);
-	// free_args(arg);
+		ft_putchar_fd('\n', 1);
 }

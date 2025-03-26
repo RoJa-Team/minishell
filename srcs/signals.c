@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 21:25:06 by joafern2         ###   ########.fr       */
+/*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
+/*   Updated: 2025/03/26 21:06:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_pwd(void)
+void	signal_handler(int signum)
 {
-	char	*cwd;
-	size_t	buffer_size;
-	int		fd;
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-	fd = 1;
-	buffer_size = 1024;
-	cwd = malloc(sizeof(char) * buffer_size);
-	if (getcwd(cwd, buffer_size) != NULL)
-	{
-		ft_putstr_fd(cwd, fd);
-		ft_putchar_fd('\n', fd);
-	}
-	else
-		perror("getcwd() error\n");
+void	setup_signals(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
