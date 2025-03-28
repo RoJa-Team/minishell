@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 22:06:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/28 22:39:35 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_ms
 	t_env	*env_lst;
 	t_cmd	**cmd;
 	t_exec	*exec;
+	int	exit_status;
 }				t_ms;
 
 /*********************************************/
@@ -209,14 +210,18 @@ void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg);
 void	ft_env(t_ms *ms, int i);
 
 /*redirections.c*/
-void	handle_redirections(t_cmd *cmd);
-void	handle_input_r(t_redir *r);
-void	handle_output_r(t_redir *r);
-void	execute_heredoc(t_redir *r);
+int	handle_redirections(t_ms *ms, t_cmd *cmd);
+void	handle_input_r(t_ms *ms, t_redir *r, int *res);
+void	handle_output_r(t_ms *ms, t_redir *r, int *res);
+void	execute_heredoc(t_ms *ms, t_redir *r, int *res);
+void	check_access(t_ms *ms, t_redir *r, int *res);
 
 /*signal.c*/
 void	signal_handler(int signum);
 void	setup_signals(void);
+
+/*cleanup.c*/
+void	check_child_exit(t_ms *ms, int status);
 
 /*********************************************/
 /*                                           */

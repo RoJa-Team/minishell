@@ -6,55 +6,60 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 06:58:32 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/28 22:39:38 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	handle_redirections(t_cmd *cmd)
+int	handle_redirections(t_ms *ms, t_cmd *cmd)
 {
 	t_redir	*r;
+	int	res;
 
+	res = 0;
 	r = cmd->fd_in;
 	if (r)
-		handle_input_r(r);
+		handle_input_r(ms, r, &res);
 	r = cmd->fd_out;
 	if (r)
-		handle_output_r(r);
+		handle_output_r(ms, r, &res);
+	return (res);
 }
 
-void	handle_input_r(t_redir *r)
+void	handle_input_r(t_ms *ms, t_redir *r, int *res)
 {
 	int	fd;
 
+	(void)res;
 	while (r)
 	{
 		if (r->type == 1)
 		{
 			fd = open(r->file, O_RDONLY);
 			if (fd < 0)
-				deallocate("no such file or directory");
+				check_access(ms, r, res);	
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 		}
 		else if (r->type == 2)
-			execute_heredoc(r);
+			execute_heredoc(ms, r, res);
 		r = r->next;
 	}
 }
 
-void	handle_output_r(t_redir *r)
+void	handle_output_r(t_ms *ms, t_redir *r, int *res)
 {
 	int	fd;
 
+	(void)res;
 	while (r)
 	{
 		if (r->type == 1)
 		{
 			fd = open(r->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				deallocate("truncating error");
+				check_access(ms, r, res);	
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
@@ -62,7 +67,7 @@ void	handle_output_r(t_redir *r)
 		{
 			fd = open(r->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (fd < 0)
-				deallocate("appending error");
+				check_access(ms, r, res);	
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
@@ -70,13 +75,28 @@ void	handle_output_r(t_redir *r)
 	}
 }
 
-void	execute_heredoc(t_redir *r)
+void	execute_heredoc(t_ms *ms, t_redir *r, int *res)
 {
 	int	fd;
 
+	(void)res;
 	fd = ft_atoi(r->file);
 	if (fd < 0)
-		deallocate("heredoc error\n");
+		check_access(ms, r, res);	
 	dup2(fd, STDIN_FILENO);
 	close(fd);
+}
+
+void	check_access(t_ms *ms, t_redir *r, int *res)
+{
+	const char	*filename;
+
+	filename = r->file;
+	if (access(filename, F_OK) == -1)
+		ft_printf("%s: No such file or directory\n", filename);
+	else if (access(filename, R_OK) == -1 || access(filename, W_OK) == -1)
+		ft_printf("%s: Permission denied\n", filename);
+	ms->exit_status = 1;
+	//ft_printf("Exit status : %d\n", ms->exit_status);
+	*res = 1;
 }

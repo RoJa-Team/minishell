@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 20:02:08 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/03/28 22:42:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout)
 	if (is_builtin(ms, *i) == 1 && !ms->cmd[*i + 1])
 	{
 		if (ms->cmd[*i]->fd_in || ms->cmd[*i]->fd_out)
-			handle_redirections(ms->cmd[*i]);
-		execute_builtin(ms, *i);
+			if (handle_redirections(ms, ms->cmd[*i]) == 0)
+				execute_builtin(ms, *i);
 		return ;
 	}
 	if (ms->cmd[*i + 1])
@@ -109,14 +109,15 @@ void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout)
 		child_process(ms, *prev_fd, fd, *i);
 	close_pipe(ms, fd, prev_fd, *i);
 	waitpid(pid, &status, 0);
-	if ((status & 0xFF) == 127)
-		return ;
+	check_child_exit(ms, status);
 }
 
 void	child_process(t_ms *ms, int prev_fd, int *fd, int i)
 {
+	int	res;
+
 	if (ms->cmd[i]->fd_in || ms->cmd[i]->fd_out)
-		handle_redirections(ms->cmd[i]);
+		res = handle_redirections(ms, ms->cmd[i]);
 	if (prev_fd != -1 && ms->cmd[i]->fd_in == NULL)
 		dup2(prev_fd, STDIN_FILENO);
 	if (prev_fd != -1)
@@ -128,12 +129,12 @@ void	child_process(t_ms *ms, int prev_fd, int *fd, int i)
 		close(fd[1]);
 		close(fd[0]);
 	}
-	if (is_builtin(ms, i))
+	if (is_builtin(ms, i) && res == 0)
 	{
 		execute_builtin(ms, i);
 		exit (0);
 	}
-	else
+	else if (res == 0)
 		execute_execve(ms, i);
 }
 
