@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 21:47:29 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 18:37:19 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:52:03 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	ft_env(int i)
 	j = 0;
 	arg = ms()->cmd[i]->arg;
 	if (arg[1])
+	{
 		ft_printf("env: '%s: No such file or directory\n", arg[1]);
+		ms()->exit_status = 1;
+	}
 	else
 	{
 		while (ms()->ms_env[j])
@@ -31,5 +34,6 @@ void	ft_env(int i)
 			ft_putchar_fd('\n', fd);
 			j++;
 		}
+		ms()->exit_status = 0;
 	}
 }

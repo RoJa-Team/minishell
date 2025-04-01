@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 18:37:02 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:17:25 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*print_oldpwd(t_env *env)
 		temp = temp->next;
 	}
 	ft_printf("cd: OLDPWD not set\n");
+	ms()->exit_status = 1;
 	return (NULL);
 }
 
@@ -91,6 +92,7 @@ void	ft_cd(int i)
 	if (count > 2)
 	{
 		ft_printf("cd: too many arguments\n");
+		ms()->exit_status = 1;
 		return ;
 	}
 	temp = ms()->env_lst;
@@ -101,7 +103,7 @@ void	ft_cd(int i)
 	else
 		newpwd = get_ab_path(oldpwd, arg[1]);
 	if (!newpwd)
-		deallocate("memory allocation fail.\n");
+		return ;
 	change_directory(oldpwd, newpwd, i);
 }
 
@@ -111,12 +113,16 @@ void	change_directory(char *oldpwd, char *newpwd, int i)
 
 	temp = ms()->env_lst;
 	if (newpwd && chdir(newpwd) != 0)
+	{
 		ft_printf("cd: %s: No such file or directory\n", ms()->cmd[i]->arg[1]);
+		ms()->exit_status = 1;
+	}
 	else if (newpwd)
 	{
 		update_env_lst(temp, "OLDPWD", oldpwd);
 		update_env_lst(temp, "PWD", newpwd);
 		update_ms_env();
+		ms()->exit_status = 0;
 	}
 	if (oldpwd)
 		free(oldpwd);

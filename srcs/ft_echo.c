@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 18:37:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:48:57 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	ft_echo(int j)
 	}
 	if (!n_flag)
 		ft_putchar_fd('\n', 1);
+	ms()->exit_status = 0;
 }

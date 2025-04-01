@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:45:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:48:15 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_ms
 	t_cmd	**cmd;
 	t_exec	*exec;
 	t_dummy	dummy;
+	int	exit_status;
 }				t_ms;
 
 /*********************************************/
@@ -214,10 +215,11 @@ void	remove_key(t_env *prev, t_env *temp, char *arg);
 void	ft_env(int i);
 
 /*redirections.c*/
-void	handle_redirections(t_cmd *cmd);
-void	handle_input_r(t_redir *r);
-void	handle_output_r(t_redir *r);
-void	execute_heredoc(t_redir *r);
+int	handle_redirections(t_cmd *cmd);
+void	handle_input_r(t_redir *r, int *res);
+void	handle_output_r(t_redir *r, int *res);
+void	execute_heredoc(t_redir *r, int *res);
+void	check_access(t_redir *r, int *res);
 
 /*signal.c*/
 void	signal_handler(int signum);

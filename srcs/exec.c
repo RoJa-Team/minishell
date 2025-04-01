@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 18:40:45 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:52:49 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	exec_cmd(void)
 		i++;
 	}
 	save_and_restore_std(&save_stdin, &save_stdout, 2);
+	ft_printf("Exit status : %d\n", ms()->exit_status);
 	while (wait(NULL) > 0)
 		continue ;
 }
@@ -109,14 +110,21 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 		child_process(*prev_fd, fd, *i);
 	close_pipe(fd, prev_fd, *i);
 	waitpid(pid, &status, 0);
-	if ((status & 0xFF) == 127)
-		return ;
+	if (WIFEXITED(status))
+		ms()->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		ms()->exit_status = 128 + WTERMSIG(status);
 }
 
 void	child_process(int prev_fd, int *fd, int i)
 {
+	int	res;
+
+	res = 0;
 	if (ms()->cmd[i]->fd_in || ms()->cmd[i]->fd_out)
-		handle_redirections(ms()->cmd[i]);
+		res = handle_redirections(ms()->cmd[i]);
+	if (res != 0)
+		exit (1);
 	if (prev_fd != -1 && ms()->cmd[i]->fd_in == NULL)
 		dup2(prev_fd, STDIN_FILENO);
 	if (prev_fd != -1)
@@ -146,6 +154,7 @@ void	execute_execve(int i)
 	{
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
 		write(2, ": command not found\n", 20);
+		ms()->exit_status = 127;
 		exit(127);
 	}
 	if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
