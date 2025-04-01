@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 22:06:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/28 21:55:48 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(input);
 		if (input[0] != '\0')
 		{
-			verify_quotes(input);
+			verify_input(input);
 			parse_input(ms, input);
 			exec_cmd(ms);
 			clean_cmd(ms);

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 22:06:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/28 21:52:30 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define IN 1
 // cat << 1 | cat << 2 | cat << 3 | cat << 4 | cat << 5 | cat << 6 | cat << 7 | cat << 8 | cat << 9 | cat << 10 | cat << 11 | cat << 12 | cat << 13 | cat << 14 | cat << 15 | cat << 16 | cat << 17 | cat << 18 | cat << 19 | cat << 20 
 // cat << here > out | lsl | cat < out | wc
-
+// cat << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 << 20 
 typedef struct s_heredoc
 {
 	char				*str;
@@ -128,7 +128,10 @@ int		handle_heredoc(char *delimiter);
 int		within_quotes(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
-void	verify_quotes(char *str);
+void	verify_input(char *input);
+void	verify_quotes(char *input);
+void	verify_heredocs(char *input);
+
 
 /* parse_ll_to_array.c */
 void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll);

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 20:59:40 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/28 21:43:09 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ void	new_redir(t_cmd *cmd_ll, char *str, int *i)
 
 	len = 0;
 	redir = str[*i];
-	while (str[*i] == str[*i + len] && str[*i] != '\0')
+	while (str[*i] && str[*i] == str[*i + len])
 		len++;
 	*i = *i + len;
-	while (str[*i] == ' ' && str[*i] != '\0')
+	while (str[*i] && str[*i] == ' ')
 		(*i)++;
 	if (len > 2 || check_metachar(str[*i + len]) || str[*i] == '\0')
 		return ((void)ft_printf("Error> Redirection Syntax error"));
