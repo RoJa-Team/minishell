@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/28 21:55:48 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:19:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
-	t_ms	*ms;
 
 	(void)argv;
 	if (argc != 1)
 		return (ft_printf("Error: Invalid number of arguments.\n"));
-	ms = init_ms(env);
 	setup_signals();
+	init_ms(env);
 	input = NULL;
 	while (1)
 	{
@@ -33,9 +32,9 @@ int	main(int argc, char **argv, char **env)
 		if (input[0] != '\0')
 		{
 			verify_input(input);
-			parse_input(ms, input);
-			exec_cmd(ms);
-			clean_cmd(ms);
+			parse_input(input);
+			exec_cmd();
+			clean_cmd();
 			free(input);
 		}
 	}

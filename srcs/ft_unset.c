@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:38:02 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/24 19:05:57 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:38:33 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_unset(t_ms *ms, int i)
+void	ft_unset(int i)
 {
 	t_env	*temp;
 	t_env	*prev;
@@ -20,21 +20,21 @@ void	ft_unset(t_ms *ms, int i)
 	int		j;
 
 	j = 1;
-	arg = ms->cmd[i]->arg;
-	temp = ms->env_lst;
+	arg = ms()->cmd[i]->arg;
+	temp = ms()->env_lst;
 	if (!temp || !temp->key)
 		return ;
 	while (arg[j])
 	{
 		prev = NULL;
-		temp = ms->env_lst;
-		remove_key(ms, prev, temp, arg[j]);
+		temp = ms()->env_lst;
+		remove_key(prev, temp, arg[j]);
 		j++;
 	}
-	update_ms_env(ms);
+	update_ms_env();
 }
 
-void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg)
+void	remove_key(t_env *prev, t_env *temp, char *arg)
 {
 	while (temp != NULL)
 	{
@@ -43,7 +43,7 @@ void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg)
 			if (prev)
 				prev->next = temp->next;
 			else
-				ms->env_lst = temp->next;
+				ms()->env_lst = temp->next;
 			free(temp->key);
 			free(temp->value);
 			free(temp);

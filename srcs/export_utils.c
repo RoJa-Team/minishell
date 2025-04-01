@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:22:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/24 19:39:31 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:36:17 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value)
+void	get_key_and_value(char *arg, char **key, char **value)
 {
 	int		h;
 	char	*copy;
@@ -29,7 +29,7 @@ void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value)
 	else
 	{
 		*key = ft_strdup(arg);
-		copy = find_value(ms->env_lst, *key);
+		copy = find_value(ms()->env_lst, *key);
 		if (copy)
 			*value = ft_strdup(copy);
 	}

@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:10:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 00:20:17 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:35:48 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i)
+void	close_pipe(int *fd, int *prev_fd, int i)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
-	if (ms->cmd[i + 1])
+	if (ms()->cmd[i + 1])
 	{
 		close(fd[1]);
 		*prev_fd = fd[0];

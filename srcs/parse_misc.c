@@ -6,21 +6,18 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:56:58 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:07:05 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:14:37 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-// t_ms	*ms(void)
-// {
-// 	static t_ms	*ms;
+t_ms	*ms(void)
+{
+	static t_ms	ms;
 
-// 	if (!ms)
-// 		init_ms();
-
-// 	return (ms);
-// }
+	return (&ms);
+}
 
 int	within_quotes(char *str)
 {

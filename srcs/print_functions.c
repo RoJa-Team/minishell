@@ -6,29 +6,29 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:00:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 21:05:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:24:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	print_ms_env(t_ms *ms)
+void	print_ms_env(void)
 {
 	int	i;
 
 	i = 0;
-	while (ms->ms_env[i])
+	while (ms()->ms_env[i])
 	{
-		ft_printf("> %s\n", ms->ms_env[i]);
+		ft_printf("> %s\n", ms()->ms_env[i]);
 		i++;
 	}
 }
 
-void	print_env_lst(t_ms *ms)
+void	print_env_lst(void)
 {
 	t_env	*temp;
 
-	temp = ms->env_lst;
+	temp = ms()->env_lst;
 	while (temp != NULL)
 	{
 		ft_printf("Key: %s - Value: %s\n", temp->key, temp->value);
@@ -36,18 +36,18 @@ void	print_env_lst(t_ms *ms)
 	}
 }
 
-void	print_cmd(t_ms *ms)
+void	print_cmd(void)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (ms->cmd[i])
+	while (ms()->cmd[i])
 	{
 		j = 0;
-		while (ms->cmd[i]->arg[j])
+		while (ms()->cmd[i]->arg[j])
 		{
-			ft_printf("%d.%d> %s\n", i, j, ms->cmd[i]->arg[j]);
+			ft_printf("%d.%d> %s\n", i, j, ms()->cmd[i]->arg[j]);
 			j++;
 		}
 		i++;

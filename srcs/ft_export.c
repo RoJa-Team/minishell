@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/24 19:39:32 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:40:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	sort_env(char **env)
 	}
 }
 
-void	add_new_key(t_ms *ms, char **arg, int j)
+void	add_new_key(char **arg, int j)
 {
 	char	*key;
 	char	*value;
@@ -49,18 +49,18 @@ void	add_new_key(t_ms *ms, char **arg, int j)
 	value = NULL;
 	while (arg[j])
 	{
-		get_key_and_value(ms, arg[j], &key, &value);
+		get_key_and_value(arg[j], &key, &value);
 		if (!is_valid_key(key))
 			ft_printf("export: %s: not a valid identifier\n", arg[j]);
 		else
-			update_or_add_env_key(&ms->env_lst, key, value);
+			update_or_add_env_key(&ms()->env_lst, key, value);
 		free_key_and_value(key, value);
 		j++;
 	}
-	update_ms_env(ms);
+	update_ms_env();
 }
 
-void	print_export_fd(t_ms *ms)
+void	print_export_fd()
 {
 	int		i;
 	t_env	*env_lst;
@@ -68,7 +68,7 @@ void	print_export_fd(t_ms *ms)
 	int		fd;
 
 	fd = 1;
-	env_lst = ms->env_lst;
+	env_lst = ms()->env_lst;
 	env_arr = NULL;
 	env_arr = convert_lst_to_arr(env_lst);
 	sort_env(env_arr);
@@ -101,15 +101,15 @@ void	execute_export(int fd, char *line)
 	}
 }
 
-void	ft_export(t_ms *ms, int i)
+void	ft_export(int i)
 {
 	char	**arg;
 	int		j;
 
 	j = 1;
-	arg = ms->cmd[i]->arg;
+	arg = ms()->cmd[i]->arg;
 	if (!arg[j])
-		print_export_fd(ms);
+		print_export_fd();
 	else
-		add_new_key(ms, arg, j);
+		add_new_key(arg, j);
 }

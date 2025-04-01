@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:06:03 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:23:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	handle_heredoc(char *delimiter)
 {
 	int		fds[2];
 	int		save_stdin;
+
+	//if (get_last_node(((t_cmd *)get_last_node(ms()->cmd, get_offset(&ms()->dummy.cmd, &ms()->dummy.cmd.next)))->fd_in, get_offset(&ms()->dummy.redir, &ms()->dummy.redir.next)));
 
 	if (pipe(fds) == -1)
 		deallocate("error creating pipe");
