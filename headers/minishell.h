@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:45:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:01:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 //TODO remove this
-# define debug(info, x) _Generic((x), int: print_int, char *: print_string)(info, x)
+# define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x)
 // USAGE: debug(mensagem, variavel);
 # define APPEND 2
 # define HEREDOC 2
@@ -44,11 +44,11 @@ typedef struct s_redir
 	struct s_redir	*next;
 }				t_redir;
 
-typedef struct s_parse
+typedef struct s_arg
 {
-	char			*token;
-	struct s_parse	*next;
-}				t_parse;
+	char			*word;
+	struct s_arg	*next;
+}				t_arg;
 
 typedef struct s_exec
 {
@@ -63,6 +63,12 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }				t_cmd;
 
+typedef struct s_parse
+{
+	t_cmd			*cmd_ll;
+	t_arg			*arg_ll;
+}				t_parse;
+
 typedef struct s_env
 {
 	int				invis;
@@ -73,20 +79,20 @@ typedef struct s_env
 
 typedef struct s_dummy
 {
-	t_heredoc	heredoc;
-	t_redir		redir;
-	t_parse		parse;
-	t_cmd		cmd;
-	t_env		env;
+	t_heredoc		heredoc;
+	t_redir			redir;
+	t_parse			parse;
+	t_arg			arg;
+	t_cmd			cmd;
+	t_env			env;
 }				t_dummy;
 
 typedef struct s_ms
 {
-	char	**ms_env;
-	t_env	*env_lst;
-	t_cmd	**cmd;
-	t_exec	*exec;
-	t_dummy	dummy;
+	char			**ms_env;
+	t_env			*env_lst;
+	t_cmd			**cmd;
+	t_exec			*exec;
 }				t_ms;
 
 /*********************************************/
@@ -96,13 +102,13 @@ typedef struct s_ms
 /*********************************************/
 
 /* init_ms.c */
-void	init_ms(char **env);
+void	init(char **env);
 void	copy_env(char **env);
 
 /* parse_input.c */
-void	new_cmd(t_cmd **cmd_ll);
+void	new_cmd(void);
 char	*new_str(char *str, int *i);
-void	new_arg(t_parse **arg_ll, char *str);
+void	new_arg(char *str);
 void	parse_input(char *str);
 
 /* parse_expansions.c */
@@ -118,15 +124,17 @@ char	*find_env_value(char *str, int i, int key_len);
 /* parse_redirections.c */
 int		file_len(char *str, int i);
 char	*get_file(char *str, int *i);
-void	new_output(t_cmd *cmd_ll, char *file, int type);
-void	new_input(t_cmd *cmd_ll, char *file, int type);
-void	new_redir(t_cmd *cmd_ll, char *str, int *i);
+void	new_output(char *file, int type);
+void	new_input(char *file, int type);
+void	new_redir(char *str, int *i);
 
 /* parse_heredoc.c */
 int		handle_heredoc(char *delimiter);
 
 /* parse_misc.c */
 t_ms	*ms(void);
+t_parse	*parse(void);
+t_dummy	*dummy(void);
 int		within_quotes(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
@@ -136,8 +144,8 @@ void	verify_heredocs(char *input);
 
 
 /* parse_ll_to_array.c */
-void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll);
-void	cmd_to_array(t_cmd *cmd_ll);
+void	token_to_array(void);
+void	cmd_to_array(void);
 
 /*********************************************/
 /*                                           */
@@ -245,6 +253,7 @@ void	print_env_lst(void);
 void	print_cmd(void);
 void	print_int(char *info, int data);
 void	print_string(char *info, char *data);
+void	print_pointer(char *info, void *data);
 
 /*********************************************/
 /*                                           */

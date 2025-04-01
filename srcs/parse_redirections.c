@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/28 21:43:09 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:03:16 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,59 +53,47 @@ char	*get_file(char *str, int *i)
 	return (delimiter);
 }
 
-void	new_input(t_cmd *cmd_ll, char *file, int type)
+void	new_input(char *file, int type)
 {
-	t_cmd	cmd_dummy;
-	t_cmd	*last_cmd;
-	t_redir	redir_dummy;
 	t_redir	*new_redir;
-	t_redir	*temp;
+	t_cmd	*last_cmd;
 
-	last_cmd = get_last_node(cmd_ll, get_offset(&cmd_dummy, &cmd_dummy.next));
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		deallocate("Error> new_redir");
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;
-	temp = NULL;
+	last_cmd = get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
+	&dummy()->cmd.next));
 	if (last_cmd->fd_in)
-	{
-		temp = get_last_node(last_cmd->fd_in, get_offset(&redir_dummy, \
-		&redir_dummy.next));
-		temp->next = new_redir;
-	}
+		((t_redir *)get_last_node(last_cmd->fd_in, get_offset(&dummy()->\
+		redir, &dummy()->redir.next)))->next = new_redir;
 	else
 		last_cmd->fd_in = new_redir;
 }
 
-void	new_output(t_cmd *cmd_ll, char *file, int type)
+void	new_output(char *file, int type)
 {
-	t_cmd	cmd_dummy;
-	t_cmd	*last_cmd;
-	t_redir	redir_dummy;
 	t_redir	*new_redir;
-	t_redir	*temp;
+	t_cmd	*last_cmd;
 
-	last_cmd = get_last_node(cmd_ll, get_offset(&cmd_dummy, &cmd_dummy.next));
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		deallocate("Error> new_redir");
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;
-	temp = NULL;
+	last_cmd = get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
+	&dummy()->cmd.next));
 	if (last_cmd->fd_out)
-	{
-		temp = get_last_node(last_cmd->fd_out, get_offset(&redir_dummy, \
-		&redir_dummy.next));
-		temp->next = new_redir;
-	}
+		((t_redir *)get_last_node(last_cmd->fd_out, get_offset(&dummy()->\
+		redir, &dummy()->redir.next)))->next = new_redir;
 	else
 		last_cmd->fd_out = new_redir;
 }
 
-void	new_redir(t_cmd *cmd_ll, char *str, int *i)
+void	new_redir(char *str, int *i)
 {
 	int		len;
 	char	redir;
@@ -120,11 +108,11 @@ void	new_redir(t_cmd *cmd_ll, char *str, int *i)
 	if (len > 2 || check_metachar(str[*i + len]) || str[*i] == '\0')
 		return ((void)ft_printf("Error> Redirection Syntax error"));
 	if (len == 2 && redir == '<')
-		new_input(cmd_ll, ft_itoa(handle_heredoc(get_file(str, i))), HEREDOC);
+		new_input(ft_itoa(handle_heredoc(get_file(str, i))), HEREDOC);
 	else if (len == 2 && redir == '>')
-		new_output(cmd_ll, get_file(str, i), APPEND);
+		new_output(get_file(str, i), APPEND);
 	else if (len == 1 && redir == '<')
-		new_input(cmd_ll, get_file(str, i), IN);
+		new_input(get_file(str, i), IN);
 	else if (len == 1 && redir == '>')
-		new_output(cmd_ll, get_file(str, i), OUT);
+		new_output(get_file(str, i), OUT);
 }

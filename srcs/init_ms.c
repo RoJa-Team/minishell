@@ -6,11 +6,32 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:16:14 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:01:50 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+t_parse	*parse(void)
+{
+	static t_parse	parse;
+
+	return (&parse);
+}
+
+t_ms	*ms(void)
+{
+	static t_ms	ms;
+
+	return (&ms);
+}
+
+t_dummy	*dummy(void)
+{
+	static t_dummy	dummy;
+
+	return (&dummy);
+}
 
 void	copy_env(char **env)
 {
@@ -62,11 +83,13 @@ void	create_env_lst()
 	}
 }
 
-void	init_ms(char **env)
+void	init(char **env)
 {
 	ms()->cmd = NULL;
 	ms()->env_lst = NULL;
 	//ms->exec = NULL;
 	copy_env(env);
 	create_env_lst();
+	parse()->cmd_ll = NULL;
+	parse()->arg_ll = NULL;
 }
