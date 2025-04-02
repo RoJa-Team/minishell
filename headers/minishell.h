@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 22:10:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:26:06 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,14 +216,22 @@ void	remove_key(t_env *prev, t_env *temp, char *arg);
 void	ft_env(int i);
 
 /*redirections.c*/
-void	handle_redirections(t_cmd *cmd);
-void	handle_input_r(t_redir *r);
-void	handle_output_r(t_redir *r);
-void	execute_heredoc(t_redir *r);
+int	handle_redirections(t_cmd *cmd);
+void	handle_input_r(t_redir *r, int *res);
+void	handle_output_r(t_redir *r, int *res);
+void	execute_heredoc(t_redir *r, int *res);
+void	check_access(t_redir *r, int *res);
 
 /*signal.c*/
 void	signal_handler(int signal, siginfo_t *info, void *context);
 void	setup_signals(void);
+
+/*ft_exit.c*/
+int	is_numeric(const char *str);
+int	is_ll_overflow(const char *str);
+void	cleanup(void);
+void	ft_exit(int i);
+
 
 /*********************************************/
 /*                                           */

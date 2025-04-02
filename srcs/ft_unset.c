@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:38:02 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 18:38:33 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:57:48 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ void	remove_key(t_env *prev, t_env *temp, char *arg)
 			free(temp->key);
 			free(temp->value);
 			free(temp);
-			break ;
+			ms()->exit_status = 0;
+			return ;
 		}
 		prev = temp;
 		temp = temp->next;
 	}
+	ms()->exit_status = 1;
 }

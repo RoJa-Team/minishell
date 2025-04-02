@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/02 21:21:31 by rafasant         ###   ########.fr        #
+#    Updated: 2025/04/02 22:25:07 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c \
 			parse_expansions.c parse_expansions_utils.c static_structs.c \
 			verify_input.c cleaner.c\
 			export_utils_2.c exec_utils.c cd_utils.c \
-			cd_utils_2.c signals.c \
+			cd_utils_2.c signals.c ft_exit.c \
 			ft_echo.c ft_cd.c ft_pwd.c ft_export.c ft_unset.c \
 			ft_env.c exec.c export_utils.c redirections.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
