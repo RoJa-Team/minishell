@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 20:47:14 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:18:01 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,19 @@ int	main(int argc, char **argv, char **env)
 	input = NULL;
 	while (1)
 	{
-		input = readline("$minishell>");
+		input = readline("$minishell> ");
 		if (!input)
-			break ;
+			return (clean_structs(), 0);
 		if (input[0] != ' ' && input[0] != '\0')
 			add_history(input);
 		if (input[0] != '\0')
 		{
-			verify_input(input);
-			parse_input(input);
-			exec_cmd();
-			clean_cmd();
+			if (verify_input(input) == 0)
+			{
+				parse_input(input);
+				exec_cmd();
+				clean_cmd();
+			}
 			free(input);
 		}
 	}

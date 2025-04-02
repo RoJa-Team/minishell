@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:56:58 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 20:55:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 19:42:45 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,63 +42,4 @@ void	check_quotes(char c, int *quotes)
 		*quotes = 0;
 	else if (c == '\"' && *quotes == 0)
 		*quotes = 2;
-}
-
-void	verify_quotes(char *input)
-{
-	int	i;
-	int	quotes;
-
-	i = 0;
-	quotes = 0;
-	while (input[i])
-	{
-		check_quotes(input[i], &quotes);
-		i++;
-	}
-	if (quotes != 0)
-	{
-		debug("verify_quotes", quotes);
-		exit(1);
-	}
-}
-
-void	verify_heredocs(char *input)
-{
-	int	i;
-	int	len;
-	int	n_heredoc;
-
-	i = 0;
-	n_heredoc = 0;
-	while (input[i])
-	{
-		if (input[i] == '\"' || input[i] == '\'')
-			i = i + within_quotes(&input[i]);
-		else if (input[i] == '<')
-		{
-			len = 0;
-			while (input[i] && input[i + len] == '<')
-				len++;
-			if (len == 2)
-				n_heredoc++;
-			i = i + len;
-		}
-		else
-			i++;
-	}
-	if (n_heredoc > 16)
-	{
-		debug("verify_heredocs", n_heredoc);
-		exit(1);
-	}
-}
-
-void	verify_input(char *input)
-{
-	verify_quotes(input);
-	verify_heredocs(input);
-
-
-	
 }

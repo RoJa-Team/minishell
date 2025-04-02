@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 21:03:16 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:31:05 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ void	new_redir(char *str, int *i)
 	*i = *i + len;
 	while (str[*i] && str[*i] == ' ')
 		(*i)++;
-	if (len > 2 || check_metachar(str[*i + len]) || str[*i] == '\0')
-		return ((void)ft_printf("Error> Redirection Syntax error"));
 	if (len == 2 && redir == '<')
 		new_input(ft_itoa(handle_heredoc(get_file(str, i))), HEREDOC);
 	else if (len == 2 && redir == '>')

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:28:30 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 21:20:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,10 @@ void	free_array(char	**array)
 // 	}
 // }
 
-void	clean_cmd(void)
+void	bad_input(char *message, int error)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (ms()->cmd && ms()->cmd[i])
-	{
-		j = 0;
-		while (ms()->cmd[i]->arg && ms()->cmd[i]->arg[j])
-		{
-			free(ms()->cmd[i]->arg[j]);
-			j++;
-		}
-		free(ms()->cmd[i]);
-		i++;
-	}
-	free(ms()->cmd);
+	ms()->exit_status = error;
+	ft_printf("%s\n", message);
 }
 
 void	deallocate(char *message)

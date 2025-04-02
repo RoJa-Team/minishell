@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 21:01:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:10:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@
 // cat << 1 | cat << 2 | cat << 3 | cat << 4 | cat << 5 | cat << 6 | cat << 7 | cat << 8 | cat << 9 | cat << 10 | cat << 11 | cat << 12 | cat << 13 | cat << 14 | cat << 15 | cat << 16 | cat << 17 | cat << 18 | cat << 19 | cat << 20 
 // cat << here > out | lsl | cat < out | wc
 // cat << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 << 20 
-typedef struct s_heredoc
-{
-	char				*str;
-	struct s_heredoc	*next;
-}				t_heredoc;
 
 typedef struct s_redir
 {
@@ -79,7 +74,6 @@ typedef struct s_env
 
 typedef struct s_dummy
 {
-	t_heredoc		heredoc;
 	t_redir			redir;
 	t_parse			parse;
 	t_arg			arg;
@@ -93,6 +87,7 @@ typedef struct s_ms
 	t_env			*env_lst;
 	t_cmd			**cmd;
 	t_exec			*exec;
+	int				exit_status;
 }				t_ms;
 
 /*********************************************/
@@ -138,10 +133,9 @@ t_dummy	*dummy(void);
 int		within_quotes(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
-void	verify_input(char *input);
-void	verify_quotes(char *input);
-void	verify_heredocs(char *input);
-
+int		verify_input(char *input);
+int		verify_quotes(char *input);
+int		verify_heredocs(char *input);
 
 /* parse_ll_to_array.c */
 void	token_to_array(void);
@@ -228,7 +222,7 @@ void	handle_output_r(t_redir *r);
 void	execute_heredoc(t_redir *r);
 
 /*signal.c*/
-void	signal_handler(int signum);
+void	signal_handler(int signal, siginfo_t *info, void *context);
 void	setup_signals(void);
 
 /*********************************************/
@@ -262,9 +256,13 @@ void	print_pointer(char *info, void *data);
 /*********************************************/
 
 /* error.c */
+void	bad_input(char *message, int error);
 void	free_array(char	**array);
-void	clean_parse(void);
-void	clean_cmd(void);
 void	deallocate(char *message);
+
+/* cleaner.c */
+void	clean_env(void);
+void	clean_cmd(void);
+void	clean_structs(void);
 
 #endif
