@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/02 20:18:45 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/02 21:27:10 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ int	is_builtin(int i)
 		return (1);
 	else if (ft_strncmp(arg[0], "env", 4) == 0)
 		return (1);
-	/*
-	else if (arg[0] == "exit")
-		ft_exit(ms);
-	*/
+	else if (ft_strncmp(arg[0], "exit", 5) == 0)
+		return (1);
 	return (0);
 }
 
@@ -41,8 +39,10 @@ void	execute_builtin(int i)
 	char	**arg;
 	int		save_out;
 
-	save_out = dup(STDOUT_FILENO);
 	arg = ms()->cmd[i]->arg;
+	if (ft_strncmp(arg[0], "exit", 5) == 0)
+		ft_exit(i);
+	save_out = dup(STDOUT_FILENO);
 	if (ft_strncmp(arg[0], "echo", 5) == 0)
 		ft_echo(i);
 	else if (ft_strncmp(arg[0], "cd", 3) == 0)
@@ -57,10 +57,6 @@ void	execute_builtin(int i)
 		ft_env(i);
 	dup2(save_out, STDOUT_FILENO);
 	close(save_out);
-	/*
-	else if (arg[0] == "exit")
-		ft_exit(ms);
-	*/
 }
 
 void	exec_cmd(void)

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 19:48:15 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/02 21:21:30 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,13 @@ void	check_access(t_redir *r, int *res);
 /*signal.c*/
 void	signal_handler(int signum);
 void	setup_signals(void);
+
+/*ft_exit.c*/
+int	is_numeric(const char *str);
+int	is_ll_overflow(const char *str);
+void	cleanup(void);
+void	ft_exit(int i);
+
 
 /*********************************************/
 /*                                           */
