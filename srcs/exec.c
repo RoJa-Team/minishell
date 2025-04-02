@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 20:52:49 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:18:45 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,21 @@ void	execute_builtin(int i)
 void	exec_cmd(void)
 {
 	int	i;
-	int	save_stdout;
-	int	save_stdin;
 
 	ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
 		deallocate("Memory allocation fail.\n");
 	ms()->exec->prev_fd = -1;
-	save_and_restore_std(&save_stdin, &save_stdout, 1);
+	//save_and_restore_std(&save_stdin, &save_stdout, 1);
 	i = 0;
 	while (ms()->cmd[i])
 	{
-		handle_input(&i, &save_stdin, &save_stdout);
+		handle_input(&i, 0, 0);
 		i++;
 	}
-	save_and_restore_std(&save_stdin, &save_stdout, 2);
+	//save_and_restore_std(&save_stdin, &save_stdout, 2);
 	ft_printf("Exit status : %d\n", ms()->exit_status);
+	free(ms()->exec);
 	while (wait(NULL) > 0)
 		continue ;
 }
@@ -99,8 +98,14 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 	if (is_builtin(*i) == 1 && !ms()->cmd[*i + 1])
 	{
 		if (ms()->cmd[*i]->fd_in || ms()->cmd[*i]->fd_out)
+		{
+			save_and_restore_std(save_stdin, save_stdout, 1);
 			handle_redirections(ms()->cmd[*i]);
-		execute_builtin(*i);
+			execute_builtin(*i);
+			save_and_restore_std(save_stdin, save_stdout, 2);
+		}
+		else
+			execute_builtin(*i);
 		return ;
 	}
 	if (ms()->cmd[*i + 1])
