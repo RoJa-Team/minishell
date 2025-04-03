@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/02 21:27:10 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:05:24 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	execute_builtin(int i)
 void	exec_cmd(void)
 {
 	int	i;
+	int	save_stdin;
+	int	save_stdout;
 
 	ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
@@ -71,7 +73,7 @@ void	exec_cmd(void)
 	i = 0;
 	while (ms()->cmd[i])
 	{
-		handle_input(&i, 0, 0);
+		handle_input(&i, &save_stdin, &save_stdout);
 		i++;
 	}
 	//save_and_restore_std(&save_stdin, &save_stdout, 2);

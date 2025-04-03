@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/02 22:26:41 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:48:13 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	handle_input_r(t_redir *r, int *res)
 {
 	int	fd;
 
+	(void)res;
 	while (r)
 	{
 		if (r->type == 1)
@@ -51,6 +52,7 @@ void	handle_output_r(t_redir *r, int *res)
 {
 	int	fd;
 
+	(void)res;
 	while (r)
 	{
 		if (r->type == 1)

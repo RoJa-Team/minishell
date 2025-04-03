@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 22:26:06 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:47:06 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,6 @@ int	is_numeric(const char *str);
 int	is_ll_overflow(const char *str);
 void	cleanup(void);
 void	ft_exit(int i);
-
 
 /*********************************************/
 /*                                           */

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 19:09:27 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:47:52 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	init(char **env)
 {
 	ms()->cmd = NULL;
 	ms()->env_lst = NULL;
+	ms()->exit_status = 0;
 	//ms->exec = NULL;
 	copy_env(env);
 	create_env_lst();
