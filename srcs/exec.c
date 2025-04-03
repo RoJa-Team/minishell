@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/03 21:35:16 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:50:28 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ void	child_process(int prev_fd, int *fd, int i)
 	if (is_builtin(i))
 	{
 		execute_builtin(i);
+		free(ms()->exec);
+		clean_structs();
 		exit (0);
 	}
 	else
