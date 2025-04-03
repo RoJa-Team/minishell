@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/02 22:25:07 by rafasant         ###   ########.fr        #
+#    Updated: 2025/04/03 19:31:37 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,12 @@ fclean: clean
 	@${RM} ${NAME}
 	@make fclean -C libft --silent
 	@echo "Cleaned executables!"
+
+v :	$(NAME)
+	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full ./minishell
+
+vf : $(NAME)
+	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
 
 re: fclean all
 

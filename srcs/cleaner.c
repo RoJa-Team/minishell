@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 21:14:19 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 22:18:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:02:03 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ void	clean_cmd(void)
 		i++;
 	}
 	free(ms()->cmd);
+	ms()->cmd = NULL;
 }
 
 void	clean_structs(void)
 {
 	// debug("clean_structs", "");
 	clean_env();
-	clean_cmd();
+	if (ms()->cmd)
+		clean_cmd();
 }

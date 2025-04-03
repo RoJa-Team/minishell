@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 21:01:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:58:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	token_to_array(void)
 		parse()->arg_ll = temp;
 		i++;
 	}
-	last_cmd->arg[i] = 0;
+	last_cmd->arg[i] = NULL;
 	parse()->arg_ll = NULL;
 }
 
@@ -41,7 +41,9 @@ void	cmd_to_array(void)
 	int		i;
 	t_cmd	*temp_cmd;
 
-	ms()->cmd = malloc(sizeof(char *) * (get_list_size(parse()->cmd_ll, \
+	if (!parse()->cmd_ll)
+		return ;
+	ms()->cmd = malloc(sizeof(t_cmd *) * (get_list_size(parse()->cmd_ll, \
 	get_offset(&dummy()->cmd, &dummy()->cmd.next)) + 1));
 	if (!ms()->cmd)
 		deallocate("Error> cmd_to_array");
@@ -53,6 +55,6 @@ void	cmd_to_array(void)
 		i++;
 		temp_cmd = temp_cmd->next;
 	}
-	ms()->cmd[i] = 0;
+	ms()->cmd[i] = NULL;
 	parse()->cmd_ll = NULL;
 }
