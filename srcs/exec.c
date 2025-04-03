@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/03 21:50:28 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:05:20 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,12 @@ void	execute_execve(int i)
 {
 	char	*path;
 
-	path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
+	path = NULL;
+	if (ms()->cmd[i]->arg[0][0] != '/')
+		path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
+	else
+		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)
+			path = ms()->cmd[i]->arg[0];
 	if (!path)
 	{
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
