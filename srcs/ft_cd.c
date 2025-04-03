@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 21:17:25 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:59:12 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,8 @@ void	change_directory(char *oldpwd, char *newpwd, int i)
 	if (oldpwd)
 		free(oldpwd);
 	if (newpwd)
+	{
+		ft_printf("freeing newpwd\n");
 		free(newpwd);
+	}
 }

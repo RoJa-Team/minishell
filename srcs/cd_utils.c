@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 21:14:40 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:01:43 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 		next_dir[ft_strlen(next_dir) - 1] = '\0';
 	if (ft_strncmp(next_dir, "..", 3) == 0)
 		new_ab_path = get_parent_dir(temp, ab_path);
-	if(ft_strncmp(next_dir, ".", 2) == 0)
+	else if(ft_strncmp(next_dir, ".", 2) == 0)
 		new_ab_path = ft_strdup(ab_path);
-	if (ab_path[ft_strlen(ab_path) - 1] != '/')
+	else if (ab_path[ft_strlen(ab_path) - 1] != '/')
 	{
 		temp = ft_strjoin(ab_path, "/");
 		new_ab_path = ft_strjoin(temp, next_dir);
