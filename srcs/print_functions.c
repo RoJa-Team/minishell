@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 23:00:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:24:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 21:09:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	print_cmd(void)
 	while (ms()->cmd[i])
 	{
 		j = 0;
-		while (ms()->cmd[i]->arg[j])
+		while (ms()->cmd[i]->arg && ms()->cmd[i]->arg[j])
 		{
 			ft_printf("%d.%d> %s\n", i, j, ms()->cmd[i]->arg[j]);
 			j++;
@@ -62,4 +62,9 @@ void	print_int(char *info, int data) //TODO remove this
 void	print_string(char *info, char *data) //TODO remove this
 {
 	ft_printf("\n%s: >%s<\n", info, data);
+}
+
+void	print_pointer(char *info, void *data) //TODO remove this
+{
+	ft_printf("\n%s: >%p<\n", info, data);
 }

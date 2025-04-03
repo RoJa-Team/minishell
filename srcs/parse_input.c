@@ -6,17 +6,15 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:25:39 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/02 21:09:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	new_cmd(t_cmd **cmd_ll)
+void	new_cmd(void)
 {
-	t_cmd	dummy;
 	t_cmd	*new_cmd;
-	t_cmd	*temp;
 
 	new_cmd = malloc(sizeof(t_cmd));
 	if (!new_cmd)
@@ -25,13 +23,11 @@ void	new_cmd(t_cmd **cmd_ll)
 	new_cmd->fd_in = NULL;
 	new_cmd->fd_out = NULL;
 	new_cmd->next = NULL;
-	temp = NULL;
-	if (*cmd_ll)
-		temp = get_last_node(*cmd_ll, get_offset(&dummy, &dummy.next));
-	if (temp)
-		temp->next = new_cmd;
+	if (parse()->cmd_ll)
+		((t_cmd *)get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
+		&dummy()->cmd.next)))->next = new_cmd;
 	else
-		*cmd_ll = new_cmd;
+		parse()->cmd_ll = new_cmd;
 }
 
 char	*new_str(char *str, int *i)
@@ -60,38 +56,32 @@ char	*new_str(char *str, int *i)
 	return (new_str);
 }
 
-void	new_arg(t_parse **arg_ll, char *str)
+void	new_arg(char *str)
 {
-	t_parse	dummy_arg;
-	t_parse	*temp;
-	t_parse	*new_arg;
+	t_arg	*new_arg;
 
 	if (!str)
 		return ;
-	new_arg = malloc(sizeof(t_parse));
+	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
 		deallocate("Error> new_arg\n");
-	new_arg->token = str;
+	new_arg->word = str;
 	new_arg->next = NULL;
-	temp = get_last_node(*arg_ll, get_offset(&dummy_arg, &dummy_arg.next));
-	if (temp)
-		temp->next = new_arg;
+	if (parse()->arg_ll)
+		((t_arg *)get_last_node(parse()->arg_ll, get_offset(&dummy()->arg, \
+		&dummy()->arg.next)))->next = new_arg;
 	else
-		*arg_ll = new_arg;
+		parse()->arg_ll = new_arg;
 }
 
 void	parse_input(char *str)
 {
 	int		i;
-	t_cmd	*cmd_ll;
-	t_parse	*arg_ll;
 
 	i = 0;
-	cmd_ll = NULL;
 	while (1)
 	{
-		arg_ll = NULL;
-		new_cmd(&cmd_ll);
+		new_cmd();
 		while (str[i])
 		{
 			while (ft_isspace(str[i]))
@@ -102,15 +92,15 @@ void	parse_input(char *str)
 				break ;
 			}
 			else if (str[i] == '<' || str[i] == '>')
-				new_redir(cmd_ll, str, &i);
+				new_redir(str, &i);
 			else
-				new_arg(&arg_ll, expand_str(new_str(str, &i)));
+				new_arg(expand_str(new_str(str, &i)));
 		}
-		if (arg_ll)
-			token_to_array(cmd_ll, arg_ll);
+		if (parse()->arg_ll)
+			token_to_array();
 		if (str[i] == '\0')
 			break ;
 	}
-	cmd_to_array(cmd_ll);
+	cmd_to_array();
 	print_cmd();
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 19:32:22 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:47:52 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	create_env_lst()
 	}
 }
 
-void	init_ms(char **env)
+void	init(char **env)
 {
 	ms()->cmd = NULL;
 	ms()->env_lst = NULL;
@@ -70,4 +70,6 @@ void	init_ms(char **env)
 	//ms->exec = NULL;
 	copy_env(env);
 	create_env_lst();
+	parse()->cmd_ll = NULL;
+	parse()->arg_ll = NULL;
 }
