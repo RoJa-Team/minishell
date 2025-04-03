@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 19:47:06 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:35:13 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ int		is_builtin(int i);
 void	child_process(int prev_fd, int *fd, int i);
 void	execute_execve(int i);
 void	execute_builtin(int i);
+void	close_heredoc(void);
 
 /*exec_utils.c*/
 char	*get_value(t_env *env, char *key);

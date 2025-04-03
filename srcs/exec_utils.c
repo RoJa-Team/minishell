@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:10:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/02 22:26:25 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:22:04 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ char	*find_path(t_env *env_lst, char *cmd)
 	if (!path_env)
 		return (NULL);
 	path_dir = ft_split(path_env, ':');
+	free(path_env);
 	if (!path_dir)
 		deallocate("Failed to split $PATH\n");
 	while (path_dir[i])

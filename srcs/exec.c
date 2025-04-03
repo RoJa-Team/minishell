@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/03 20:05:24 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:35:16 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,36 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 	if (pid == 0)
 		child_process(*prev_fd, fd, *i);
 	close_pipe(fd, prev_fd, *i);
+	close_heredoc();
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		ms()->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		ms()->exit_status = 128 + WTERMSIG(status);
+}
+
+void	close_heredoc(void)
+{
+	int	fd;
+	t_redir *r;
+	int	i;
+
+	i = 0;
+	while (ms()->cmd && ms()->cmd[i])
+	{
+		r = ms()->cmd[i]->fd_in;
+		while (r)
+		{
+			if (r->type == 2)
+			{
+				fd = ft_atoi(r->file);
+				if (fd >= 0)
+					close(fd);
+			}
+			r = r->next;
+		}
+		i++;
+	}
 }
 
 void	child_process(int prev_fd, int *fd, int i)
@@ -158,6 +183,8 @@ void	execute_execve(int i)
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
 		write(2, ": command not found\n", 20);
 		ms()->exit_status = 127;
+		free(ms()->exec);
+		clean_structs();
 		exit(127);
 	}
 	if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
