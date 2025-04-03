@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/02 22:11:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:22:30 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 	}
 	else if (signal == 3)
 	{
-		clean_structs();
-		exit(1);
+		return ;
 	}
 }
 
@@ -40,6 +39,6 @@ void	setup_signals(void)
 		return ((void)ft_printf("Error: Failed cleaning mask."));
 	if (sigaction(SIGINT, &sig, NULL) != 0)
 		return ((void)ft_printf("Error: Failed assigning action to SIGINT."));
-	if (sigaction(SIGQUIT, &sig, NULL) != 0)
+	if (signal(SIGQUIT, SIG_IGN) != 0)
 		return ((void)ft_printf("Error: Failed assigning action to SIGQUIT."));
 }
