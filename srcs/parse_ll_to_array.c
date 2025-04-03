@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 22:16:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:27:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,23 @@ void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll)
 	last_cmd->arg[i] = 0;
 }
 
-void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll)
+void	cmd_to_array(t_cmd *cmd_ll)
 {
 	int		i;
 	t_cmd	dummy_cmd;
 	t_cmd	*temp_cmd;
 
-	ms->cmd = malloc(sizeof(char *) * (get_list_size(cmd_ll, \
+	ms()->cmd = malloc(sizeof(char *) * (get_list_size(cmd_ll, \
 	get_offset(&dummy_cmd, &dummy_cmd.next)) + 1));
-	if (!ms->cmd)
+	if (!ms()->cmd)
 		deallocate("Error> cmd_to_array");
 	temp_cmd = cmd_ll;
 	i = 0;
 	while (temp_cmd != NULL)
 	{
-		ms->cmd[i] = temp_cmd;
+		ms()->cmd[i] = temp_cmd;
 		i++;
 		temp_cmd = temp_cmd->next;
 	}
-	ms->cmd[i] = 0;
+	ms()->cmd[i] = 0;
 }

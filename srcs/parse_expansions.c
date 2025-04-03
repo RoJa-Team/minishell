@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 22:22:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:26:40 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	expansion_len(t_ms *ms, char *str, int *i)
+int	expansion_len(char *str, int *i)
 {
 	int	len;
 
@@ -27,10 +27,10 @@ int	expansion_len(t_ms *ms, char *str, int *i)
 		str[*i + len] != '\'' && str[*i + len] != '\"')
 			len++;
 	*i = *i + len;
-	return (ft_strlen(find_env_value(ms, str, *i - len, len)));
+	return (ft_strlen(find_env_value(str, *i - len, len)));
 }
 
-int	exp_len(t_ms *ms, char *str)
+int	exp_len(char *str)
 {
 	int	i;
 	int	len;
@@ -43,7 +43,7 @@ int	exp_len(t_ms *ms, char *str)
 	while (str[i])
 	{
 		if (str[i] == '$' && (quotes == 2 || quotes == 0))
-			len = len + expansion_len(ms, str, &i);
+			len = len + expansion_len(str, &i);
 		else
 		{
 			if (str[i] != '\'' && str[i] != '\"')
@@ -55,7 +55,7 @@ int	exp_len(t_ms *ms, char *str)
 	return (len);
 }
 
-char	*expansion_value(t_ms *ms, char *str, int *i)
+char	*expansion_value(char *str, int *i)
 {
 	int	len;
 
@@ -65,10 +65,10 @@ char	*expansion_value(t_ms *ms, char *str, int *i)
 	str[*i + len] != '\'' && str[*i + len] != '\"')
 		len++;
 	*i = *i + len;
-	return (find_env_value(ms, str, *i - len, len));
+	return (find_env_value(str, *i - len, len));
 }
 
-char	*final_str(t_ms *ms, char *str, char *arg, int i)
+char	*final_str(char *str, char *arg, int i)
 {
 	int		len;
 	int		quotes;
@@ -81,7 +81,7 @@ char	*final_str(t_ms *ms, char *str, char *arg, int i)
 		check_quotes(str[i], &quotes);
 		if (str[i] == '$' && (quotes == 2 || quotes == 0))
 		{
-			val = expansion_value(ms, str, &i);
+			val = expansion_value(str, &i);
 			ft_strlcat(&arg[len], val, ft_strlen(arg) + ft_strlen(val) + 1);
 			len = len + ft_strlen(val);
 		}
@@ -96,16 +96,16 @@ char	*final_str(t_ms *ms, char *str, char *arg, int i)
 	return (arg);
 }
 
-char	*expand_str(t_ms *ms, char *str)
+char	*expand_str(char *str)
 {
 	char	*arg;
 
 	if (!str)
 		return (NULL);
-	arg = ft_calloc(sizeof(char), exp_len(ms, str) + 1);
+	arg = ft_calloc(sizeof(char), exp_len(str) + 1);
 	if (!arg)
 		deallocate ("Error> expand_token");
-	arg = final_str(ms, str, arg, 0);
+	arg = final_str(str, arg, 0);
 	free(str);
 	return (arg);
 }

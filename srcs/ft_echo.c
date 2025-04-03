@@ -6,19 +6,19 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 06:57:08 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:48:57 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_echo(t_ms *ms, int j)
+void	ft_echo(int j)
 {
 	int		i;
 	int		n_flag;
 	char	**arg;
 
-	arg = ms->cmd[j]->arg;
+	arg = ms()->cmd[j]->arg;
 	if (!arg)
 		deallocate("Memory allocation failure\n");
 	n_flag = 0;
@@ -34,4 +34,5 @@ void	ft_echo(t_ms *ms, int j)
 	}
 	if (!n_flag)
 		ft_putchar_fd('\n', 1);
+	ms()->exit_status = 0;
 }

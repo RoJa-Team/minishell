@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:10:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 00:20:17 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:06:06 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i)
+void	close_pipe(int *fd, int *prev_fd, int i)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
-	if (ms->cmd[i + 1])
+	if (ms()->cmd[i + 1])
 	{
 		close(fd[1]);
 		*prev_fd = fd[0];
@@ -34,12 +34,33 @@ void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
 		if (*save_stdout == -1 || *save_stdin == -1)
 			deallocate("dup failed'\n");
 	}
-	if (flag == 2)
+	else if (flag == 2)
 	{
-		dup2(*save_stdout, STDOUT_FILENO);
-		dup2(*save_stdin, STDIN_FILENO);
-		close(*save_stdout);
-		close(*save_stdin);
+		if (*save_stdout != -1)
+		{
+			dup2(*save_stdout, STDOUT_FILENO);
+			close(*save_stdout);
+			*save_stdout = -1;
+		}
+		if (*save_stdin != -1)
+		{
+			dup2(*save_stdin, STDIN_FILENO);
+			close(*save_stdin);
+			*save_stdin = -1;
+		}
+	}
+	else if (flag == 3)
+	{
+		if (*save_stdout != -1)
+		{
+			ft_printf("closinf std out\n");
+			close(*save_stdout);
+		}
+		if (*save_stdin != -1)
+		{
+			close(*save_stdin);
+			ft_printf("closinf std out\n");
+		}
 	}
 }
 

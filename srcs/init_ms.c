@@ -6,55 +6,55 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/28 19:31:51 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:32:22 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	copy_env(t_ms *ms, char **env)
+void	copy_env(char **env)
 {
 	int	i;
 
 	i = 0;
 	while (env[i])
 		i++;
-	ms->ms_env = malloc(sizeof(char *) * (i + 1));
-	if (!ms->ms_env)
+	ms()->ms_env = malloc(sizeof(char *) * (i + 1));
+	if (!ms()->ms_env)
 		deallocate("Error> copy_env");
 	i = 0;
 	while (env[i])
 	{
-		ms->ms_env[i] = ft_strdup(env[i]);
-		if (!ms->ms_env[i])
+		ms()->ms_env[i] = ft_strdup(env[i]);
+		if (!ms()->ms_env[i])
 			deallocate("Error> copy_env");
 		i++;
 	}
-	ms->ms_env[i] = NULL;
+	ms()->ms_env[i] = NULL;
 }
 
-void	create_env_lst(t_ms *ms)
+void	create_env_lst()
 {
 	int		i;
 	t_env	*new_env;
 	t_env	*temp;
 
 	i = -1;
-	while (ms->ms_env[++i] != NULL)
+	while (ms()->ms_env[++i] != NULL)
 	{
 		new_env = malloc(sizeof(t_env));
 		if (!new_env)
 			deallocate("Error> create_env_lst");
-		new_env->key = ft_strndup(ms->ms_env[i], \
-		ft_strlen_c(ms->ms_env[i], '='));
-		new_env->value = ft_strdup(ft_strchr(ms->ms_env[i], '=') + 1);
+		new_env->key = ft_strndup(ms()->ms_env[i], \
+		ft_strlen_c(ms()->ms_env[i], '='));
+		new_env->value = ft_strdup(ft_strchr(ms()->ms_env[i], '=') + 1);
 		new_env->invis = 0;
 		new_env->next = NULL;
-		if (!ms->env_lst)
-			ms->env_lst = new_env;
+		if (!ms()->env_lst)
+			ms()->env_lst = new_env;
 		else
 		{
-			temp = ms->env_lst;
+			temp = ms()->env_lst;
 			while (temp->next != NULL)
 				temp = temp->next;
 			temp->next = new_env;
@@ -62,18 +62,12 @@ void	create_env_lst(t_ms *ms)
 	}
 }
 
-t_ms	*init_ms(char **env)
+void	init_ms(char **env)
 {
-	t_ms	*ms;
-
-	ms = malloc(sizeof(t_ms));
-	if (!ms)
-		deallocate("Error> failed memory allocation for t_ms.");
-	ms->cmd = NULL;
-	ms->env_lst = NULL;
-	ms->exit_status = 0;
+	ms()->cmd = NULL;
+	ms()->env_lst = NULL;
+	ms()->exit_status = 0;
 	//ms->exec = NULL;
-	copy_env(ms, env);
-	create_env_lst(ms);
-	return (ms);
+	copy_env(env);
+	create_env_lst();
 }

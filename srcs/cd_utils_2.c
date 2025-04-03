@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:59:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/03/26 03:17:43 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:35:30 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,21 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 	}
 }
 
-void	update_ms_env(t_ms *ms)
+void	update_ms_env()
 {
 	int		count;
 	t_env	*temp1;
 
 	count = 0;
-	temp1 = ms->env_lst;
-	free_args(ms->ms_env);
+	temp1 = ms()->env_lst;
+	free_args(ms()->ms_env);
 	while (temp1 != NULL)
 	{
 		count++;
 		temp1 = temp1->next;
 	}
-	ms->ms_env = malloc(sizeof(char *) * (count + 1));
-	assign_to_ms_env(ms);
+	ms()->ms_env = malloc(sizeof(char *) * (count + 1));
+	assign_to_ms_env();
 }
 
 void	free_args(char **arg)

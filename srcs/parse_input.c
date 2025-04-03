@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/26 21:00:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:25:39 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	new_arg(t_parse **arg_ll, char *str)
 		*arg_ll = new_arg;
 }
 
-void	parse_input(t_ms *ms, char *str)
+void	parse_input(char *str)
 {
 	int		i;
 	t_cmd	*cmd_ll;
@@ -104,13 +104,13 @@ void	parse_input(t_ms *ms, char *str)
 			else if (str[i] == '<' || str[i] == '>')
 				new_redir(cmd_ll, str, &i);
 			else
-				new_arg(&arg_ll, expand_str(ms, new_str(str, &i)));
+				new_arg(&arg_ll, expand_str(new_str(str, &i)));
 		}
 		if (arg_ll)
 			token_to_array(cmd_ll, arg_ll);
 		if (str[i] == '\0')
 			break ;
 	}
-	cmd_to_array(ms, cmd_ll);
-	print_cmd(ms);
+	cmd_to_array(cmd_ll);
+	print_cmd();
 }

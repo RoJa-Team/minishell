@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/03/28 22:39:35 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:28:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define IN 1
 // cat << 1 | cat << 2 | cat << 3 | cat << 4 | cat << 5 | cat << 6 | cat << 7 | cat << 8 | cat << 9 | cat << 10 | cat << 11 | cat << 12 | cat << 13 | cat << 14 | cat << 15 | cat << 16 | cat << 17 | cat << 18 | cat << 19 | cat << 20 
 // cat << here > out | lsl | cat < out | wc
-
+// cat << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 << 20 
 typedef struct s_heredoc
 {
 	char				*str;
@@ -86,6 +86,7 @@ typedef struct s_ms
 	t_env	*env_lst;
 	t_cmd	**cmd;
 	t_exec	*exec;
+	t_dummy	dummy;
 	int	exit_status;
 }				t_ms;
 
@@ -96,24 +97,24 @@ typedef struct s_ms
 /*********************************************/
 
 /* init_ms.c */
-t_ms	*init_ms(char **env);
-void	copy_env(t_ms *ms, char **env);
+void	init_ms(char **env);
+void	copy_env(char **env);
 
 /* parse_input.c */
 void	new_cmd(t_cmd **cmd_ll);
 char	*new_str(char *str, int *i);
 void	new_arg(t_parse **arg_ll, char *str);
-void	parse_input(t_ms *ms, char *str);
+void	parse_input(char *str);
 
 /* parse_expansions.c */
-int		exp_len(t_ms *ms, char *str);
-char	*expand_str(t_ms *ms, char *str);
-char	*expansion_value(t_ms *ms, char *str, int *i);
-int		expansion_len(t_ms *ms, char *str, int *i);
-char	*final_str(t_ms *ms, char *str, char *arg, int i);
+int		exp_len(char *str);
+char	*expand_str(char *str);
+char	*expansion_value(char *str, int *i);
+int		expansion_len(char *str, int *i);
+char	*final_str(char *str, char *arg, int i);
 
 /* parse_expansions_utils.c */
-char	*find_env_value(t_ms *ms, char *str, int i, int key_len);
+char	*find_env_value(char *str, int i, int key_len);
 
 /* parse_redirections.c */
 int		file_len(char *str, int i);
@@ -126,14 +127,18 @@ void	new_redir(t_cmd *cmd_ll, char *str, int *i);
 int		handle_heredoc(char *delimiter);
 
 /* parse_misc.c */
+t_ms	*ms(void);
 int		within_quotes(char *str);
 int		check_metachar(char c);
 void	check_quotes(char c, int *quotes);
-void	verify_quotes(char *str);
+void	verify_input(char *input);
+void	verify_quotes(char *input);
+void	verify_heredocs(char *input);
+
 
 /* parse_ll_to_array.c */
 void	token_to_array(t_cmd *cmd_ll, t_parse *arg_ll);
-void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll);
+void	cmd_to_array(t_cmd *cmd_ll);
 
 /*********************************************/
 /*                                           */
@@ -142,29 +147,29 @@ void	cmd_to_array(t_ms *ms, t_cmd *cmd_ll);
 /*********************************************/
 
 /*exec.c*/
-void	exec_cmd(t_ms *ms);
-void	handle_input(t_ms *ms, int *i, int *save_stdin, int *save_stdout);
-int		is_builtin(t_ms *ms, int i);
-void	child_process(t_ms *ms, int prev_fd, int *fd, int i);
-void	execute_execve(t_ms *ms, int i);
-void	execute_builtin(t_ms *ms, int i);
+void	exec_cmd(void);
+void	handle_input(int *i, int *save_stdin, int *save_stdout);
+int		is_builtin(int i);
+void	child_process(int prev_fd, int *fd, int i);
+void	execute_execve(int i);
+void	execute_builtin(int i);
 
 /*exec_utils.c*/
 char	*get_value(t_env *env, char *key);
 char	*find_path(t_env *env_lst, char *cmd);
 void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
-void	close_pipe(t_ms *ms, int *fd, int *prev_fd, int i);
+void	close_pipe(int *fd, int *prev_fd, int i);
 
 /*ft_echo.c*/
-void	ft_echo(t_ms *ms, int i);
+void	ft_echo(int i);
 
 /*ft_cd.c*/
-void	ft_cd(t_ms *ms, int i);
+void	ft_cd(int i);
 char	*print_oldpwd(t_env *env);
-void	assign_to_ms_env(t_ms *ms);
+void	assign_to_ms_env(void);
 char	*check_visibility(t_env *temp);
-void	change_directory(t_ms *ms, char *oldpwd, char *newpwd, int i);
+void	change_directory(char *oldpwd, char *newpwd, int i);
 
 /*cd_utils.c*/
 char	*get_pwd(t_env *env);
@@ -174,7 +179,7 @@ char	*get_ab_path(char *ab_path, char *next_dir);
 
 /*cd_utils_2.c*/
 void	update_env_lst(t_env *env, char *key, char *new_value);
-void	update_ms_env(t_ms *ms);
+void	update_ms_env(void);
 void	free_args(char **arg);
 int		arg_count(char **arg);
 
@@ -182,14 +187,14 @@ int		arg_count(char **arg);
 void	ft_pwd(void);
 
 /*ft_export.c*/
-void	ft_export(t_ms *ms, int i);
-void	add_new_key(t_ms *ms, char **arg, int j);
-void	print_export_fd(t_ms *ms);
+void	ft_export(int i);
+void	add_new_key(char **arg, int j);
+void	print_export_fd(void);
 void	execute_export(int fd, char *line);
 void	sort_env(char **env);
 
 /*export_utils.c*/
-void	get_key_and_value(t_ms *ms, char *arg, char **key, char **value);
+void	get_key_and_value(char *arg, char **key, char **value);
 int		is_valid_key(char *key);
 void	update_or_add_env_key(t_env **env, char *key, char *value);
 void	add_env_key(t_env **env, char *key, char *value);
@@ -203,25 +208,28 @@ void	free_key_and_value(char *key, char *value);
 char	*find_value(t_env *env, char *key);
 
 /*ft_unset.c*/
-void	ft_unset(t_ms *ms, int i);
-void	remove_key(t_ms *ms, t_env *prev, t_env *temp, char *arg);
+void	ft_unset(int i);
+void	remove_key(t_env *prev, t_env *temp, char *arg);
 
 /*ft_env.c*/
-void	ft_env(t_ms *ms, int i);
+void	ft_env(int i);
 
 /*redirections.c*/
-int	handle_redirections(t_ms *ms, t_cmd *cmd);
-void	handle_input_r(t_ms *ms, t_redir *r, int *res);
-void	handle_output_r(t_ms *ms, t_redir *r, int *res);
-void	execute_heredoc(t_ms *ms, t_redir *r, int *res);
-void	check_access(t_ms *ms, t_redir *r, int *res);
+int	handle_redirections(t_cmd *cmd);
+void	handle_input_r(t_redir *r, int *res);
+void	handle_output_r(t_redir *r, int *res);
+void	execute_heredoc(t_redir *r, int *res);
+void	check_access(t_redir *r, int *res);
 
 /*signal.c*/
 void	signal_handler(int signum);
 void	setup_signals(void);
 
-/*cleanup.c*/
-void	check_child_exit(t_ms *ms, int status);
+/*ft_exit.c*/
+int	is_numeric(const char *str);
+int	is_ll_overflow(const char *str);
+void	cleanup(void);
+void	ft_exit(int i);
 
 /*********************************************/
 /*                                           */
@@ -240,9 +248,9 @@ void	free_list(void *node, size_t next_offset);
 /*                                           */
 /*********************************************/
 
-void	print_ms_env(t_ms *ms);
-void	print_env_lst(t_ms *ms);
-void	print_cmd(t_ms *ms);
+void	print_ms_env(void);
+void	print_env_lst(void);
+void	print_cmd(void);
 void	print_int(char *info, int data);
 void	print_string(char *info, char *data);
 
@@ -254,8 +262,8 @@ void	print_string(char *info, char *data);
 
 /* error.c */
 void	free_array(char	**array);
-void	clean_parse(t_ms *ms);
-void	clean_cmd(t_ms *ms);
+void	clean_parse(void);
+void	clean_cmd(void);
 void	deallocate(char *message);
 
 #endif
