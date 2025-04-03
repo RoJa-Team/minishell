@@ -6,28 +6,34 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 21:27:35 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:01:27 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	receive_content(char *del, int here)
+void	receive_content(char *del, int here, int quote)
 {
 	char	*line;
+	char	*expanded;
 
 	while (1)
 	{
 		line = readline("heredoc> ");
 		if (!line || ft_strncmp(line, del, ft_strlen(del) + 1) == 0)
+			return (free(line), write(here, "\n", 1), free(del));
+		if (quote == 0)
 		{
-			free(line);
-			write(here, "\n", 1); //TODO shorten this
-			break ;
+			expanded = expand_str(line);
+			write(here, expanded, ft_strlen(expanded));
+			free(expanded);
 		}
-		write(here, line, ft_strlen(line));
-		write(here, "\n", 1); //because of this
-		free(line);
+		else
+		{
+			write(here, line, ft_strlen(line));
+			write(here, "\n", 1);
+			free(line);
+		}
 	}
 }
 
@@ -46,7 +52,24 @@ int	check_existing_heredoc(void)
 	return (0);
 }
 
-int	handle_heredoc(char *delimiter)
+int	heredoc_quote(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' || str[i] == '\'')
+			return (1);
+		else if (check_metachar(str[i]))
+			break ;
+		else
+			i++;
+	}
+	return (0);
+}
+
+int	handle_heredoc(int quote, char *delimiter)
 {
 	static int	fds[2];
 	// int			save_stdin;
@@ -58,7 +81,7 @@ int	handle_heredoc(char *delimiter)
 		deallocate("error creating pipe");
 	debug("fd 0", fds[0]);
 	debug("fd 1", fds[1]);
-	receive_content(delimiter, fds[1]);
+	receive_content(delimiter, fds[1], quote);
 	// save_stdin = dup(STDIN_FILENO);
 	// dup2(fds[0], STDIN_FILENO);
 	// dup2(save_stdin, STDIN_FILENO);
