@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:42:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 21:02:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:11:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,13 @@ int	verify_pipes(char *input)
 
 int	verify_input(char *input)
 {
+	int	i;
+
+	i = 0;
+	while (input[i] == ' ')
+		i++;
+	if (input[i] == '\0')
+		return (1);
 	if (verify_quotes(input) || verify_redirections(input) || \
 	verify_heredocs(input) || verify_pipes(input))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 19:47:06 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:56:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,15 @@ char	*final_str(char *str, char *arg, int i);
 char	*find_env_value(char *str, int i, int key_len);
 
 /* parse_redirections.c */
-int		file_len(char *str, int i);
+int		file_len(char *str);
 char	*get_file(char *str, int *i);
 void	new_output(char *file, int type);
 void	new_input(char *file, int type);
 void	new_redir(char *str, int *i);
 
 /* parse_heredoc.c */
-int		handle_heredoc(char *delimiter);
+int		handle_heredoc(int quote, char *delimiter);
+int		heredoc_quote(char *str);
 
 /* parse_misc.c */
 t_ms	*ms(void);
