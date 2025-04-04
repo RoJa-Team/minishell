@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:10:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/03 21:22:04 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:53:33 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,6 @@ void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
 			*save_stdin = -1;
 		}
 	}
-	else if (flag == 3)
-	{
-		if (*save_stdout != -1)
-		{
-			ft_printf("closinf std out\n");
-			close(*save_stdout);
-		}
-		if (*save_stdin != -1)
-		{
-			close(*save_stdin);
-			ft_printf("closinf std out\n");
-		}
-	}
 }
 
 char	*get_value(t_env *env, char *key)
@@ -99,7 +86,7 @@ char	*get_full_path(char *path_dir, char *cmd)
 	full_path = ft_strjoin(temp, cmd);
 	if (!full_path)
 		deallocate("Failed to join command to $PATH\n");
-	if (access(full_path, X_OK) == 0)
+	if (is_executable(full_path) == 1)
 	{
 		free(temp);
 		free(path_dir);
@@ -109,6 +96,19 @@ char	*get_full_path(char *path_dir, char *cmd)
 	free(full_path);
 	free(path_dir);
 	return (NULL);
+}
+
+int	is_executable(const char *path)
+{
+	struct stat	st;
+
+	if (access(path, X_OK) != 0)
+		return (0);
+	if (stat(path, &st) != 0)
+		return (0);
+	if (!S_ISREG(st.st_mode))
+		return (0);
+	return (1);
 }
 
 char	*find_path(t_env *env_lst, char *cmd)
@@ -131,7 +131,10 @@ char	*find_path(t_env *env_lst, char *cmd)
 	{
 		full_path = get_full_path(path_dir[i], cmd);
 		if (full_path != NULL)
+		{
+			free(path_dir);
 			return (full_path);
+		}
 		i++;
 	}
 	free(path_dir);

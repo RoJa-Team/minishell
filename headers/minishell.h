@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 23:07:27 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:16:32 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <stdio.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -163,6 +164,7 @@ char	*find_path(t_env *env_lst, char *cmd);
 void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
 void	close_pipe(int *fd, int *prev_fd, int i);
+int	is_executable(const char *path);
 
 /*ft_echo.c*/
 void	ft_echo(int i);
@@ -221,8 +223,8 @@ void	ft_env(int i);
 int	handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_redir *r, int *res);
 void	handle_output_r(t_redir *r, int *res);
-void	execute_heredoc(t_redir *r, int *res);
-void	check_access(t_redir *r, int *res);
+void	execute_heredoc(t_redir *r, int *res, struct stat st);
+void	check_access(t_redir *r, int *res, struct stat st);
 
 /*signal.c*/
 void	signal_handler(int signal, siginfo_t *info, void *context);

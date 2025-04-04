@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/03 22:05:20 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:33:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 		if (ms()->cmd[*i]->fd_in || ms()->cmd[*i]->fd_out)
 		{
 			save_and_restore_std(save_stdin, save_stdout, 1);
-			handle_redirections(ms()->cmd[*i]);
-			execute_builtin(*i);
+			if (handle_redirections(ms()->cmd[*i]) == 0)
+				execute_builtin(*i);
 			save_and_restore_std(save_stdin, save_stdout, 2);
 		}
 		else
@@ -152,7 +152,7 @@ void	child_process(int prev_fd, int *fd, int i)
 	if (ms()->cmd[i]->fd_in || ms()->cmd[i]->fd_out)
 		res = handle_redirections(ms()->cmd[i]);
 	if (res != 0)
-		exit (1);
+		return ;
 	if (prev_fd != -1 && ms()->cmd[i]->fd_in == NULL)
 		dup2(prev_fd, STDIN_FILENO);
 	if (prev_fd != -1)
