@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 22:57:29 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:47:48 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ char	*get_del(char *str, int *i)
 	if (!del)
 		deallocate("Error> get_del");
 	j = 0;
-	while (j < len)
+	quotes = 0;
+	while (j < len && str[*i])
 	{
 		if (str[*i] == '\"' || str[*i] == '\'')
 		{
@@ -64,6 +65,8 @@ char	*get_del(char *str, int *i)
 		(*i)++;
 	}
 	del[j] = '\0';
+	while (str[*i] && !check_metachar(str[*i]))
+		(*i)++;
 	return (del);
 }
 
@@ -80,7 +83,7 @@ char	*get_file(char *str, int *i)
 		deallocate("Error> get_file");
 	j = 0;
 	quotes = 0;
-	while (j < len)
+	while (j < len && str[*i])
 	{
 		if (str[*i] == '\"' || str[*i] == '\'')
 		{
