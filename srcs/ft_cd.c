@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 21:06:44 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:23:58 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void	change_directory(char *oldpwd, char *newpwd, int i)
 	t_env		*temp;
 
 	temp = ms()->env_lst;
-	ft_printf("changing to directory : %s\n", newpwd);
 	if (newpwd && chdir(newpwd) != 0)
 	{
 		ft_printf("cd: %s: No such file or directory\n", ms()->cmd[i]->arg[1]);
