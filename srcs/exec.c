@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/04 20:33:54 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:37:27 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	exec_cmd(void)
 		i++;
 	}
 	//save_and_restore_std(&save_stdin, &save_stdout, 2);
-	ft_printf("Exit status : %d\n", ms()->exit_status);
+	//ft_printf("Exit status : %d\n", ms()->exit_status);
 	free(ms()->exec);
 	while (wait(NULL) > 0)
 		continue ;
@@ -109,15 +109,19 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 	if (ms()->cmd[*i + 1])
 		pipe(fd);
 	pid = fork();
+	if (pid == -1)
+		return ;
 	if (pid == 0)
 		child_process(*prev_fd, fd, *i);
 	close_pipe(fd, prev_fd, *i);
 	close_heredoc();
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		ms()->exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		ms()->exit_status = 128 + WTERMSIG(status);
+	if (waitpid(pid, &status, 0) != -1)
+	{
+		if (WIFEXITED(status))
+			ms()->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			ms()->exit_status = 128 + WTERMSIG(status);
+	}
 }
 
 void	close_heredoc(void)
@@ -180,7 +184,7 @@ void	execute_execve(int i)
 	char	*path;
 
 	path = NULL;
-	if (ms()->cmd[i]->arg[0][0] != '/')
+	if (ms()->cmd[i]->arg[0][0] != '/' && (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
 		path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
 	else
 		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)

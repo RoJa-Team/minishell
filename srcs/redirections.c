@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/04 20:30:15 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:38:24 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	handle_redirections(t_cmd *cmd)
 	r = cmd->fd_out;
 	if (r)
 		handle_output_r(r, &res);
-	ft_printf("res is : %d\n", res);
 	return (res);
 }
 
@@ -65,8 +64,6 @@ void	handle_output_r(t_redir *r, int *res)
 			fd = open(r->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0 || (!S_ISREG(st.st_mode)))
 				check_access(r, res, st);
-			else
-				ft_printf("able to open: %s\n", r->file);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
