@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:56:58 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 19:42:45 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:38:14 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	within_quotes(char *str)
 	i = 0;
 	c = str[i];
 	i++;
-	while (str[i] != c)
+	while (str[i] && str[i] != c)
 		i++;
 	i++;
 	return (i);

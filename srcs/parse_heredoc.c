@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 23:01:27 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:53:37 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	receive_content(char *del, int here, int quote)
 		else
 		{
 			write(here, line, ft_strlen(line));
-			write(here, "\n", 1);
 			free(line);
 		}
+		write(here, "\n", 1);
 	}
 }
 
@@ -79,8 +79,6 @@ int	handle_heredoc(int quote, char *delimiter)
 		close(fds[0]);
 	if (pipe(fds) == -1)
 		deallocate("error creating pipe");
-	debug("fd 0", fds[0]);
-	debug("fd 1", fds[1]);
 	receive_content(delimiter, fds[1], quote);
 	// save_stdin = dup(STDIN_FILENO);
 	// dup2(fds[0], STDIN_FILENO);

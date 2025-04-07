@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/02 21:09:44 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:22:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*new_str(char *str, int *i)
 	if (!new_str)
 		deallocate("Error> new_str");
 	j = 0;
-	while (j < len)
+	while (j < len && str[*i])
 		new_str[j++] = str[(*i)++];
 	new_str[j] = '\0';
 	return (new_str);
@@ -60,7 +60,7 @@ void	new_arg(char *str)
 {
 	t_arg	*new_arg;
 
-	if (!str)
+	if (!str || ft_strlen(str) == 0)
 		return ;
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
