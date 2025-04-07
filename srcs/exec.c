@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 20:37:27 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:11:02 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	exec_cmd(void)
 
 	ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
-		deallocate("Memory allocation fail.\n");
+		deallocate("Memory allocation error: exec_cmd\n");
 	ms()->exec->prev_fd = -1;
 	//save_and_restore_std(&save_stdin, &save_stdout, 1);
 	i = 0;
@@ -199,5 +199,5 @@ void	execute_execve(int i)
 		exit(127);
 	}
 	if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
-		deallocate("Error executing execve.\n");
+		deallocate("Error executing execve: execute_execve\n");
 }

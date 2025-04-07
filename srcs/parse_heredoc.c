@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 20:53:37 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:13:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	handle_heredoc(int quote, char *delimiter)
 	if (fds[0] != 0)
 		close(fds[0]);
 	if (pipe(fds) == -1)
-		deallocate("error creating pipe");
+		deallocate("Pipe creation error: handle_heredoc\n");
 	receive_content(delimiter, fds[1], quote);
 	// save_stdin = dup(STDIN_FILENO);
 	// dup2(fds[0], STDIN_FILENO);

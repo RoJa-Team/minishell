@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 20:47:48 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:07:46 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*get_del(char *str, int *i)
 	len = file_len(&str[*i]);
 	del = malloc(sizeof(char) * len + 1);
 	if (!del)
-		deallocate("Error> get_del");
+		deallocate("Memory allocation error: get_del\n");
 	j = 0;
 	quotes = 0;
 	while (j < len && str[*i])
@@ -80,7 +80,7 @@ char	*get_file(char *str, int *i)
 	len = file_len(&str[*i]);
 	file = malloc(sizeof(char) * len + 1);
 	if (!file)
-		deallocate("Error> get_file");
+		deallocate("Memory allocation error: get_file\n");
 	j = 0;
 	quotes = 0;
 	while (j < len && str[*i])
@@ -106,7 +106,7 @@ void	new_input(char *file, int type)
 
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-		deallocate("Error> new_redir");
+		deallocate("Memory allocation error: new_redir\n");
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;
@@ -126,7 +126,7 @@ void	new_output(char *file, int type)
 
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-		deallocate("Error> new_redir");
+		deallocate("Memory allocation error: new_redir\n");
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;

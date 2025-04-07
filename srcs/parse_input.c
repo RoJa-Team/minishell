@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 21:22:41 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:07:56 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	new_cmd(void)
 
 	new_cmd = malloc(sizeof(t_cmd));
 	if (!new_cmd)
-		deallocate("Error> init_cmd");
+		deallocate("Memory allocation error: init_cmd\n");
 	new_cmd->arg = NULL;
 	new_cmd->fd_in = NULL;
 	new_cmd->fd_out = NULL;
@@ -48,7 +48,7 @@ char	*new_str(char *str, int *i)
 		return (NULL);
 	new_str = malloc(sizeof(char) * len + 1);
 	if (!new_str)
-		deallocate("Error> new_str");
+		deallocate("Memory allocation error: new_str\n");
 	j = 0;
 	while (j < len && str[*i])
 		new_str[j++] = str[(*i)++];
@@ -64,7 +64,7 @@ void	new_arg(char *str)
 		return ;
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
-		deallocate("Error> new_arg\n");
+		deallocate("Memory allocation error: new_arg\n");
 	new_arg->word = str;
 	new_arg->next = NULL;
 	if (parse()->arg_ll)

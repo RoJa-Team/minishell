@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 21:50:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:08:24 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ char	*expand_str(char *str)
 		return (NULL);
 	arg = ft_calloc(sizeof(char), final_len(str) + 1);
 	if (!arg)
-		deallocate ("Error> expand_token");
+		deallocate ("Memory allocation error: expand_str\n");
 	arg = final_str(str, arg, 0);
 	free(str);
 	return (arg);

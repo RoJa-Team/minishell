@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:10:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/04 19:53:33 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:13:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
 		*save_stdout = dup(STDOUT_FILENO);
 		*save_stdin = dup(STDIN_FILENO);
 		if (*save_stdout == -1 || *save_stdin == -1)
-			deallocate("dup failed'\n");
+			deallocate("FD duplication error: save_and_restore_std\n");
 	}
 	else if (flag == 2)
 	{
@@ -85,7 +85,7 @@ char	*get_full_path(char *path_dir, char *cmd)
 	temp = ft_strjoin(path_dir, "/");
 	full_path = ft_strjoin(temp, cmd);
 	if (!full_path)
-		deallocate("Failed to join command to $PATH\n");
+		deallocate("Memory allocation error: get_full_path\n");
 	if (is_executable(full_path) == 1)
 	{
 		free(temp);
@@ -126,7 +126,7 @@ char	*find_path(t_env *env_lst, char *cmd)
 	path_dir = ft_split(path_env, ':');
 	free(path_env);
 	if (!path_dir)
-		deallocate("Failed to split $PATH\n");
+		deallocate("Memory allocation error: find_path\n");
 	while (path_dir[i])
 	{
 		full_path = get_full_path(path_dir[i], cmd);

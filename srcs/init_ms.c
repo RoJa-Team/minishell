@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 19:47:52 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:08:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	copy_env(char **env)
 		i++;
 	ms()->ms_env = malloc(sizeof(char *) * (i + 1));
 	if (!ms()->ms_env)
-		deallocate("Error> copy_env");
+		deallocate("Memory allocation error: copy_env\n");
 	i = 0;
 	while (env[i])
 	{
 		ms()->ms_env[i] = ft_strdup(env[i]);
 		if (!ms()->ms_env[i])
-			deallocate("Error> copy_env");
+			deallocate("Memory allocation error: copy_env\n");
 		i++;
 	}
 	ms()->ms_env[i] = NULL;
@@ -44,7 +44,7 @@ void	create_env_lst()
 	{
 		new_env = malloc(sizeof(t_env));
 		if (!new_env)
-			deallocate("Error> create_env_lst");
+			deallocate("Memory allocation error: create_env_lst\n");
 		new_env->key = ft_strndup(ms()->ms_env[i], \
 		ft_strlen_c(ms()->ms_env[i], '='));
 		new_env->value = ft_strdup(ft_strchr(ms()->ms_env[i], '=') + 1);
