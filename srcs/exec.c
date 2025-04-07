@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 20:37:27 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:39:43 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,8 @@ void	execute_execve(int i)
 		clean_structs();
 		exit(127);
 	}
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 		deallocate("Error executing execve.\n");
 }

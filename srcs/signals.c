@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 21:01:14 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:47:23 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		ms()->exit_status = 130;
-	}
-	else if (signal == 3)
-	{
-		return ;
 	}
 }
 
