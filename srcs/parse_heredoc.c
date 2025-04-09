@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 22:13:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:15:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	check_existing_heredoc(void)
 {
 	t_redir	*temp_redir;
 
-	temp_redir = ((t_cmd *)get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
-	&dummy()->cmd.next)))->fd_in;
+	temp_redir = ((t_cmd *)get_last_node(parse()->cmd_ll, \
+	get_offset(&dummy()->cmd, &dummy()->cmd.next)))->fd_in;
 	while (temp_redir != NULL)
 	{
 		if (temp_redir->type == HEREDOC)
@@ -72,7 +72,6 @@ int	heredoc_quote(char *str)
 int	handle_heredoc(int quote, char *delimiter)
 {
 	static int	fds[2];
-	// int			save_stdin;
 
 	fds[0] = check_existing_heredoc();
 	if (fds[0] != 0)
@@ -80,10 +79,6 @@ int	handle_heredoc(int quote, char *delimiter)
 	if (pipe(fds) == -1)
 		deallocate("Pipe creation error: handle_heredoc\n");
 	receive_content(delimiter, fds[1], quote);
-	// save_stdin = dup(STDIN_FILENO);
-	// dup2(fds[0], STDIN_FILENO);
-	// dup2(save_stdin, STDIN_FILENO);
-	// close(save_stdin);
 	close(fds[1]);
 	return (fds[0]);
 }

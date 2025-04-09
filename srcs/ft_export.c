@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 20:50:20 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:13:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	add_new_key(char **arg, int j)
 	update_ms_env();
 }
 
-void	print_export_fd()
+void	print_export_fd(void)
 {
 	int		i;
 	t_env	*env_lst;

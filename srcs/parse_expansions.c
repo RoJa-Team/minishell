@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 22:08:24 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:20:25 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	expansion_len(char *str, int *i)
 	else if (ft_isdigit(str[*i]))
 		len++;
 	else
-		while (str[*i + len] && (ft_isalnum(str[*i + len]) || str[*i + len] == '_'))
+		while (str[*i + len] && (ft_isalnum(str[*i + len]) || \
+		str[*i + len] == '_'))
 			len++;
 	*i = *i + len;
 	return (ft_strlen(find_env_value(str, *i - len, len)));
@@ -40,7 +41,8 @@ char	*expansion_value(char *str, int *i)
 	else if (ft_isdigit(str[*i]))
 		len++;
 	else
-		while (str[*i + len] && (ft_isalnum(str[*i + len]) || str[*i + len] == '_'))
+		while (str[*i + len] && (ft_isalnum(str[*i + len]) || \
+		str[*i + len] == '_'))
 			len++;
 	*i = *i + len;
 	return (find_env_value(str, *i - len, len));
@@ -67,7 +69,8 @@ char	*final_str(char *str, char *arg, int i)
 		{
 			if (str[i] == '\"' || str[i] == '\'')
 			{
-				if ((quotes == 2 && str[i] == '\'') || (quotes == 1 && str[i] == '\"'))
+				if ((quotes == 2 && str[i] == '\'') || (quotes == 1 && \
+					str[i] == '\"'))
 					arg[j++] = str[i];
 			}
 			else

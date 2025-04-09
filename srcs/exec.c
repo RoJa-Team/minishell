@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 22:11:02 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:18:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,9 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 
 void	close_heredoc(void)
 {
-	int	fd;
-	t_redir *r;
-	int	i;
+	int		i;
+	int		fd;
+	t_redir	*r;
 
 	i = 0;
 	while (ms()->cmd && ms()->cmd[i])
@@ -184,7 +184,8 @@ void	execute_execve(int i)
 	char	*path;
 
 	path = NULL;
-	if (ms()->cmd[i]->arg[0][0] != '/' && (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
+	if (ms()->cmd[i]->arg[0][0] != '/' && \
+	(ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
 		path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
 	else
 		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)

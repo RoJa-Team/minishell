@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:42:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 22:11:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:21:49 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	verify_redirections(char *input)
 {
 	int	i;
 	int	len;
-	
+
 	i = 0;
 	while (input[i])
 	{
@@ -91,7 +91,7 @@ int	verify_redirections(char *input)
 int	verify_pipes(char *input)
 {
 	int	i;
-	
+
 	i = 0;
 	while (input[i])
 	{
