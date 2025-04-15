@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 21:14:19 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/09 20:14:17 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:47:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,5 @@ void	clean_structs(void)
 	clean_env();
 	if (ms()->cmd)
 		clean_cmd();
+	//free(ms()->exit_status);
 }

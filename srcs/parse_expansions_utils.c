@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:35:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/01 18:38:48 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:03:11 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*find_env_value(char *str, int i, int key_len)
 	while (temp != NULL)
 	{
 		if (ft_strlen_c(&str[i], str[i + key_len]) == ft_strlen(temp->key) && \
-		!strncmp(&str[i], temp->key, key_len))
+		!ft_strncmp(&str[i], temp->key, key_len))
 			break ;
 		temp = temp->next;
 	}

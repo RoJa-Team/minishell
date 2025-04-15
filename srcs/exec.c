@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/09 20:53:32 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:34:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,23 @@ int	is_builtin(int i)
 	char	**arg;
 
 	arg = ms()->cmd[i]->arg;
-	if (ft_strncmp(arg[0], "echo", 5) == 0)
-		return (1);
-	else if (ft_strncmp(arg[0], "cd", 3) == 0)
-		return (1);
-	else if (ft_strncmp(arg[0], "pwd", 4) == 0)
-		return (1);
-	else if (ft_strncmp(arg[0], "export", 7) == 0)
-		return (1);
-	else if (ft_strncmp(arg[0], "unset", 6) == 0)
-		return (1);
-	else if (ft_strncmp(arg[0], "env", 4) == 0)
-		return (1);
-	else if (ft_strncmp(arg[0], "exit", 5) == 0)
-		return (1);
+	if (arg)
+	{
+		if (ft_strncmp(arg[0], "echo", 5) == 0)
+			return (1);
+		else if (ft_strncmp(arg[0], "cd", 3) == 0)
+			return (1);
+		else if (ft_strncmp(arg[0], "pwd", 4) == 0)
+			return (1);
+		else if (ft_strncmp(arg[0], "export", 7) == 0)
+			return (1);
+		else if (ft_strncmp(arg[0], "unset", 6) == 0)
+			return (1);
+		else if (ft_strncmp(arg[0], "env", 4) == 0)
+			return (1);
+		else if (ft_strncmp(arg[0], "exit", 5) == 0)
+			return (1);
+	}
 	return (0);
 }
 

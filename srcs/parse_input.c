@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 22:07:56 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:25:46 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	new_arg(char *str)
 {
 	t_arg	*new_arg;
 
+	debug("new_arg", 1);
 	if (!str || ft_strlen(str) == 0)
 		return ;
 	new_arg = malloc(sizeof(t_arg));
@@ -101,6 +102,7 @@ void	parse_input(char *str)
 		if (str[i] == '\0')
 			break ;
 	}
+	debug("parse_input", 1);
 	cmd_to_array();
 	print_cmd();
 }
