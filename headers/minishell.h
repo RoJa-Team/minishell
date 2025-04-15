@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/04 20:16:32 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:53:18 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct s_arg
 typedef struct s_exec
 {
 	int	prev_fd;
+	char	*pwd;
+	size_t	buffer_size;
 }				t_exec;
 
 typedef struct s_cmd
@@ -89,6 +91,7 @@ typedef struct s_ms
 	t_cmd			**cmd;
 	t_exec			*exec;
 	int				exit_status;
+	int				nested_shell;
 }				t_ms;
 
 /*********************************************/
@@ -157,6 +160,7 @@ void	child_process(int prev_fd, int *fd, int i);
 void	execute_execve(int i);
 void	execute_builtin(int i);
 void	close_heredoc(void);
+void	invoke_shell(int i, char *path);
 
 /*exec_utils.c*/
 char	*get_value(t_env *env, char *key);
@@ -227,7 +231,7 @@ void	execute_heredoc(t_redir *r, int *res, struct stat st);
 void	check_access(t_redir *r, int *res, struct stat st);
 
 /*signal.c*/
-void	signal_handler(int signal, siginfo_t *info, void *context);
+void	signal_handler(int signal);
 void	setup_signals(void);
 
 /*ft_exit.c*/

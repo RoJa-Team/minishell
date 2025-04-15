@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 21:14:19 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 20:20:52 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:16:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,10 @@ void	clean_structs(void)
 	clean_env();
 	if (ms()->cmd)
 		clean_cmd();
+	if (ms()->exec)
+	{
+		if (ms()->exec->pwd)
+			free(ms()->exec->pwd);
+		free(ms()->exec);
+	}
 }

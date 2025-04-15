@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 22:12:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:57:06 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	bad_input(char *message, int error)
 
 void	deallocate(char *message)
 {
+	free(ms()->exec->pwd);
 	free(ms()->exec);
 	clean_structs();
 	exit(ft_printf(message));

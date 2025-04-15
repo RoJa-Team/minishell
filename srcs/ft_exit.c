@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:41:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/03 20:36:53 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:57:43 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	is_ll_overflow(const char *str)
 
 void	cleanup(void)
 {
+	free(ms()->exec->pwd);
 	free(ms()->exec);
 	clean_structs();	
 }

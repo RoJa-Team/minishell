@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 22:17:20 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:09:55 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,17 @@ void	exec_cmd(void)
 	int	i;
 	int	save_stdin;
 	int	save_stdout;
-
-	ms()->exec = malloc(sizeof(t_exec));
+/*
+	if (!ms()->exec)
+		ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
 		deallocate("Memory allocation error: exec_cmd\n");
+*/
 	ms()->exec->prev_fd = -1;
+	ms()->exec->buffer_size = 1024;
+	if (!ms()->exec->pwd)
+		ms()->exec->pwd = malloc(sizeof(char) * ms()->exec->buffer_size);
+	getcwd(ms()->exec->pwd, ms()->exec->buffer_size);
 	//save_and_restore_std(&save_stdin, &save_stdout, 1);
 	i = 0;
 	while (ms()->cmd[i])
@@ -78,7 +84,7 @@ void	exec_cmd(void)
 	}
 	//save_and_restore_std(&save_stdin, &save_stdout, 2);
 	//ft_printf("Exit status : %d\n", ms()->exit_status);
-	free(ms()->exec);
+	//free(ms()->exec);
 	while (wait(NULL) > 0)
 		continue ;
 }
@@ -171,7 +177,7 @@ void	child_process(int prev_fd, int *fd, int i)
 	if (is_builtin(i))
 	{
 		execute_builtin(i);
-		free(ms()->exec);
+		//free(ms()->exec);
 		clean_structs();
 		exit (0);
 	}
@@ -182,24 +188,41 @@ void	child_process(int prev_fd, int *fd, int i)
 void	execute_execve(int i)
 {
 	char	*path;
+	struct sigaction	sa;
 
 	path = NULL;
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
 	if (ms()->cmd[i]->arg[0][0] != '/' && (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
 		path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
 	else
 		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)
+		{
 			path = ms()->cmd[i]->arg[0];
-	if (!path)
+			if ((ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) == 0))
+				return (invoke_shell(i, path));
+		}
+	if (!path || execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 	{
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
 		write(2, ": command not found\n", 20);
 		ms()->exit_status = 127;
-		free(ms()->exec);
+		//free(ms()->exec);
 		clean_structs();
 		exit(127);
 	}
+	//if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
+	//	deallocate("Error executing execve: execute_execve\n");
+}
+
+void	invoke_shell(int i, char *path)
+{
+
+	ms()->nested_shell++;
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 		deallocate("Error executing execve: execute_execve\n");
+	ms()->nested_shell--;
+
 }
