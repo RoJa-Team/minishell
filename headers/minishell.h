@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/15 20:53:18 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:38:11 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_redir
 {
 	int				type;
 	char			*file;
+	int				heredoc_fd;
 	struct s_redir	*next;
 }				t_redir;
 
@@ -229,6 +230,7 @@ void	handle_input_r(t_redir *r, int *res);
 void	handle_output_r(t_redir *r, int *res);
 void	execute_heredoc(t_redir *r, int *res, struct stat st);
 void	check_access(t_redir *r, int *res, struct stat st);
+//void	process_heredoc(void);
 
 /*signal.c*/
 void	signal_handler(int signal);

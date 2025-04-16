@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/09 20:48:42 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:32:49 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	setup_signals(void)
 		return ((void)ft_printf("Error: Failed cleaning mask."));
 	if (sigaction(SIGINT, &sig, NULL) != 0)
 		return ((void)ft_printf("Error: Failed assigning action to SIGINT."));
-	sig.sa_flags = 0;
+sig.sa_flags = 0;
 	sig.sa_handler = SIG_IGN;
 	if (sigemptyset(&sig.sa_mask) != 0)
 		return ((void)ft_printf("Error: Failed cleaning mask."));

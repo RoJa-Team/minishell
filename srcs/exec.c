@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/15 21:09:55 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/16 21:45:08 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	exec_cmd(void)
 		ms()->exec->pwd = malloc(sizeof(char) * ms()->exec->buffer_size);
 	getcwd(ms()->exec->pwd, ms()->exec->buffer_size);
 	//save_and_restore_std(&save_stdin, &save_stdout, 1);
+	//process_heredoc();
 	i = 0;
 	while (ms()->cmd[i])
 	{
@@ -182,7 +183,11 @@ void	child_process(int prev_fd, int *fd, int i)
 		exit (0);
 	}
 	else
+	{
+		//ft_printf("fd 0 : %d\n", fd[0]);
+		//ft_printf("fd 1 : %d\n", fd[1]);
 		execute_execve(i);
+	}
 }
 
 void	execute_execve(int i)
@@ -203,6 +208,7 @@ void	execute_execve(int i)
 			if ((ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) == 0))
 				return (invoke_shell(i, path));
 		}
+	ft_printf("arg : %s\n", ms()->cmd[i]->arg[0]);
 	if (!path || execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 	{
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));

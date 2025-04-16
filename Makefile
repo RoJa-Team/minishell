@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/03 20:09:38 by rafasant         ###   ########.fr        #
+#    Updated: 2025/04/16 21:20:19 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,9 @@ v :	$(NAME)
 
 vf : $(NAME)
 	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
+
+vp : $(NAME)
+	valgrind --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
 
 re: fclean all
 
