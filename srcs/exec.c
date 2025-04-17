@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/17 19:05:55 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:54:06 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,6 @@ void	execute_execve(int i)
 			if ((ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) == 0))
 				return (invoke_shell(i, path));
 		}
-	ft_printf("arg : %s\n", ms()->cmd[i]->arg[0]);
 	if (!path || execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 	{
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));

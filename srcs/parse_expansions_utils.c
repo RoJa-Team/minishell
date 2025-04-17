@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:35:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/16 19:56:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:08:30 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*find_env_value(char *str, int i, int key_len)
 			break ;
 		temp = temp->next;
 	}
-	if (temp)
+	if (temp && temp->value)
 		return (temp->value);
 	return ("");
 }

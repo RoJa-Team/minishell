@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/15 21:32:45 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 20:25:19 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 	init(env);
 	input = NULL;
 	while (1)
-{
+	{
 		input = readline("$minishell> ");
 		if (!input)
 			return (clean_structs(), 0);

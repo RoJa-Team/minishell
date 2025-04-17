@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/09 20:13:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:04:25 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	add_new_key(char **arg, int j)
 		get_key_and_value(arg[j], &key, &value);
 		if (!is_valid_key(key))
 		{
-			ft_printf("export: %s: not a valid identifier\n", arg[j]);
+			ft_printf("export: `%s': not a valid identifier\n", arg[j]);
 			ms()->exit_status = 1;
 		}
 		else
