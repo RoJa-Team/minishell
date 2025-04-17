@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/16 21:04:09 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:00:34 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,7 @@ void	handle_input_r(t_redir *r, int *res)
 			close(fd);
 		}
 		else if (r->type == 2)
-		{
 			execute_heredoc(r, res, st);
-			ft_printf("execute_heredoc\n");
-		}
-		ft_printf("file : %s\n", r->file);
 		r = r->next;
 	}
 }
@@ -83,7 +79,6 @@ void	handle_output_r(t_redir *r, int *res)
 				dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
-		ft_printf("file : %s\n", r->file);
 		r = r->next;
 	}
 }

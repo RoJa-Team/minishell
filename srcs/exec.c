@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/16 21:45:08 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:00:32 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	exec_cmd(void)
 		handle_input(&i, &save_stdin, &save_stdout);
 		i++;
 	}
+	//close_heredoc();
 	//save_and_restore_std(&save_stdin, &save_stdout, 2);
 	//ft_printf("Exit status : %d\n", ms()->exit_status);
 	//free(ms()->exec);
@@ -121,7 +122,7 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 	if (pid == 0)
 		child_process(*prev_fd, fd, *i);
 	close_pipe(fd, prev_fd, *i);
-	close_heredoc();
+	close_heredoc(*i);
 	if (waitpid(pid, &status, 0) != -1)
 	{
 		if (WIFEXITED(status))
@@ -131,27 +132,21 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 	}
 }
 
-void	close_heredoc(void)
+void	close_heredoc(int i)
 {
 	int	fd;
 	t_redir *r;
-	int	i;
 
-	i = 0;
-	while (ms()->cmd && ms()->cmd[i])
+	r = ms()->cmd[i]->fd_in;
+	while (r)
 	{
-		r = ms()->cmd[i]->fd_in;
-		while (r)
+		if (r->type == 2)
 		{
-			if (r->type == 2)
-			{
-				fd = ft_atoi(r->file);
-				if (fd >= 0)
-					close(fd);
-			}
-			r = r->next;
+			fd = ft_atoi(r->file);
+			if (fd >= 0)
+				close(fd);
 		}
-		i++;
+		r = r->next;
 	}
 }
 
