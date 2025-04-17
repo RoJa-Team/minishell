@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/16 20:36:22 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char	*get_del(char *str, int *i)
 		if (str[*i] == '\"' || str[*i] == '\'')
 		{
 			check_quotes(str[*i], &quotes);
-			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && str[*i] == '\"'))
+			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && \
+				str[*i] == '\"'))
 				del[j++] = str[*i];
 		}
 		else
@@ -88,7 +89,8 @@ char	*get_file(char *str, int *i)
 		if (str[*i] == '\"' || str[*i] == '\'')
 		{
 			check_quotes(str[*i], &quotes);
-			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && str[*i] == '\"'))
+			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && \
+				str[*i] == '\"'))
 				file[j++] = str[*i];
 		}
 		else

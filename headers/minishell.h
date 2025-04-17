@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/17 19:00:05 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:04:15 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ typedef struct s_dummy
 
 typedef struct s_ms
 {
+	int				exit_status;
 	char			**ms_env;
 	t_env			*env_lst;
 	t_cmd			**cmd;
 	t_exec			*exec;
-	int				exit_status;
 	int				nested_shell;
 }				t_ms;
 

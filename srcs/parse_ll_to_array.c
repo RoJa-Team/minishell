@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 22:07:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:01:16 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	token_to_array(void)
 	t_cmd	*last_cmd;
 	t_arg	*temp;
 
-	last_cmd = get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, &dummy()->cmd.next));
+	last_cmd = get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
+	&dummy()->cmd.next));
 	last_cmd->arg = malloc(sizeof(char *) * (get_list_size(parse()->arg_ll, \
 	get_offset(&dummy()->arg, &dummy()->arg.next)) + 1));
 	if (!last_cmd->arg)
@@ -34,6 +35,7 @@ void	token_to_array(void)
 	}
 	last_cmd->arg[i] = NULL;
 	parse()->arg_ll = NULL;
+
 }
 
 void	cmd_to_array(void)

@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 21:23:58 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:53:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	assign_to_ms_env()
+void	assign_to_ms_env(void)
 {
 	t_env	*temp2;
 	char	*temp3;
@@ -27,7 +27,7 @@ void	assign_to_ms_env()
 			if (temp2->value)
 			{
 				temp3 = ft_strjoin(temp2->key, "=");
-				ms()->ms_env[i] = ft_strjoin(temp3, temp2->value);
+				(ms()->ms_env[i]) = ft_strjoin(temp3, temp2->value);
 				free(temp3);
 			}
 			else

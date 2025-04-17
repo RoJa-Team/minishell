@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:42:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/03 22:11:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/14 16:51:11 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	verify_quotes(char *input)
 	}
 	if (quotes != 0)
 		return (bad_input("Syntax error: incorrect number of \
-			quotes!\n", 2), 1);
+quotes!\n", 2), 1);
 	return (0);
 }
 
@@ -56,7 +56,7 @@ int	verify_heredocs(char *input)
 	}
 	if (n_heredoc > 16)
 		return (bad_input("Syntax error: maximum here-document \
-			count exceeded!\n", 2), 1);
+count exceeded!\n", 2), 1);
 	return (0);
 }
 
@@ -64,7 +64,7 @@ int	verify_redirections(char *input)
 {
 	int	i;
 	int	len;
-	
+
 	i = 0;
 	while (input[i])
 	{
@@ -91,7 +91,7 @@ int	verify_redirections(char *input)
 int	verify_pipes(char *input)
 {
 	int	i;
-	
+
 	i = 0;
 	while (input[i])
 	{

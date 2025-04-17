@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/15 21:09:25 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:20 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	copy_env(char **env)
 	ms()->ms_env[i] = NULL;
 }
 
-void	create_env_lst()
+void	create_env_lst(void)
 {
 	int		i;
 	t_env	*new_env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:41:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/15 20:57:43 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:07:33 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	is_numeric(const char *str)
 
 int	is_ll_overflow(const char *str)
 {
-	int	sign;
-	int	i;
+	int				sign;
+	int				i;
 	unsigned long	res;
 
 	sign = 1;
@@ -46,8 +46,8 @@ int	is_ll_overflow(const char *str)
 	while (str[i] && ft_isdigit(str[i]))
 	{
 		res = res * 10 + (str[i] - '0');
-		if ((sign == 1 && res > LLONG_MAX) || (sign == -1 
-			&& res > (unsigned long)LLONG_MAX + 1))
+		if ((sign == 1 && res > LLONG_MAX) || (sign == -1 && \
+			res > (unsigned long)LLONG_MAX + 1))
 			return (1);
 		i++;
 	}
@@ -58,13 +58,13 @@ void	cleanup(void)
 {
 	free(ms()->exec->pwd);
 	free(ms()->exec);
-	clean_structs();	
+	clean_structs();
 }
 
 void	ft_exit(int i)
 {
-	char 	**arg;
-	
+	char	**arg;
+
 	arg = ms()->cmd[i]->arg;
 	if (!arg[1])
 		ft_putendl_fd("exit", STDERR_FILENO);

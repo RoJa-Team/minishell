@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 21:20:42 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:22:05 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 		new_ab_path = ft_strdup(next_dir);
 	else if (ft_strncmp(next_dir, "..", 3) == 0)
 		new_ab_path = get_parent_dir(temp, ab_path);
-	else if(ft_strncmp(next_dir, ".", 2) == 0)
+	else if (ft_strncmp(next_dir, ".", 2) == 0)
 		new_ab_path = ft_strdup(ab_path);
 	else if (ab_path[ft_strlen(ab_path) - 1] != '/')
 	{

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/07 22:07:56 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:07:16 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	new_arg(char *str)
 {
 	t_arg	*new_arg;
 
-	if (!str || ft_strlen(str) == 0)
+	if (!str)
 		return ;
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)

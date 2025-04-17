@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:59:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 18:35:30 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:16:43 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 	}
 }
 
-void	update_ms_env()
+void	update_ms_env(void)
 {
 	int		count;
 	t_env	*temp1;

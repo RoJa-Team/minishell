@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/17 19:00:34 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:06:01 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	handle_redirections(t_cmd *cmd)
 {
+	int		res;
 	t_redir	*r;
-	int	res;
 
 	res = 0;
 	r = cmd->fd_in;
@@ -29,7 +29,7 @@ int	handle_redirections(t_cmd *cmd)
 
 void	handle_input_r(t_redir *r, int *res)
 {
-	int	fd;
+	int			fd;
 	struct stat	st;
 
 	(void)res;
@@ -53,7 +53,7 @@ void	handle_input_r(t_redir *r, int *res)
 
 void	handle_output_r(t_redir *r, int *res)
 {
-	int	fd;
+	int			fd;
 	struct stat	st;
 
 	(void)res;
