@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:41:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/17 19:07:33 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:42:20 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,39 +54,30 @@ int	is_ll_overflow(const char *str)
 	return (0);
 }
 
-void	cleanup(void)
-{
-	//free(ms()->exec->pwd);
-	//free(ms()->exec);
-	clean_structs();
-}
-
 void	ft_exit(int i)
 {
-	char	**arg;
-
-	arg = ms()->cmd[i]->arg;
-	if (!arg[1])
+	if (!ms()->cmd[i]->arg[1])
 		ft_putendl_fd("exit", STDERR_FILENO);
-	if (arg[1])
+	if (ms()->cmd[i]->arg[1])
 	{
-		if (!is_numeric(arg[1]) || is_ll_overflow(arg[1]))
+		if (!is_numeric(ms()->cmd[i]->arg[1])
+			|| is_ll_overflow(ms()->cmd[i]->arg[1]))
 		{
 			ft_putstr_fd("exit: ", STDERR_FILENO);
-			ft_putstr_fd(arg[1], STDERR_FILENO);
+			ft_putstr_fd(ms()->cmd[i]->arg[1], STDERR_FILENO);
 			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-			cleanup();
+			clean_structs();
 			exit(2);
 		}
-		else if (arg[2])
+		else if (ms()->cmd[i]->arg[2])
 		{
 			ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 			ms()->exit_status = 1;
 			return ;
 		}
 		else
-			ms()->exit_status = (unsigned char)ft_atoi(arg[1]);
+			ms()->exit_status = (unsigned char)ft_atoi(ms()->cmd[i]->arg[1]);
 	}
-	cleanup();
+	clean_structs();
 	exit (ms()->exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:59:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 21:23:34 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:47:49 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 
 	temp = env;
 	if (!env)
-	       return ;	
+		return ;
 	while (temp != NULL)
 	{
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0)
@@ -39,8 +39,6 @@ void	update_ms_env(void)
 	count = 0;
 	temp1 = ms()->env_lst;
 	free_args(ms()->ms_env);
-	//if (!temp1)
-	//	return ;
 	while (temp1 != NULL)
 	{
 		count++;

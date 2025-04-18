@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 20:38:37 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:59:05 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,12 @@ void	exec_cmd(void)
 	int	i;
 	int	save_stdin;
 	int	save_stdout;
-/*
-	if (!ms()->exec)
-		ms()->exec = malloc(sizeof(t_exec));
-	if (!ms()->exec)
-		deallocate("Memory allocation error: exec_cmd\n");
-*/
+
 	ms()->exec->prev_fd = -1;
 	ms()->exec->buffer_size = 1024;
 	if (!ms()->exec->pwd)
 		ms()->exec->pwd = malloc(sizeof(char) * ms()->exec->buffer_size);
 	getcwd(ms()->exec->pwd, ms()->exec->buffer_size);
-	//save_and_restore_std(&save_stdin, &save_stdout, 1);
-	//process_heredoc();
 	i = 0;
 	setup_exec();
 	while (ms()->cmd[i])
@@ -87,10 +80,6 @@ void	exec_cmd(void)
 		handle_input(&i, &save_stdin, &save_stdout);
 		i++;
 	}
-	//close_heredoc();
-	//save_and_restore_std(&save_stdin, &save_stdout, 2);
-	//ft_printf("Exit status : %d\n", ms()->exit_status);
-	//free(ms()->exec);
 	while (wait(NULL) > 0)
 		continue ;
 }
@@ -98,9 +87,6 @@ void	exec_cmd(void)
 void	handle_input(int *i, int *save_stdin, int *save_stdout)
 {
 	int		*prev_fd;
-	int		fd[2];
-	int		status;
-	pid_t	pid;
 
 	(void)save_stdin;
 	(void)save_stdout;
@@ -118,6 +104,15 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 			execute_builtin(*i);
 		return ;
 	}
+	fork_child_process(i, prev_fd);
+}
+
+void	fork_child_process(int *i, int *prev_fd)
+{
+	int	status;
+	int		fd[2];
+	pid_t	pid;
+
 	if (ms()->cmd[*i + 1])
 		pipe(fd);
 	pid = fork();
