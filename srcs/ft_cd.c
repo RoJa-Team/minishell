@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/09 20:53:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:58:47 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	assign_to_ms_env(void)
 	}
 	ms()->ms_env[i] = NULL;
 }
-
+/*
 char	*print_oldpwd(t_env *env)
 {
 	t_env	*temp;
@@ -60,7 +60,7 @@ char	*print_oldpwd(t_env *env)
 	ft_printf("cd: OLDPWD not set\n");
 	ms()->exit_status = 1;
 	return (NULL);
-}
+}*/
 
 char	*check_visibility(t_env *temp)
 {
@@ -97,7 +97,7 @@ void	ft_cd(int i)
 	}
 	temp = ms()->env_lst;
 	newpwd = NULL;
-	oldpwd = get_value(temp, "PWD");
+	oldpwd = ms()->exec->pwd;
 	if (count < 2)
 		newpwd = get_home(temp);
 	else

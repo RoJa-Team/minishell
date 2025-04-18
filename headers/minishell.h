@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 21:29:57 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:27:35 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ void	execute_execve(int i);
 void	execute_builtin(int i);
 void	close_heredoc(int i);
 void	invoke_shell(int i, char *path);
+void	fork_child_process(int *i, int *prev_fd);
 
 /*exec_utils.c*/
 char	*get_value(t_env *env, char *key);
@@ -236,20 +237,20 @@ void	handle_input_r(t_redir *r, int *res);
 void	handle_output_r(t_redir *r, int *res);
 void	execute_heredoc(t_redir *r, int *res, struct stat st);
 void	check_access(t_redir *r, int *res, struct stat st);
-//void	process_heredoc(void);
 
-/*signal.c*/
+/*signals.c*/
 void	signal_handler(int signal);
 void	setup_signals(void);
-void	setup_heredoc(void);
 void	heredoc_signal(int signal);
 void	setup_exec(void);
 void	exec_signal(int	signal);
 
+/*signals_2.c*/
+void	setup_heredoc(void);
+
 /*ft_exit.c*/
 int	is_numeric(const char *str);
 int	is_ll_overflow(const char *str);
-void	cleanup(void);
 void	ft_exit(int i);
 
 /*********************************************/

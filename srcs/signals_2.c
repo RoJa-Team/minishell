@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   signals_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 03:24:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 21:37:17 by joafern2         ###   ########.fr       */
+/*   Created: 2025/04/18 21:44:27 by joafern2          #+#    #+#             */
+/*   Updated: 2025/04/18 21:45:24 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_pwd(void)
+void	setup_heredoc(void)
 {
-	ft_putstr_fd(ms()->exec->pwd, 1);
-	ft_putchar_fd('\n', 1);
-	ms()->exit_status = 0;
+	struct sigaction	sa;
+
+	sa.sa_handler = heredoc_signal;
+	sa.sa_flags = SA_RESTART;
+	if (sigemptyset(&sa.sa_mask) || sigaction(SIGINT, &sa, NULL))
+		deallocate("Error: Failed heredoc siganls\n");
 }

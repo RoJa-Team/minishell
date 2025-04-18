@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:38:02 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/01 20:57:48 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:25:03 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	ft_unset(int i)
 
 void	remove_key(t_env *prev, t_env *temp, char *arg)
 {
+	(void)arg;
 	while (temp != NULL)
 	{
 		if (ft_strncmp(arg, temp->key, ft_strlen(temp->key) + 1) == 0)

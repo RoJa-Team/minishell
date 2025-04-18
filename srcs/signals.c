@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 22:25:14 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:29:49 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -43,7 +42,7 @@ void	setup_signals(void)
 		return ((void)ft_printf("Error: Failed assigning action to SIGQUIT."));
 }
 
-void	exec_signal(int	signal)
+void	exec_signal(int signal)
 {
 	if (signal == SIGQUIT)
 		ms()->exit_status = 131;
@@ -79,15 +78,4 @@ int	rl_hook(void)
 		rl_event_hook = 0;
 	}
 	return (0);
-}
-
-void	setup_heredoc(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = heredoc_signal;
-	sa.sa_flags = SA_RESTART;
-	if (sigemptyset(&sa.sa_mask) || sigaction(SIGINT, &sa, NULL))
-		deallocate("Error: Failed heredoc siganls\n");
-	rl_event_hook = rl_hook;
 }
