@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/17 19:04:15 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:50:59 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ typedef struct s_ms
 	t_env			*env_lst;
 	t_cmd			**cmd;
 	t_exec			*exec;
-	int				nested_shell;
 }				t_ms;
 
 /*********************************************/
@@ -235,6 +234,10 @@ void	check_access(t_redir *r, int *res, struct stat st);
 /*signal.c*/
 void	signal_handler(int signal);
 void	setup_signals(void);
+void	setup_heredoc(void);
+void	heredoc_signal(int signal);
+void	setup_exec(void);
+void	exec_signal(int	signal);
 
 /*ft_exit.c*/
 int	is_numeric(const char *str);

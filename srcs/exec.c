@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/17 19:05:55 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:51:14 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	exec_cmd(void)
 	//save_and_restore_std(&save_stdin, &save_stdout, 1);
 	//process_heredoc();
 	i = 0;
+	setup_exec();
 	while (ms()->cmd[i])
 	{
 		handle_input(&i, &save_stdin, &save_stdout);
@@ -197,7 +198,7 @@ void	execute_execve(int i)
 	sa.sa_handler = SIG_DFL;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	if (ms()->cmd[i]->arg[0][0] != '/' && (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
+	if ((ms()->cmd[i]->arg[0][0] != '/') && (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
 		path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
 	else
 		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)
@@ -206,7 +207,6 @@ void	execute_execve(int i)
 			if ((ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) == 0))
 				return (invoke_shell(i, path));
 		}
-	ft_printf("arg : %s\n", ms()->cmd[i]->arg[0]);
 	if (!path || execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 	{
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
@@ -222,11 +222,16 @@ void	execute_execve(int i)
 
 void	invoke_shell(int i, char *path)
 {
+	pid_t	pid;
 
-	ms()->nested_shell++;
-	signal(SIGINT, SIG_DFL);
-	if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
-		deallocate("Error executing execve: execute_execve\n");
-	ms()->nested_shell--;
-
+	pid = fork();
+	if (pid == 0)
+	{
+		//ft_printf("invoking new shell\n");
+		signal(SIGINT, SIG_DFL);
+		if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
+			deallocate("Error executing execve: execute_execve\n");
+	}
+	else
+		waitpid(pid, NULL, 0);
 }

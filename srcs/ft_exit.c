@@ -56,8 +56,8 @@ int	is_ll_overflow(const char *str)
 
 void	cleanup(void)
 {
-	free(ms()->exec->pwd);
-	free(ms()->exec);
+	//free(ms()->exec->pwd);
+	//free(ms()->exec);
 	clean_structs();
 }
 
