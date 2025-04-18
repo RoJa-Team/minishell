@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:38:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:29:57 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_redir
 {
 	int				type;
 	char			*file;
-	int				heredoc_fd;
 	struct s_redir	*next;
 }				t_redir;
 
@@ -87,6 +86,7 @@ typedef struct s_dummy
 
 typedef struct s_ms
 {
+	int				here_sig;
 	int				exit_status;
 	char			**ms_env;
 	t_env			*env_lst;

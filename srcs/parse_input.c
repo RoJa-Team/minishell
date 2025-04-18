@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:22:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:56:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void	parse_input(char *str)
 	int		i;
 
 	i = 0;
-	while (1)
+	while (str[i] != '\0' && !ms()->here_sig)
 	{
 		new_cmd();
-		while (str[i])
+		while (str[i] != '\0' && !ms()->here_sig)
 		{
 			while (ft_isspace(str[i]))
 				i++;
@@ -98,9 +98,6 @@ void	parse_input(char *str)
 		}
 		if (parse()->arg_ll)
 			token_to_array();
-		if (str[i] == '\0')
-			break ;
 	}
 	cmd_to_array();
-	// print_cmd();
 }

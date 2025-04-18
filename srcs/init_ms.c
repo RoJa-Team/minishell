@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/17 19:37:29 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:44:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	init(char **env)
 	ms()->cmd = NULL;
 	ms()->env_lst = NULL;
 	ms()->exit_status = 0;
+	ms()->here_sig = 0;
 	ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
 		deallocate("Memory allocation error: exec_cmd\n");

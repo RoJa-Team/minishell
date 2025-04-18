@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:39:08 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:01:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	main(int argc, char **argv, char **env)
 			if (verify_input(input) == 0)
 			{
 				parse_input(input);
-				// if (!g)
+				if (!ms()->here_sig)
 					exec_cmd();
+				ms()->here_sig = 0;
 				clean_cmd();
 			}
 			free(input);

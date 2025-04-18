@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 20:40:09 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:25:14 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,19 @@ void	setup_exec(void)
 
 void	heredoc_signal(int signal)
 {
-	int	i;
-
 	(void)signal;
-	i = 0;
+	ms()->here_sig = 1;
 	write(1, "\n", 1);
-	while (ms()->cmd && ms()->cmd[i])
+}
+
+int	rl_hook(void)
+{
+	if (ms()->here_sig)
 	{
-		close_heredoc(i);
-		i++;
+		rl_done = 1;
+		rl_event_hook = 0;
 	}
-	ms()->exit_status = 130;
-	clean_structs();
+	return (0);
 }
 
 void	setup_heredoc(void)
@@ -88,4 +89,5 @@ void	setup_heredoc(void)
 	sa.sa_flags = SA_RESTART;
 	if (sigemptyset(&sa.sa_mask) || sigaction(SIGINT, &sa, NULL))
 		deallocate("Error: Failed heredoc siganls\n");
+	rl_event_hook = rl_hook;
 }

@@ -6,10 +6,9 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:39:34 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:04:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../headers/minishell.h"
 
@@ -20,10 +19,9 @@ void	receive_content(char *del, int here, int quote)
 
 	while (1)
 	{
-		rl_catch_signals = 0;
-		rl_done = 1;
 		line = readline("heredoc> ");
-		if (!line || ft_strncmp(line, del, ft_strlen(del) + 1) == 0)
+		if (!line || ft_strncmp(line, del, ft_strlen(del) + 1) == 0 || \
+		ms()->here_sig)
 			return (free(line), free(del));
 		if (quote == 0)
 		{
@@ -68,5 +66,10 @@ int	handle_heredoc(int quote, char *delimiter)
 	receive_content(delimiter, fds[1], quote);
 	setup_signals();
 	close(fds[1]);
+	if (ms()->here_sig)
+	{
+		close(fds[0]);
+		return (0);
+	}
 	return (fds[0]);
 }
