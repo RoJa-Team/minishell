@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 18:50:59 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:38:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,51 +100,58 @@ typedef struct s_ms
 /*                                           */
 /*********************************************/
 
-/* init_ms.c */
-void	init(char **env);
-void	copy_env(char **env);
+/* parse_verifications.c */
+int		verify_quotes(char *input);
+int		verify_heredocs(char *input);
+int		verify_redirections(char *input);
+int		verify_pipes(char *input);
+int		verify_input(char *input);
 
 /* parse_input.c */
-void	new_cmd(void);
 char	*new_str(char *str, int *i);
 void	new_arg(char *str);
+void	new_cmd(void);
 void	parse_input(char *str);
 
 /* parse_expansions.c */
-int		exp_len(char *str);
-char	*expand_str(char *str);
-char	*expansion_value(char *str, int *i);
-int		expansion_len(char *str, int *i);
+int		final_len(char *str);
 char	*final_str(char *str, char *arg, int i);
+char	*expand_str(char *str);
 
 /* parse_expansions_utils.c */
+char	*convert_exit_status(void);
 char	*find_env_value(char *str, int i, int key_len);
+char	*expansion_value(char *str, int *i);
 
 /* parse_redirections.c */
-int		file_len(char *str);
-char	*get_file(char *str, int *i);
-void	new_output(char *file, int type);
 void	new_input(char *file, int type);
+void	new_output(char *file, int type);
 void	new_redir(char *str, int *i);
 
-/* parse_heredoc.c */
-int		handle_heredoc(int quote, char *delimiter);
+/* parse_redirections_utils.c */
 int		heredoc_quote(char *str);
+int		file_len(char *str);
+char	*get_del(char *str, int *i);
+char	*get_file(char *str, int *i);
 
-/* parse_misc.c */
-t_ms	*ms(void);
-t_parse	*parse(void);
-t_dummy	*dummy(void);
-int		within_quotes(char *str);
-int		check_metachar(char c);
-void	check_quotes(char c, int *quotes);
-int		verify_input(char *input);
-int		verify_quotes(char *input);
-int		verify_heredocs(char *input);
+/* parse_heredoc.c */
+void	receive_content(char *del, int here, int quote);
+int		check_existing_heredoc(void);
+int		handle_heredoc(int quote, char *delimiter);
+
+/* parse_heredoc_expansions.c */
+int		here_len(char *line);
+char	*final_here(char *str, char *arg, int i);
+char	*expand_here(char *line);
 
 /* parse_ll_to_array.c */
 void	token_to_array(void);
 void	cmd_to_array(void);
+
+/* parse_misc.c */
+int		within_quotes(char *str);
+int		check_metachar(char c);
+void	check_quotes(char c, int *quotes);
 
 /*********************************************/
 /*                                           */
@@ -247,33 +254,33 @@ void	ft_exit(int i);
 
 /*********************************************/
 /*                                           */
-/*             List functions                */
+/*          Miscellanious functions          */
 /*                                           */
 /*********************************************/
 
+/* init_ms.c */
+void	copy_env(char **env);
+void	create_env_lst(void);
+void	init(char **env);
+
+/* static_structs.c */
+t_ms	*ms(void);
+t_parse	*parse(void);
+t_dummy	*dummy(void);
+
+/* list_functions.c */
 size_t	get_offset(void *struct_ptr, void *member_ptr);
 int		get_list_size(void *node, size_t next_offset);
 void	*get_last_node(void *node, size_t next_offset);
 void	free_list(void *node, size_t next_offset);
 
-/*********************************************/
-/*                                           */
-/*             Printing functions            */
-/*                                           */
-/*********************************************/
-
+/* print_functions.c */
 void	print_ms_env(void);
 void	print_env_lst(void);
 void	print_cmd(void);
 void	print_int(char *info, int data);
 void	print_string(char *info, char *data);
 void	print_pointer(char *info, void *data);
-
-/*********************************************/
-/*                                           */
-/*          Miscellanious functions          */
-/*                                           */
-/*********************************************/
 
 /* error.c */
 void	bad_input(char *message, int error);

@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/16 21:20:19 by joafern2         ###   ########.fr        #
+#    Updated: 2025/04/18 20:36:03 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,14 @@ NAME 	= minishell
 LIBFT 	= libft/libft.a
 SRCS_DIR= srcs/
 OBJS_DIR= objs/
-SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c init_ms.c error.c \
-			list_functions.c print_functions.c parse_input.c parse_heredoc.c \
-			parse_ll_to_array.c parse_misc.c parse_redirections.c \
-			parse_expansions.c parse_expansions_utils.c static_structs.c \
-			verify_input.c cleaner.c\
+SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
+			init_ms.c static_structs.c list_functions.c print_functions.c \
+			error.c cleaner.c \
+			parse_verifications.c parse_input.c \
+			parse_expansions.c parse_expansions_utils.c \
+			parse_redirections.c parse_redirections_utils.c \
+			parse_heredoc.c parse_heredoc_expansions.c \
+			parse_ll_to_array.c parse_misc.c \
 			export_utils_2.c exec_utils.c cd_utils.c \
 			cd_utils_2.c signals.c ft_exit.c \
 			ft_echo.c ft_cd.c ft_pwd.c ft_export.c ft_unset.c \

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:35:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/16 19:56:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:25:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,25 @@ char	*find_env_value(char *str, int i, int key_len)
 			break ;
 		temp = temp->next;
 	}
-	if (temp)
+	if (temp && temp->value)
 		return (temp->value);
 	return ("");
+}
+
+char	*expansion_value(char *str, int *i)
+{
+	int	len;
+
+	(*i)++;
+	len = 0;
+	if (str[*i] == '?')
+		len++;
+	else if (ft_isdigit(str[*i]))
+		len++;
+	else
+		while (str[*i + len] && (ft_isalnum(str[*i + len]) || \
+		str[*i + len] == '_'))
+			len++;
+	*i = *i + len;
+	return (find_env_value(str, *i - len, len));
 }

@@ -6,28 +6,44 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/16 20:10:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:25:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-char	*expansion_value(char *str, int *i)
+int	final_len(char *str)
 {
+	int	i;
+	int	wq;
 	int	len;
+	int	quotes;
 
-	(*i)++;
+	i = 0;
 	len = 0;
-	if (str[*i] == '?')
-		len++;
-	else if (ft_isdigit(str[*i]))
-		len++;
-	else
-		while (str[*i + len] && (ft_isalnum(str[*i + len]) || \
-		str[*i + len] == '_'))
-			len++;
-	*i = *i + len;
-	return (find_env_value(str, *i - len, len));
+	quotes = 0;
+	wq = 0;
+	while (str[i])
+	{
+		check_quotes(str[i], &quotes);
+		if (str[i] == '$' && (quotes == 2 || quotes == 0))
+			len = len + ft_strlen(expansion_value(str, &i));
+		else
+		{
+			if (str[i] == '\"' || str[i] == '\'')
+			{
+				wq = within_quotes(&str[i]);
+				i = i + wq;
+				len = len + wq - 2;
+			}
+			else
+			{
+				len++;
+				i++;
+			}
+		}
+	}
+	return (len);
 }
 
 char	*final_str(char *str, char *arg, int i)
@@ -62,40 +78,6 @@ char	*final_str(char *str, char *arg, int i)
 	}
 	arg[j] = '\0';
 	return (arg);
-}
-
-int	final_len(char *str)
-{
-	int	i;
-	int	wq;
-	int	len;
-	int	quotes;
-
-	i = 0;
-	len = 0;
-	quotes = 0;
-	wq = 0;
-	while (str[i])
-	{
-		check_quotes(str[i], &quotes);
-		if (str[i] == '$' && (quotes == 2 || quotes == 0))
-			len = len + ft_strlen(expansion_value(str, &i));
-		else
-		{
-			if (str[i] == '\"' || str[i] == '\'')
-			{
-				wq = within_quotes(&str[i]);
-				i = i + wq;
-				len = len + wq - 2;
-			}
-			else
-			{
-				len++;
-				i++;
-			}
-		}
-	}
-	return (len);
 }
 
 char	*expand_str(char *str)

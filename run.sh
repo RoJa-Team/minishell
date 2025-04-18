@@ -1,11 +1,41 @@
 #!/bin/bash
 
-if [[ $1 == "-e" ]]; then
-	cc -Werror -Wextra -Wall srcs/exec.c srcs/ft_echo.c srcs/ft_cd.c srcs/error.c libft/*.c && ./a.out
-elif [[ $1 == "-n" ]]; then
-	norminette srcs/cd_utils.c srcs/cd_utils_2.c srcs/exec.c srcs/exec_utils.c srcs/exec_utils.c srcs/ft_cd.c srcs/ft_env.c srcs/ft_echo.c srcs/ft_export.c srcs/ft_pwd.c srcs/ft_unset.c srcs/ft_cd.c srcs/redirections.c srcs/export_utils.c srcs/export_utils_2.c
-elif [[ $1 == "-ve" ]]; then
-	cc -Werror -Wextra -Wall srcs/exec.c srcs/ft_echo.c srcs/ft_cd.c srcs/error.c libft/*.c && valgrind ./a.out
-else
-	echo "not set"
-fi
+cat << EOF1 | cat << EOF2 >> $1
+ola
+EOF
+adeus
+EOF
+
+echo $?
+
+echo $DoesntExist
+
+export NowExistsValueNumeric=1
+echo $NowExistsValueNumeric
+export NowExistsValueNumeric=1113745243058239740598274352743576174850234750823143
+echo $NowExistsValueNumeric
+unset NowExistsValueNumeric
+
+export NowExistsValueAlpha=a
+echo $NowExistsValueAlpha
+export NowExistsValueAlpha=aasdfsachabsdfhasojdadsjncashebfhasjknda
+echo $NowExistsValueAlpha
+unset NowExistsValueAlpha
+
+export NowExistsValueAlphaNumeric=a1
+echo $NowExistsValueAlpha
+export NowExistsValueAlphaNumeric=1a
+echo $NowExistsValueAlpha
+export NowExistsValueAlphaNumeric=168t2g7ydg18276gy8h1276
+echo $NowExistsValueAlpha
+export NowExistsValueAlphaNumeric=t2g7ydg18276gy8h1276
+echo $NowExistsValueAlpha
+unset NowExistsValueAlphaNumeric
+
+export NowExistsValueRandom=/
+echo $NowExistsValueRandom
+export NowExistsValueRandom=129jeP/n\nLQ9D-90O]LQD0=DP.;.FOK3IKQ8jd123
+echo $NowExistsValueRandom
+unset NowExistsValueRandom
+
+echo $1StartsWithNumberAndDoesntExist
