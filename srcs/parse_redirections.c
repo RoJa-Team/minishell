@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:39:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 21:33:49 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	new_redir(char *str, int *i)
 {
 	int		len;
 	char	redir;
-	int		fd;
 
 	len = 0;
 	redir = str[*i];
@@ -65,11 +64,8 @@ void	new_redir(char *str, int *i)
 	*i = *i + len;
 	while (str[*i] && str[*i] == ' ')
 		(*i)++;
-	fd = handle_heredoc(heredoc_quote(&str[*i]), get_del(str, i));
-	if (len == 2 && redir == '<' && fd != -1)
-		new_input(ft_itoa(fd), HEREDOC);
-	else if (fd == -1)
-		return ;
+	if (len == 2 && redir == '<')
+		new_input(ft_itoa(handle_heredoc(heredoc_quote(&str[*i]), get_del(str, i))), HEREDOC);
 	else if (len == 2 && redir == '>')
 		new_output(get_file(str, i), APPEND);
 	else if (len == 1 && redir == '<')
