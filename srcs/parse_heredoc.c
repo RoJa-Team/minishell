@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:38 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:06:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	receive_content(char *del, int here, int quote)
 	{
 		line = readline("heredoc> ");
 		if (!line || ft_strncmp(line, del, ft_strlen(del) + 1) == 0)
-			return (free(line), write(here, "\n", 1), free(del));
+			return (free(line), free(del));
 		if (quote == 0)
 		{
-			expanded = expand_str(line);
+			expanded = expand_here(line);
 			write(here, expanded, ft_strlen(expanded));
 			free(expanded);
 		}
@@ -48,23 +48,6 @@ int	check_existing_heredoc(void)
 		if (temp_redir->type == HEREDOC)
 			return (ft_atoi(temp_redir->file));
 		temp_redir = temp_redir->next;
-	}
-	return (0);
-}
-
-int	heredoc_quote(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\"' || str[i] == '\'')
-			return (1);
-		else if (check_metachar(str[i]))
-			break ;
-		else
-			i++;
 	}
 	return (0);
 }

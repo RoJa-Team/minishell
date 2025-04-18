@@ -6,29 +6,11 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/17 18:10:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:22:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-void	new_cmd(void)
-{
-	t_cmd	*new_cmd;
-
-	new_cmd = malloc(sizeof(t_cmd));
-	if (!new_cmd)
-		deallocate("Memory allocation error: init_cmd\n");
-	new_cmd->arg = NULL;
-	new_cmd->fd_in = NULL;
-	new_cmd->fd_out = NULL;
-	new_cmd->next = NULL;
-	if (parse()->cmd_ll)
-		((t_cmd *)get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
-		&dummy()->cmd.next)))->next = new_cmd;
-	else
-		parse()->cmd_ll = new_cmd;
-}
 
 char	*new_str(char *str, int *i)
 {
@@ -72,6 +54,24 @@ void	new_arg(char *str)
 		&dummy()->arg.next)))->next = new_arg;
 	else
 		parse()->arg_ll = new_arg;
+}
+
+void	new_cmd(void)
+{
+	t_cmd	*new_cmd;
+
+	new_cmd = malloc(sizeof(t_cmd));
+	if (!new_cmd)
+		deallocate("Memory allocation error: init_cmd\n");
+	new_cmd->arg = NULL;
+	new_cmd->fd_in = NULL;
+	new_cmd->fd_out = NULL;
+	new_cmd->next = NULL;
+	if (parse()->cmd_ll)
+		((t_cmd *)get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
+		&dummy()->cmd.next)))->next = new_cmd;
+	else
+		parse()->cmd_ll = new_cmd;
 }
 
 void	parse_input(char *str)
