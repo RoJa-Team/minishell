@@ -59,8 +59,6 @@ void	bad_input(char *message, int error)
 
 void	deallocate(char *message)
 {
-	free(ms()->exec->pwd);
-	free(ms()->exec);
 	clean_structs();
 	exit(ft_printf(message));
 }
