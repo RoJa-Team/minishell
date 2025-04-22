@@ -6,23 +6,17 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:25:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:39:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	final_len(char *str)
+int	final_len(char *str, int len, int quotes, int wq)
 {
 	int	i;
-	int	wq;
-	int	len;
-	int	quotes;
 
 	i = 0;
-	len = 0;
-	quotes = 0;
-	wq = 0;
 	while (str[i])
 	{
 		check_quotes(str[i], &quotes);
@@ -46,23 +40,25 @@ int	final_len(char *str)
 	return (len);
 }
 
-char	*final_str(char *str, char *arg, int i)
+void	copy_exp_value(char *str, char *arg, int *i, int *j)
 {
-	int		j;
-	int		quotes;
 	char	*val;
 
+	val = expansion_value(str, i);
+	ft_strlcat(&arg[*j], val, ft_strlen(arg) + ft_strlen(val) + 1);
+	*j = *j + ft_strlen(val);
+}
+
+char	*final_str(char *str, char *arg, int i, int quotes)
+{
+	int		j;
+
 	j = 0;
-	quotes = 0;
 	while (str[i])
 	{
 		check_quotes(str[i], &quotes);
 		if (str[i] == '$' && (quotes == 2 || quotes == 0))
-		{
-			val = expansion_value(str, &i);
-			ft_strlcat(&arg[j], val, ft_strlen(arg) + ft_strlen(val) + 1);
-			j = j + ft_strlen(val);
-		}
+			copy_exp_value(str, arg, &i, &j);
 		else
 		{
 			if (str[i] == '\"' || str[i] == '\'')
@@ -76,7 +72,6 @@ char	*final_str(char *str, char *arg, int i)
 			i++;
 		}
 	}
-	arg[j] = '\0';
 	return (arg);
 }
 
@@ -87,13 +82,13 @@ char	*expand_str(char *str)
 
 	if (!str)
 		return (NULL);
-	len = final_len(str);
+	len = final_len(str, 0, 0, 0);
 	if (len == 0)
 		return (free(str), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);
 	if (!arg)
 		deallocate ("Memory allocation error: expand_str\n");
-	arg = final_str(str, arg, 0);
+	arg = final_str(str, arg, 0, 0);
 	free(str);
 	return (arg);
 }

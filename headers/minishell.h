@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 18:29:32 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:25:45 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ void	new_cmd(void);
 void	parse_input(char *str);
 
 /* parse_expansions.c */
-int		final_len(char *str);
-char	*final_str(char *str, char *arg, int i);
+int		final_len(char *str, int len, int quotes, int wq);
+char	*final_str(char *str, char *arg, int i, int quotes);
 char	*expand_str(char *str);
 
 /* parse_expansions_utils.c */

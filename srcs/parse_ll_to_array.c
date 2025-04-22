@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/16 20:01:16 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:18:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	token_to_array(void)
 	}
 	last_cmd->arg[i] = NULL;
 	parse()->arg_ll = NULL;
-
 }
 
 void	cmd_to_array(void)
