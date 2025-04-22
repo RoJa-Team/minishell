@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 22:27:35 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:29:32 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,12 +163,8 @@ void	check_quotes(char c, int *quotes);
 void	exec_cmd(void);
 void	handle_input(int *i, int *save_stdin, int *save_stdout);
 int		is_builtin(int i);
-void	child_process(int prev_fd, int *fd, int i);
-void	execute_execve(int i);
-void	execute_builtin(int i);
-void	close_heredoc(int i);
-void	invoke_shell(int i, char *path);
 void	fork_child_process(int *i, int *prev_fd);
+void	execute_builtin(int i);
 
 /*exec_utils.c*/
 char	*get_value(t_env *env, char *key);
@@ -176,7 +172,14 @@ char	*find_path(t_env *env_lst, char *cmd);
 void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
 void	close_pipe(int *fd, int *prev_fd, int i);
-int	is_executable(const char *path);
+int		is_executable(const char *path);
+
+/*exec_utils_2.c*/
+void	close_heredoc(int i);
+void	not_found(int i);
+void	invoke_shell(int i, char *path);
+void	execute_execve(int i);
+void	child_process(int prev_fd, int *fd, int i);
 
 /*ft_echo.c*/
 void	ft_echo(int i);
@@ -241,12 +244,13 @@ void	check_access(t_redir *r, int *res, struct stat st);
 /*signals.c*/
 void	signal_handler(int signal);
 void	setup_signals(void);
-void	heredoc_signal(int signal);
 void	setup_exec(void);
 void	exec_signal(int	signal);
 
 /*signals_2.c*/
 void	setup_heredoc(void);
+void	heredoc_signal(int signal);
+int	rl_hook(void);
 
 /*ft_exit.c*/
 int	is_numeric(const char *str);

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 21:59:05 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:25:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 
 void	fork_child_process(int *i, int *prev_fd)
 {
-	int	status;
+	int		status;
 	int		fd[2];
 	pid_t	pid;
 
@@ -129,104 +129,4 @@ void	fork_child_process(int *i, int *prev_fd)
 		else if (WIFSIGNALED(status))
 			ms()->exit_status = 128 + WTERMSIG(status);
 	}
-}
-
-void	close_heredoc(int i)
-{
-	int	fd;
-	t_redir *r;
-
-	r = ms()->cmd[i]->fd_in;
-	while (r)
-	{
-		if (r->type == 2)
-		{
-			fd = ft_atoi(r->file);
-			if (fd >= 0)
-				close(fd);
-		}
-		r = r->next;
-	}
-}
-
-void	child_process(int prev_fd, int *fd, int i)
-{
-	int	res;
-
-	res = 0;
-	if (ms()->cmd[i]->fd_in || ms()->cmd[i]->fd_out)
-		res = handle_redirections(ms()->cmd[i]);
-	if (res != 0)
-		return ;
-	if (prev_fd != -1 && ms()->cmd[i]->fd_in == NULL)
-		dup2(prev_fd, STDIN_FILENO);
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (ms()->cmd[i + 1] && ms()->cmd[i]->fd_out == NULL)
-		dup2(fd[1], STDOUT_FILENO);
-	if (ms()->cmd[i + 1])
-	{
-		close(fd[1]);
-		close(fd[0]);
-	}
-	if (is_builtin(i))
-	{
-		execute_builtin(i);
-		//free(ms()->exec);
-		clean_structs();
-		exit (0);
-	}
-	else
-	{
-		//ft_printf("fd 0 : %d\n", fd[0]);
-		//ft_printf("fd 1 : %d\n", fd[1]);
-		execute_execve(i);
-	}
-}
-
-void	execute_execve(int i)
-{
-	char	*path;
-	struct sigaction	sa;
-
-	path = NULL;
-	sa.sa_handler = SIG_DFL;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	if ((ms()->cmd[i]->arg[0][0] != '/') && (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))
-		path = find_path(ms()->env_lst, ms()->cmd[i]->arg[0]);
-	else
-		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)
-		{
-			path = ms()->cmd[i]->arg[0];
-			if ((ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) == 0))
-				return (invoke_shell(i, path));
-		}
-	if (!path || execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
-	{
-		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
-		write(2, ": command not found\n", 20);
-		ms()->exit_status = 127;
-		//free(ms()->exec);
-		clean_structs();
-		exit(127);
-	}
-	//if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
-	//	deallocate("Error executing execve: execute_execve\n");
-}
-
-void	invoke_shell(int i, char *path)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		//ft_printf("invoking new shell\n");
-		signal(SIGINT, SIG_DFL);
-		if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
-			deallocate("Error executing execve: execute_execve\n");
-	}
-	else
-		waitpid(pid, NULL, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:10:56 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/07 22:13:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:39:04 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,9 @@ char	*find_path(t_env *env_lst, char *cmd)
 	{
 		full_path = get_full_path(path_dir[i], cmd);
 		if (full_path != NULL)
-		{
-			free(path_dir);
-			return (full_path);
-		}
+			break ;
 		i++;
 	}
 	free(path_dir);
-	return (NULL);
+	return (full_path);
 }

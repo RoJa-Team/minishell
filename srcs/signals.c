@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/18 22:29:49 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:29:42 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,4 @@ void	setup_exec(void)
 		deallocate("Error: FAiled at execution mode in SIGINT\n");
 	if (sigaction(SIGQUIT, &sa, NULL))
 		deallocate("Error: FAiled at execution mode in SIGQUIT\n");
-}
-
-void	heredoc_signal(int signal)
-{
-	(void)signal;
-	ms()->here_sig = 1;
-	write(1, "\n", 1);
-}
-
-int	rl_hook(void)
-{
-	if (ms()->here_sig)
-	{
-		rl_done = 1;
-		rl_event_hook = 0;
-	}
-	return (0);
 }
