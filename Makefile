@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/22 18:38:26 by joafern2         ###   ########.fr        #
+#    Updated: 2025/04/22 19:33:46 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,18 @@ LIBFT 	= libft/libft.a
 SRCS_DIR= srcs/
 OBJS_DIR= objs/
 SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
-			init_ms.c static_structs.c list_functions.c print_functions.c \
-			error.c cleaner.c \
+			init_ms.c static_structs.c list_functions.c \
+			error.c cleaner.c print_functions.c \
 			parse_verifications.c parse_input.c \
 			parse_expansions.c parse_expansions_utils.c \
 			parse_redirections.c parse_redirections_utils.c \
 			parse_heredoc.c parse_heredoc_expansions.c \
-			parse_ll_to_array.c parse_misc.c \
-			export_utils_2.c exec_utils.c cd_utils.c \
-			cd_utils_2.c signals.c ft_exit.c exec_utils_2.c \
-			ft_echo.c ft_cd.c ft_pwd.c ft_export.c ft_unset.c \
-			ft_env.c exec.c export_utils.c redirections.c signals_2.c)
+			parse_ll_to_array.c parse_misc.c exec.c \
+			ft_export_utils_2.c exec_utils.c ft_cd_utils.c \
+			exec_utils_2.c ft_cd_utils_2.c exec_signals.c \
+			ft_exit.c ft_echo_pwd_env_unset.c ft_cd.c ft_export.c \
+			ft_export_utils.c exec_redirections.c \
+			exec_signals_here.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM	= /bin/rm -f
 

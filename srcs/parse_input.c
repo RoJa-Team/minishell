@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 21:56:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:41:19 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,17 @@ void	parse_input(char *str)
 			token_to_array();
 	}
 	cmd_to_array();
+}
+
+void	input_check(char *input)
+{
+	if (verify_input(input) == 0)
+	{
+		parse_input(input);
+		if (!ms()->here_sig)
+			exec_cmd();
+		ms()->here_sig = 0;
+		clean_cmd();
+	}
+	free(input);
 }
