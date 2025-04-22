@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/17 19:06:01 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:00:20 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,25 +60,15 @@ void	handle_output_r(t_redir *r, int *res)
 	while (r)
 	{
 		if (r->type == 1)
-		{
 			fd = open(r->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			stat(r->file, &st);
-			if (fd < 0 || (!S_ISREG(st.st_mode)))
-				check_access(r, res, st);
-			else
-				dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
 		else if (r->type == 2)
-		{
 			fd = open(r->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			stat(r->file, &st);
-			if ((fd < 0) || (!S_ISREG(st.st_mode)))
-				check_access(r, res, st);
-			else
-				dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+		stat(r->file, &st);
+		if ((fd < 0) || (!S_ISREG(st.st_mode)))
+			check_access(r, res, st);
+		else
+			dup2(fd, STDOUT_FILENO);
+		close(fd);
 		r = r->next;
 	}
 }

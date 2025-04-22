@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 18:29:32 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:56:56 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,6 @@ char	*find_path(t_env *env_lst, char *cmd);
 void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
 void	close_pipe(int *fd, int *prev_fd, int i);
-int		is_executable(const char *path);
 
 /*exec_utils_2.c*/
 void	close_heredoc(int i);
@@ -205,6 +204,7 @@ int		arg_count(char **arg);
 
 /*ft_pwd.c*/
 void	ft_pwd(void);
+int		is_executable(const char *path);
 
 /*ft_export.c*/
 void	ft_export(int i);
@@ -235,7 +235,7 @@ void	remove_key(t_env *prev, t_env *temp, char *arg);
 void	ft_env(int i);
 
 /*redirections.c*/
-int	handle_redirections(t_cmd *cmd);
+int		handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_redir *r, int *res);
 void	handle_output_r(t_redir *r, int *res);
 void	execute_heredoc(t_redir *r, int *res, struct stat st);
@@ -250,11 +250,11 @@ void	exec_signal(int	signal);
 /*signals_2.c*/
 void	setup_heredoc(void);
 void	heredoc_signal(int signal);
-int	rl_hook(void);
+int		rl_hook(void);
 
 /*ft_exit.c*/
-int	is_numeric(const char *str);
-int	is_ll_overflow(const char *str);
+int		is_numeric(const char *str);
+int		is_ll_overflow(const char *str);
 void	ft_exit(int i);
 
 /*********************************************/
