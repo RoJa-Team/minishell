@@ -72,3 +72,4 @@ echo "--- cd_out.txt ---"
 cat redirs/cd_out.txt
 echo "--- lastline.txt ---"
 cat redirs/lastline.txt
+exit
