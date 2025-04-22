@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:25:45 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:45:47 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ char	*new_str(char *str, int *i);
 void	new_arg(char *str);
 void	new_cmd(void);
 void	parse_input(char *str);
+void	input_check(char *input);
 
 /* parse_expansions.c */
 int		final_len(char *str, int len, int quotes, int wq);
@@ -172,7 +173,6 @@ char	*find_path(t_env *env_lst, char *cmd);
 void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
 void	close_pipe(int *fd, int *prev_fd, int i);
-int		is_executable(const char *path);
 
 /*exec_utils_2.c*/
 void	close_heredoc(int i);
@@ -181,8 +181,12 @@ void	invoke_shell(int i, char *path);
 void	execute_execve(int i);
 void	child_process(int prev_fd, int *fd, int i);
 
-/*ft_echo.c*/
+/*ft_echo_pwd_env_unset.c*/
 void	ft_echo(int i);
+void	ft_pwd(void);
+void	ft_unset(int i);
+void	remove_key(t_env *prev, t_env *temp, char *arg);
+void	ft_env(int i);
 
 /*ft_cd.c*/
 void	ft_cd(int i);
@@ -191,20 +195,18 @@ void	assign_to_ms_env(void);
 char	*check_visibility(t_env *temp);
 void	change_directory(char *oldpwd, char *newpwd, int i);
 
-/*cd_utils.c*/
+/*ft_cd_utils.c*/
 char	*get_pwd(t_env *env);
 char	*get_home(t_env *env);
 char	*get_parent_dir(char *temp, char *ab_path);
 char	*get_ab_path(char *ab_path, char *next_dir);
 
-/*cd_utils_2.c*/
+/*ft_cd_utils_2.c*/
 void	update_env_lst(t_env *env, char *key, char *new_value);
 void	update_ms_env(void);
 void	free_args(char **arg);
 int		arg_count(char **arg);
-
-/*ft_pwd.c*/
-void	ft_pwd(void);
+int		is_executable(const char *path);
 
 /*ft_export.c*/
 void	ft_export(int i);
@@ -213,48 +215,41 @@ void	print_export_fd(void);
 void	execute_export(int fd, char *line);
 void	sort_env(char **env);
 
-/*export_utils.c*/
+/*ft_export_utils.c*/
 void	get_key_and_value(char *arg, char **key, char **value);
 int		is_valid_key(char *key);
 void	update_or_add_env_key(t_env **env, char *key, char *value);
 void	add_env_key(t_env **env, char *key, char *value);
 void	swap_str(char **a, char **b);
 
-/*export_utils_2.c*/
+/*ft_export_utils_2.c*/
 char	**convert_lst_to_arr(t_env *lst);
 int		env_lst_size(t_env *env_lst);
 int		assign_value_to_array(int *i, t_env *lst, char **arr);
 void	free_key_and_value(char *key, char *value);
 char	*find_value(t_env *env, char *key);
 
-/*ft_unset.c*/
-void	ft_unset(int i);
-void	remove_key(t_env *prev, t_env *temp, char *arg);
-
-/*ft_env.c*/
-void	ft_env(int i);
-
-/*redirections.c*/
-int	handle_redirections(t_cmd *cmd);
+/*exec_redirections.c*/
+int		handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_redir *r, int *res);
 void	handle_output_r(t_redir *r, int *res);
 void	execute_heredoc(t_redir *r, int *res, struct stat st);
 void	check_access(t_redir *r, int *res, struct stat st);
 
-/*signals.c*/
+/*exec_signals.c*/
 void	signal_handler(int signal);
 void	setup_signals(void);
 void	setup_exec(void);
 void	exec_signal(int	signal);
 
-/*signals_2.c*/
+/*exec_signals_here.c*/
 void	setup_heredoc(void);
 void	heredoc_signal(int signal);
-int	rl_hook(void);
+int		rl_hook(void);
 
 /*ft_exit.c*/
-int	is_numeric(const char *str);
-int	is_ll_overflow(const char *str);
+int		is_numeric(const char *str);
+int		is_ll_overflow(const char *str);
 void	ft_exit(int i);
 
 /*********************************************/
