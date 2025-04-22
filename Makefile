@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/22 19:33:46 by joafern2         ###   ########.fr        #
+#    Updated: 2025/04/22 21:13:44 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS_DIR= srcs/
 OBJS_DIR= objs/
 SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
 			init_ms.c static_structs.c list_functions.c \
-			error.c cleaner.c print_functions.c \
+			error.c cleaner.c \
 			parse_verifications.c parse_input.c \
 			parse_expansions.c parse_expansions_utils.c \
 			parse_redirections.c parse_redirections_utils.c \

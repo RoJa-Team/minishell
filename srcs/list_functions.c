@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:23:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/09 20:17:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:09:30 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,4 @@ int	get_list_size(void *node, size_t next_offset)
 		size++;
 	}
 	return (size);
-}
-
-void	free_list(void *node, size_t next_offset)
-{
-	char	*tmp;
-	char	*to_free;
-
-	tmp = (char *)node;
-	if (!tmp)
-		return ;
-	while (*(void **)(tmp + next_offset))
-	{
-		to_free = tmp;
-		tmp = *(char **)(tmp + next_offset);
-		free(to_free);
-	}
 }

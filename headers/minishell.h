@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:45:47 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:10:50 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-//TODO remove this
-# define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x)
-// USAGE: debug(mensagem, variavel);
 # define APPEND 2
 # define HEREDOC 2
 # define OUT 1
 # define IN 1
-// cat << 1 | cat << 2 | cat << 3 | cat << 4 | cat << 5 | cat << 6 | cat << 7 | cat << 8 | cat << 9 | cat << 10 | cat << 11 | cat << 12 | cat << 13 | cat << 14 | cat << 15 | cat << 16 | cat << 17 | cat << 18 | cat << 19 | cat << 20 
-// cat << here > out | lsl | cat < out | wc
-// cat << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 << 20 
 
 typedef struct s_redir
 {
@@ -48,9 +42,9 @@ typedef struct s_arg
 
 typedef struct s_exec
 {
-	int	prev_fd;
-	char	*pwd;
-	size_t	buffer_size;
+	int				prev_fd;
+	char			*pwd;
+	size_t			buffer_size;
 }				t_exec;
 
 typedef struct s_cmd
@@ -190,7 +184,6 @@ void	ft_env(int i);
 
 /*ft_cd.c*/
 void	ft_cd(int i);
-char	*print_oldpwd(t_env *env);
 void	assign_to_ms_env(void);
 char	*check_visibility(t_env *temp);
 void	change_directory(char *oldpwd, char *newpwd, int i);
@@ -272,23 +265,14 @@ t_dummy	*dummy(void);
 size_t	get_offset(void *struct_ptr, void *member_ptr);
 int		get_list_size(void *node, size_t next_offset);
 void	*get_last_node(void *node, size_t next_offset);
-void	free_list(void *node, size_t next_offset);
-
-/* print_functions.c */
-void	print_ms_env(void);
-void	print_env_lst(void);
-void	print_cmd(void);
-void	print_int(char *info, int data);
-void	print_string(char *info, char *data);
-void	print_pointer(char *info, void *data);
 
 /* error.c */
 void	bad_input(char *message, int error);
-void	free_array(char	**array);
 void	deallocate(char *message);
 
 /* cleaner.c */
 void	clean_env(void);
+void	clean_redir(void);
 void	clean_cmd(void);
 void	clean_structs(void);
 
