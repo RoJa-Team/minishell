@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:39:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:41:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	copy_exp_value(char *str, char *arg, int *i, int *j)
 
 char	*final_str(char *str, char *arg, int i, int quotes)
 {
-	int		j;
+	int	j;
 
 	j = 0;
 	while (str[i])
