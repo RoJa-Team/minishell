@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/22 18:25:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:52:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,20 @@ void	exec_cmd(void)
 	int	save_stdout;
 
 	ms()->exec->prev_fd = -1;
-	ms()->exec->buffer_size = 1024;
 	if (!ms()->exec->pwd)
-		ms()->exec->pwd = malloc(sizeof(char) * ms()->exec->buffer_size);
-	getcwd(ms()->exec->pwd, ms()->exec->buffer_size);
+		ms()->exec->pwd = malloc(sizeof(char) * 1024);
+	getcwd(ms()->exec->pwd, 1024);
 	i = 0;
 	setup_exec();
 	while (ms()->cmd[i])
 	{
 		handle_input(&i, &save_stdin, &save_stdout);
+		i++;
+	}
+	i = 0;
+	while (ms()->cmd[i])
+	{
+		close_heredoc(i);
 		i++;
 	}
 	while (wait(NULL) > 0)
