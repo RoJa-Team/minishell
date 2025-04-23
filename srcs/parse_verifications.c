@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:42:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:15:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:56:19 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	verify_quotes(char *input)
 	}
 	if (quotes != 0)
 		return (bad_input("Syntax error: incorrect number of \
-quotes!\n", 2), 1);
+quotes!", 2), 1);
 	return (0);
 }
 
@@ -56,7 +56,7 @@ int	verify_heredocs(char *input)
 	}
 	if (n_heredoc > 16)
 		return (bad_input("Syntax error: maximum here-document \
-count exceeded!\n", 2), 1);
+count exceeded!", 2), 1);
 	return (0);
 }
 
@@ -79,7 +79,7 @@ int	verify_redirections(char *input)
 			while (input[i] && input[i] == ' ')
 				i++;
 			if (len > 2 || check_metachar(input[i]) || input[i] == '\0')
-				return (bad_input("Syntax error: invalid redirection!\n", \
+				return (bad_input("Syntax error: invalid redirection!", \
 					2), 1);
 		}
 		else
@@ -103,7 +103,7 @@ int	verify_pipes(char *input)
 			while (input[i] && input[i] == ' ')
 				i++;
 			if (input[i] == '|' || input[i] == '\0')
-				return (bad_input("Syntax error: invalid pipe!\n", \
+				return (bad_input("Syntax error: invalid pipe!", \
 					2), 1);
 		}
 		else
