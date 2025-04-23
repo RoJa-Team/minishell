@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:20:25 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/23 20:02:14 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:22:07 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	child_process(int prev_fd, int *fd, int i)
 		close(fd[1]);
 		close(fd[0]);
 	}
+	close_heredoc(i);
 	execute_builtin_or_execve(i);
 }
 
@@ -86,15 +87,20 @@ void	close_heredoc(int i)
 	int		fd;
 	t_redir	*r;
 
-	r = ms()->cmd[i]->fd_in;
-	while (r)
+	i = 0;
+	while (ms()->cmd[i])
 	{
-		if (r->type == 2)
+		r = ms()->cmd[i]->fd_in;
+		while (r)
 		{
-			fd = ft_atoi(r->file);
-			if (fd >= 0)
-				close(fd);
+			if (r->type == 2)
+			{
+				fd = ft_atoi(r->file);
+				if (fd >= 0)
+					close(fd);
+			}
+			r = r->next;
 		}
-		r = r->next;
+		i++;
 	}
 }
