@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/23 19:52:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:19:52 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,7 @@ void	exec_cmd(void)
 		handle_input(&i, &save_stdin, &save_stdout);
 		i++;
 	}
-	i = 0;
-	while (ms()->cmd[i])
-	{
-		close_heredoc(i);
-		i++;
-	}
+	close_heredoc(i);
 	while (wait(NULL) > 0)
 		continue ;
 }
@@ -126,7 +121,6 @@ void	fork_child_process(int *i, int *prev_fd)
 	if (pid == 0)
 		child_process(*prev_fd, fd, *i);
 	close_pipe(fd, prev_fd, *i);
-	close_heredoc(*i);
 	if (waitpid(pid, &status, 0) != -1)
 	{
 		if (WIFEXITED(status))
