@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:41:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:18:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	final_len(char *str, int len, int quotes, int wq)
+int	final_len(char *str, int len, int quotes)
 {
 	int	i;
 
@@ -26,15 +26,13 @@ int	final_len(char *str, int len, int quotes, int wq)
 		{
 			if (str[i] == '\"' || str[i] == '\'')
 			{
-				wq = within_quotes(&str[i]);
-				i = i + wq;
-				len = len + wq - 2;
+				if ((quotes == 2 && str[i] == '\'') || (quotes == 1 && \
+					str[i] == '\"'))
+					len++;
 			}
 			else
-			{
 				len++;
-				i++;
-			}
+			i++;
 		}
 	}
 	return (len);
@@ -82,7 +80,7 @@ char	*expand_str(char *str)
 
 	if (!str)
 		return (NULL);
-	len = final_len(str, 0, 0, 0);
+	len = final_len(str, 0, 0);
 	if (len == 0)
 		return (free(str), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);

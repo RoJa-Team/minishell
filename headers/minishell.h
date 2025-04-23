@@ -6,8 +6,8 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 20:12:12 by joafern2         ###   ########.fr       */
-*                                                                            */
+/*   Updated: 2025/04/23 21:32:12 by rafasant         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -108,7 +108,7 @@ void	parse_input(char *str);
 void	input_check(char *input);
 
 /* parse_expansions.c */
-int		final_len(char *str, int len, int quotes, int wq);
+int		final_len(char *str, int len, int quotes);
 char	*final_str(char *str, char *arg, int i, int quotes);
 char	*expand_str(char *str);
 

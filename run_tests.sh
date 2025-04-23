@@ -31,7 +31,7 @@ bash < "$TEST_FILE" > "$OUT_BASH" 2>&1
 
 # === Run Minishell ===
 echo "▶ Running in Minishell..."
-$MINISHELL_PATH < "$TEST_FILE" > "$OUT_MINISHELL" 2>&1
+valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes $MINISHELL_PATH < "$TEST_FILE" > "$OUT_MINISHELL" 2>&1
 
 # === Strip minishell prompts ===
 echo "▶ Removing \$minishell> prompts..."
