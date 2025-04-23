@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:08:53 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 19:10:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:35:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,16 @@ int	file_len(char *str)
 	return (len);
 }
 
-char	*get_del(char *str, int *i)
+char	*get_del(char *str, int *i, int len, int quotes)
 {
 	int		j;
-	int		len;
 	char	*del;
-	int		quotes;
 
 	len = file_len(&str[*i]);
 	del = malloc(sizeof(char) * len + 1);
 	if (!del)
 		deallocate("Memory allocation error: get_del\n");
 	j = 0;
-	quotes = 0;
 	while (j < len && str[*i])
 	{
 		if (str[*i] == '\"' || str[*i] == '\'')
@@ -88,19 +85,16 @@ char	*get_del(char *str, int *i)
 	return (del);
 }
 
-char	*get_file(char *str, int *i)
+char	*get_file(char *str, int *i, int len, int quotes)
 {
 	int		j;
-	int		len;
 	char	*file;
-	int		quotes;
 
 	len = file_len(&str[*i]);
 	file = malloc(sizeof(char) * len + 1);
 	if (!file)
 		deallocate("Memory allocation error: get_file\n");
 	j = 0;
-	quotes = 0;
 	while (j < len && str[*i])
 	{
 		if (str[*i] == '\"' || str[*i] == '\'')

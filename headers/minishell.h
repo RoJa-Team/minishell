@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 21:10:50 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:37:25 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ void	new_redir(char *str, int *i);
 /* parse_redirections_utils.c */
 int		heredoc_quote(char *str);
 int		file_len(char *str);
-char	*get_del(char *str, int *i);
-char	*get_file(char *str, int *i);
+char	*get_del(char *str, int *i, int len, int quotes);
+char	*get_file(char *str, int *i, int len, int quotes);
 
 /* parse_heredoc.c */
 void	receive_content(char *del, int here, int quote);
@@ -233,7 +233,7 @@ void	check_access(t_redir *r, int *res, struct stat st);
 void	signal_handler(int signal);
 void	setup_signals(void);
 void	setup_exec(void);
-void	exec_signal(int	signal);
+void	exec_signal(int signal);
 
 /*exec_signals_here.c*/
 void	setup_heredoc(void);
