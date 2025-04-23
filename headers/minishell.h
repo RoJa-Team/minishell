@@ -6,8 +6,8 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 19:37:25 by rafasant         ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2025/04/23 20:12:12 by joafern2         ###   ########.fr       */
+*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -44,7 +44,6 @@ typedef struct s_exec
 {
 	int				prev_fd;
 	char			*pwd;
-	size_t			buffer_size;
 }				t_exec;
 
 typedef struct s_cmd
@@ -175,6 +174,10 @@ void	invoke_shell(int i, char *path);
 void	execute_execve(int i);
 void	child_process(int prev_fd, int *fd, int i);
 
+/*exec_utils_3.c*/
+void	execute_builtin_or_execve(int i);
+int		is_executable(const char *path);
+
 /*ft_echo_pwd_env_unset.c*/
 void	ft_echo(int i);
 void	ft_pwd(void);
@@ -199,7 +202,6 @@ void	update_env_lst(t_env *env, char *key, char *new_value);
 void	update_ms_env(void);
 void	free_args(char **arg);
 int		arg_count(char **arg);
-int		is_executable(const char *path);
 
 /*ft_export.c*/
 void	ft_export(int i);
@@ -224,9 +226,9 @@ char	*find_value(t_env *env, char *key);
 
 /*exec_redirections.c*/
 int		handle_redirections(t_cmd *cmd);
-void	handle_input_r(t_redir *r, int *res);
-void	handle_output_r(t_redir *r, int *res);
-void	execute_heredoc(t_redir *r, int *res, struct stat st);
+void	handle_input_r(t_cmd *cmd, t_redir *r, int *res);
+void	handle_output_r(t_cmd *cmd, t_redir *r, int *res);
+void	execute_heredoc(t_cmd *cmd, t_redir *r, int *res, struct stat st);
 void	check_access(t_redir *r, int *res, struct stat st);
 
 /*exec_signals.c*/

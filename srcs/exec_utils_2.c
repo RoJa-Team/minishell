@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:20:25 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/22 18:25:39 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:02:14 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ void	child_process(int prev_fd, int *fd, int i)
 {
 	if (ms()->cmd[i]->fd_in || ms()->cmd[i]->fd_out)
 	{
-		if (handle_redirections(ms()->cmd[i]) != 0)
-			return ;
+		if (handle_redirections(ms()->cmd[i]) != 0 || !ms()->cmd[i]->arg)
+		{
+			clean_structs();
+			exit (1);
+		}
 	}
 	if (prev_fd != -1 && ms()->cmd[i]->fd_in == NULL)
 		dup2(prev_fd, STDIN_FILENO);
@@ -30,14 +33,7 @@ void	child_process(int prev_fd, int *fd, int i)
 		close(fd[1]);
 		close(fd[0]);
 	}
-	if (is_builtin(i))
-	{
-		execute_builtin(i);
-		clean_structs();
-		exit (0);
-	}
-	else
-		execute_execve(i);
+	execute_builtin_or_execve(i);
 }
 
 void	invoke_shell(int i, char *path)
@@ -79,11 +75,7 @@ void	execute_execve(int i)
 	else
 	{
 		if (access(ms()->cmd[i]->arg[0], X_OK) == 0)
-		{
 			path = ms()->cmd[i]->arg[0];
-			if ((ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) == 0))
-				return (invoke_shell(i, path));
-		}
 	}
 	if (!path || execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
 		not_found(i);

@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/22 21:13:44 by rafasant         ###   ########.fr        #
+#    Updated: 2025/04/23 20:02:40 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
 			exec_utils_2.c ft_cd_utils_2.c exec_signals.c \
 			ft_exit.c ft_echo_pwd_env_unset.c ft_cd.c ft_export.c \
 			ft_export_utils.c exec_redirections.c \
-			exec_signals_here.c)
+			exec_signals_here.c exec_utils_3.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM	= /bin/rm -f
 

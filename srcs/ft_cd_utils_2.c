@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_utils_2.c                                       :+:      :+:    :+:   */
+/*   ft_cd_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:59:42 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/22 19:19:18 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:01:35 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,4 @@ int	arg_count(char **arg)
 	while (arg[i])
 		i++;
 	return (i);
-}
-
-int	is_executable(const char *path)
-{
-	struct stat	st;
-
-	if (access(path, X_OK) != 0)
-		return (0);
-	if (stat(path, &st) != 0)
-		return (0);
-	if (!S_ISREG(st.st_mode))
-		return (0);
-	return (1);
 }

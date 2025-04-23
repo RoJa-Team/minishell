@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   exec_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/22 19:00:20 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:48:09 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int	handle_redirections(t_cmd *cmd)
 	res = 0;
 	r = cmd->fd_in;
 	if (r)
-		handle_input_r(r, &res);
+		handle_input_r(cmd, r, &res);
 	r = cmd->fd_out;
 	if (r)
-		handle_output_r(r, &res);
+		handle_output_r(cmd, r, &res);
 	return (res);
 }
 
-void	handle_input_r(t_redir *r, int *res)
+void	handle_input_r(t_cmd *cmd, t_redir *r, int *res)
 {
 	int			fd;
 	struct stat	st;
@@ -41,17 +41,17 @@ void	handle_input_r(t_redir *r, int *res)
 			stat(r->file, &st);
 			if ((fd < 0) || (!S_ISREG(st.st_mode)))
 				check_access(r, res, st);
-			else
+			else if (cmd->arg)
 				dup2(fd, STDIN_FILENO);
 			close(fd);
 		}
 		else if (r->type == 2)
-			execute_heredoc(r, res, st);
+			execute_heredoc(cmd, r, res, st);
 		r = r->next;
 	}
 }
 
-void	handle_output_r(t_redir *r, int *res)
+void	handle_output_r(t_cmd *cmd, t_redir *r, int *res)
 {
 	int			fd;
 	struct stat	st;
@@ -66,14 +66,14 @@ void	handle_output_r(t_redir *r, int *res)
 		stat(r->file, &st);
 		if ((fd < 0) || (!S_ISREG(st.st_mode)))
 			check_access(r, res, st);
-		else
+		else if (cmd->arg)
 			dup2(fd, STDOUT_FILENO);
 		close(fd);
 		r = r->next;
 	}
 }
 
-void	execute_heredoc(t_redir *r, int *res, struct stat st)
+void	execute_heredoc(t_cmd *cmd, t_redir *r, int *res, struct stat st)
 {
 	int	fd;
 
@@ -82,7 +82,7 @@ void	execute_heredoc(t_redir *r, int *res, struct stat st)
 	fd = ft_atoi(r->file);
 	if (fd < 0)
 		check_access(r, res, st);
-	else
+	else if (cmd->arg)
 		dup2(fd, STDIN_FILENO);
 	close(fd);
 }
