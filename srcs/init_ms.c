@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 21:44:44 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:00:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,5 @@ void	init(char **env)
 	create_env_lst();
 	parse()->cmd_ll = NULL;
 	parse()->arg_ll = NULL;
+	catch()->error_msg = NULL;
 }

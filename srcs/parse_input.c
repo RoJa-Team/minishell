@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:41:19 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:15:39 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*new_str(char *str, int *i)
 		return (NULL);
 	new_str = malloc(sizeof(char) * len + 1);
 	if (!new_str)
-		deallocate("Memory allocation error: new_str\n");
+		return (catch()->error_msg = "Memory allocation error: new_str\n", NULL);
 	j = 0;
 	while (j < len && str[*i])
 		new_str[j++] = str[(*i)++];
@@ -38,22 +38,29 @@ char	*new_str(char *str, int *i)
 	return (new_str);
 }
 
-void	new_arg(char *str)
+void	new_arg(char **str_arr)
 {
+	int		i;
 	t_arg	*new_arg;
 
-	if (!str)
+	if (!str_arr)
 		return ;
-	new_arg = malloc(sizeof(t_arg));
-	if (!new_arg)
-		deallocate("Memory allocation error: new_arg\n");
-	new_arg->word = str;
-	new_arg->next = NULL;
-	if (parse()->arg_ll)
-		((t_arg *)get_last_node(parse()->arg_ll, get_offset(&dummy()->arg, \
-		&dummy()->arg.next)))->next = new_arg;
-	else
-		parse()->arg_ll = new_arg;
+	i = 0;
+	while (str_arr[i])
+	{
+		new_arg = malloc(sizeof(t_arg));
+		if (!new_arg)
+			return (catch()->error_msg = "Memory allocation error: new_arg\n");
+		new_arg->word = str_arr[i];
+		new_arg->next = NULL;
+		if (parse()->arg_ll)
+			((t_arg *)get_last_node(parse()->arg_ll, \
+			get_offset(&dummy()->arg, &dummy()->arg.next)))->next = new_arg;
+		else
+			parse()->arg_ll = new_arg;
+		i++;
+	}
+	free(str_arr);
 }
 
 void	new_cmd(void)
@@ -76,7 +83,7 @@ void	new_cmd(void)
 
 void	parse_input(char *str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0' && !ms()->here_sig)
@@ -107,6 +114,11 @@ void	input_check(char *input)
 	if (verify_input(input) == 0)
 	{
 		parse_input(input);
+		if (catch()->error_msg != NULL)
+		{
+			free(input);
+			deallocate(catch()->error_msg);
+		}
 		if (!ms()->here_sig)
 			exec_cmd();
 		ms()->here_sig = 0;

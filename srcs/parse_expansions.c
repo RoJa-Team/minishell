@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 21:18:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:15:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	copy_exp_value(char *str, char *arg, int *i, int *j)
 	*j = *j + ft_strlen(val);
 }
 
-char	*final_str(char *str, char *arg, int i, int quotes)
+void	final_str(char *str, char *arg, int i, int quotes)
 {
 	int	j;
 
@@ -70,23 +70,37 @@ char	*final_str(char *str, char *arg, int i, int quotes)
 			i++;
 		}
 	}
-	return (arg);
 }
 
-char	*expand_str(char *str)
+char	**expand_str(char *str)
 {
 	int		len;
 	char	*arg;
+	char	**str_arr;
 
-	if (!str)
+	if (!str || catch()->error_msg != NULL)
 		return (NULL);
 	len = final_len(str, 0, 0);
 	if (len == 0)
 		return (free(str), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);
 	if (!arg)
-		deallocate ("Memory allocation error: expand_str\n");
-	arg = final_str(str, arg, 0, 0);
-	free(str);
-	return (arg);
+		return (free(str), catch()->error_msg = "Memory allocation error: expand_str\n", NULL);
+	final_str(str, arg, 0, 0);
+	if (str[0] == '$')
+	{
+		str_arr = ft_split(arg, ' ');
+		if (!str_arr)
+			return (free(str), free(arg), catch()->error_msg = "Memory allocation error: expand_str\n", NULL);
+		free(arg);
+	}
+	else
+	{
+		str_arr = ft_calloc(sizeof(char *), 2);
+		if (!str_arr)
+			return (free(str), free(arg), catch()->error_msg = "Memory allocation error: expand_str\n", NULL);
+		str_arr[0] = arg;
+	}
+	return (free(str), str_arr);
 }
+// echo 123 abc
