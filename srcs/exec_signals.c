@@ -56,9 +56,10 @@ void	setup_exec(void)
 
 	sa.sa_handler = exec_signal;
 	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sa.sa_mask);
+	if (sigemptyset(&sa.sa_mask) != 0)
+		return ((void)(catch()->error_msg = " Failed to clear mask"));
 	if (sigaction(SIGINT, &sa, NULL))
-		deallocate("Error: FAiled at execution mode in SIGINT\n");
+		return ((void)(catch()->error_msg = "Error: Failed at execution mode in SIGINT\n"));
 	if (sigaction(SIGQUIT, &sa, NULL))
-		deallocate("Error: FAiled at execution mode in SIGQUIT\n");
+		return ((void)(catch()->error_msg = "Error: FAiled at execution mode in SIGQUIT\n"));
 }

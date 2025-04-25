@@ -23,16 +23,14 @@ char	**convert_lst_to_arr(t_env *lst)
 	arr = malloc(sizeof(char *) * (size + 1));
 	status = -1;
 	if (!arr)
-		deallocate("Memory Allocation failed");
+		return (catch()->error_msg = "Memory Allocation failed", NULL);
 	i = 0;
 	while (lst)
 	{
 		status = assign_value_to_array(&i, lst, arr);
 		if (status == 0)
-		{
-			deallocate("Error allocating memory");
-			return (NULL);
-		}
+			return (free(arr), catch()->error_msg
+				= "Error allocating memory", NULL);
 		lst = lst->next;
 		i++;
 	}

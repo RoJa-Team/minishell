@@ -41,16 +41,22 @@ void	child_process(int prev_fd, int *fd, int i)
 void	invoke_shell(int i, char *path)
 {
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (execve(path, ms()->cmd[i]->arg, ms()->ms_env) == -1)
-			deallocate("Error executing execve: execute_execve\n");
+		execve(path, ms()->cmd[i]->arg, ms()->ms_env);
+		catch()->error_msg = "Error executing execve: execute_execve\n";
+		exit(1);
 	}
 	else
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			catch()->error_msg = "Child process exit with failure";
+	}
 }
 
 void	not_found(int i)

@@ -49,7 +49,7 @@ char	*check_visibility(t_env *temp)
 		ft_putchar_fd('\n', 1);
 		value = ft_strdup(temp->value);
 		if (!value)
-			deallocate("memory allocation fail.\n");
+			return (catch()->error_msg = "memory allocation fail.\n", NULL);
 		return (value);
 	}
 	else

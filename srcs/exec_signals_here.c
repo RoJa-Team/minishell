@@ -19,7 +19,8 @@ void	setup_heredoc(void)
 	sa.sa_handler = heredoc_signal;
 	sa.sa_flags = SA_RESTART;
 	if (sigemptyset(&sa.sa_mask) || sigaction(SIGINT, &sa, NULL))
-		deallocate("Error: Failed heredoc signals\n");
+		return (catch()->error_msg
+			= "Error: Failed heredoc signals\n", (void)(NULL));
 	rl_event_hook = rl_hook;
 }
 

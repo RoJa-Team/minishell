@@ -32,7 +32,8 @@ void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
 		*save_stdout = dup(STDOUT_FILENO);
 		*save_stdin = dup(STDIN_FILENO);
 		if (*save_stdout == -1 || *save_stdin == -1)
-			deallocate("FD duplication error: save_and_restore_std\n");
+			return ((void)(catch()->error_msg
+				= "FD duplication error: save_and_restore_std\n"));
 	}
 	else if (flag == 2)
 	{
@@ -83,18 +84,16 @@ char	*get_full_path(char *path_dir, char *cmd)
 	char	*full_path;
 
 	temp = ft_strjoin(path_dir, "/");
+	if (!temp)
+		return (catch()->error_msg = "Memory allocation error\n");
 	full_path = ft_strjoin(temp, cmd);
 	if (!full_path)
-		deallocate("Memory allocation error: get_full_path\n");
-	if (is_executable(full_path) == 1)
-	{
-		free(temp);
-		free(path_dir);
-		return (full_path);
-	}
+		return (free(temp), catch()->error_msg
+			= "Memory allocation error: get_full_path\n");
 	free(temp);
+	if (is_executable(full_path) == 1)
+		return (full_path);
 	free(full_path);
-	free(path_dir);
 	return (NULL);
 }
 
@@ -109,16 +108,18 @@ char	*find_path(t_env *env_lst, char *cmd)
 	i = 0;
 	path_env = get_value(env_lst, "PATH");
 	if (!path_env)
-		return (NULL);
+		return (catch()->error_msg = "Missing PATH env var", NULL);
 	path_dir = ft_split(path_env, ':');
 	free(path_env);
 	if (!path_dir)
-		deallocate("Memory allocation error: find_path\n");
+		return (catch()->error_msg
+			= "Memory allocation error: find_path\n", NULL);
 	while (path_dir[i])
 	{
 		full_path = get_full_path(path_dir[i], cmd);
 		if (full_path != NULL)
 			break ;
+		free(path_dir[i]);
 		i++;
 	}
 	free(path_dir);

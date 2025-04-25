@@ -20,7 +20,7 @@ void	ft_echo(int j)
 
 	arg = ms()->cmd[j]->arg;
 	if (!arg)
-		deallocate("Memory allocation failure\n");
+		return ((void)(catch()->error_msg = "Memory allocation failure\n"));
 	n_flag = 0;
 	if (arg[1] && ft_strncmp(arg[1], "-n", 3) == 0)
 		n_flag = 1;

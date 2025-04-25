@@ -57,11 +57,13 @@ int	handle_heredoc(int quote, char *delimiter)
 {
 	static int	fds[2];
 
+	if (catch()->error_msg)
+		return (-1);
 	fds[0] = check_existing_heredoc();
 	if (fds[0] != 0)
 		close(fds[0]);
 	if (pipe(fds) == -1)
-		deallocate("Pipe creation error: handle_heredoc\n");
+		return (catch()->error_msg = "Pipe creation error: handle_heredoc\n", 0);
 	setup_heredoc();
 	receive_content(delimiter, fds[1], quote);
 	setup_signals();

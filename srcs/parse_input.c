@@ -50,7 +50,7 @@ void	new_arg(char **str_arr)
 	{
 		new_arg = malloc(sizeof(t_arg));
 		if (!new_arg)
-			return (catch()->error_msg = "Memory allocation error: new_arg\n");
+			return (catch()->error_msg = "Memory allocation error: new_arg\n", (void)NULL);
 		new_arg->word = str_arr[i];
 		new_arg->next = NULL;
 		if (parse()->arg_ll)

@@ -48,7 +48,7 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 		free(temp);
 	}
 	if (!new_ab_path)
-		deallocate("memory allocation fail\n");
+		return (catch()->error_msg = "memory allocation fail\n", NULL);
 	return (new_ab_path);
 }
 
@@ -90,7 +90,8 @@ char	*get_pwd(t_env *env)
 		{
 			pwd = ft_strdup(env->value);
 			if (!pwd)
-				deallocate("Memory allocation failed for ft_getcwd\n");
+				return (catch()->error_msg
+					= "Memory allocation failed for ft_getcwd\n", NULL);
 			return (pwd);
 		}
 		env = env->next;

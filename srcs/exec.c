@@ -82,6 +82,8 @@ void	exec_cmd(void)
 	close_heredoc(i);
 	while (wait(NULL) > 0)
 		continue ;
+	if (catch()->error_msg != NULL)
+		deallocate(catch()->error_msg);
 }
 
 void	handle_input(int *i, int *save_stdin, int *save_stdout)

@@ -80,7 +80,7 @@ void	add_env_key(t_env **env, char *key, char *value)
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		deallocate("Error adding new env key\n");
+		return ((void)(catch()->error_msg = "Error adding new env key\n"));
 	new_node->key = ft_strdup(key);
 	if (value)
 	{

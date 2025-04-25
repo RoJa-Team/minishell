@@ -70,7 +70,7 @@ void	init(char **env)
 	ms()->here_sig = 0;
 	ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
-		deallocate("Memory allocation error: exec_cmd\n");
+		return ((void)(catch()->error_msg = "Memory allocation error: exec_cmd\n"));
 	ms()->exec->pwd = NULL;
 	copy_env(env);
 	create_env_lst();
