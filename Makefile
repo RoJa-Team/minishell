@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/04/23 20:02:40 by joafern2         ###   ########.fr        #
+#    Updated: 2025/04/25 19:23:18 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,10 @@ SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
 			parse_heredoc.c parse_heredoc_expansions.c \
 			parse_ll_to_array.c parse_misc.c exec.c \
 			ft_export_utils_2.c exec_utils.c ft_cd_utils.c \
-			exec_utils_2.c ft_cd_utils_2.c exec_signals.c \
+			exec_utils_2.c ft_cd_utils_2.c signals.c \
 			ft_exit.c ft_echo_pwd_env_unset.c ft_cd.c ft_export.c \
 			ft_export_utils.c exec_redirections.c \
-			exec_signals_here.c exec_utils_3.c)
+			signals_utils.c exec_utils_3.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM	= /bin/rm -f
 

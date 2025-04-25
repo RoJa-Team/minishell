@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 16:57:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 19:25:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,17 +237,6 @@ void	handle_output_r(t_cmd *cmd, t_redir *r, int *res);
 void	execute_heredoc(t_cmd *cmd, t_redir *r, int *res, struct stat st);
 void	check_access(t_redir *r, int *res, struct stat st);
 
-/*exec_signals.c*/
-void	signal_handler(int signal);
-void	setup_signals(void);
-void	setup_exec(void);
-void	exec_signal(int signal);
-
-/*exec_signals_here.c*/
-void	setup_heredoc(void);
-void	heredoc_signal(int signal);
-int		rl_hook(void);
-
 /*ft_exit.c*/
 int		is_numeric(const char *str);
 int		is_ll_overflow(const char *str);
@@ -270,6 +259,18 @@ t_parse	*parse(void);
 t_dummy	*dummy(void);
 t_catch *catch(void);
 
+/* signals.c */
+void	setup_parse(void);
+void	setup_exec(void);
+void	setup_heredoc(void);
+void	setup_signal(int signum, void (* sig_handler)(int), int flag);
+
+/* signals_utils.c */
+void	heredoc_signal(int signal);
+void	parse_signal(int signal);
+void	exec_signal(int signal);
+int		rl_hook(void);
+
 /* list_functions.c */
 size_t	get_offset(void *struct_ptr, void *member_ptr);
 int		get_list_size(void *node, size_t next_offset);
@@ -280,6 +281,7 @@ void	bad_input(char *message, int error);
 void	deallocate(char *message);
 
 /* cleaner.c */
+void	clean_env_lst(void);
 void	clean_env(void);
 void	clean_redir(void);
 void	clean_cmd(void);
