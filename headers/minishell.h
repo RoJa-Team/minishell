@@ -196,6 +196,7 @@ void	ft_cd(int i);
 void	assign_to_ms_env(void);
 char	*check_visibility(t_env *temp);
 void	change_directory(char *oldpwd, char *newpwd, int i);
+void	assign_visible(t_env *temp2, char *temp3, int *i);
 
 /*ft_cd_utils.c*/
 char	*get_pwd(t_env *env);
@@ -208,6 +209,7 @@ void	update_env_lst(t_env *env, char *key, char *new_value);
 void	update_ms_env(void);
 void	free_args(char **arg);
 int		arg_count(char **arg);
+void	no_value(char *arg, char **key, char **value);
 
 /*ft_export.c*/
 void	ft_export(int i);

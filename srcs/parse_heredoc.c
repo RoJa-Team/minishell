@@ -66,7 +66,7 @@ int	handle_heredoc(int quote, char *delimiter)
 		return (catch()->error_msg = "Pipe creation error: handle_heredoc\n", 0);
 	setup_heredoc();
 	receive_content(delimiter, fds[1], quote);
-	setup_signals();
+	setup_parse();
 	close(fds[1]);
 	if (ms()->here_sig)
 	{

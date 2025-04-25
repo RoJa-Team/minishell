@@ -17,6 +17,8 @@ char	*get_parent_dir(char *temp, char *ab_path)
 	int		i;
 
 	temp = ft_strdup(ab_path);
+	if (!temp)
+		return (catch()->error_msg = "Strdup failed", NULL);
 	i = ft_strlen(temp);
 	while (i > 0 && temp[i] != '/')
 		i--;
@@ -31,8 +33,6 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 
 	temp = NULL;
 	new_ab_path = NULL;
-	if (!next_dir || !ab_path)
-		return (NULL);
 	if (next_dir[ft_strlen(next_dir) - 1] == '/')
 		next_dir[ft_strlen(next_dir) - 1] = '\0';
 	if (next_dir[0] == '/')
@@ -44,6 +44,8 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 	else if (ab_path[ft_strlen(ab_path) - 1] != '/')
 	{
 		temp = ft_strjoin(ab_path, "/");
+		if (!temp)
+			return (catch()->error_msg = "Strdup failed", NULL);
 		new_ab_path = ft_strjoin(temp, next_dir);
 		free(temp);
 	}

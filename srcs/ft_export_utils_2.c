@@ -49,6 +49,8 @@ int	assign_value_to_array(int *i, t_env *lst, char **arr)
 		if (!temp)
 			return (0);
 		arr[*i] = ft_strjoin(temp, lst->value);
+		if (!arr[*i])
+			return (free(temp), (catch()->error_msg = "Strdup failed"), 0);
 		free(temp);
 	}
 	else

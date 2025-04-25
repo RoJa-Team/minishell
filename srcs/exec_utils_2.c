@@ -72,12 +72,8 @@ void	not_found(int i)
 void	execute_execve(int i)
 {
 	char				*path;
-	struct sigaction	sa;
 
 	path = NULL;
-	sa.sa_handler = SIG_DFL;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
 	if (ms()->cmd[i]->arg && ms()->cmd[i]->arg[0]
 		&& (ms()->cmd[i]->arg[0][0] != '/')
 		&& (ft_strncmp((ms()->cmd[i])->arg[0], "./", 2) != 0))

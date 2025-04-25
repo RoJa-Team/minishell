@@ -47,7 +47,7 @@ void	add_new_key(char **arg, int j)
 
 	key = NULL;
 	value = NULL;
-	while (arg[j])
+	while (arg[j] && catch()->error_msg == NULL)
 	{
 		get_key_and_value(arg[j], &key, &value);
 		if (!is_valid_key(key))
@@ -63,7 +63,8 @@ void	add_new_key(char **arg, int j)
 		free_key_and_value(key, value);
 		j++;
 	}
-	update_ms_env();
+	if (catch()->error_msg == NULL)
+		update_ms_env();
 }
 
 void	print_export_fd(void)

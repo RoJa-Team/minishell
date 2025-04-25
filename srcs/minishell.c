@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 	input = NULL;
 	while (1)
 	{
-		setup_signals();
+		setup_parse();
 		input = readline("$minishell> ");
 		if (!input)
 		{

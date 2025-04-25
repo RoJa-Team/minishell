@@ -36,10 +36,7 @@ void	exec_signal(int signal)
 	if (signal == SIGQUIT)
 		ms()->exit_status = 131;
 	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
 		ms()->exit_status = 130;
-	}
 }
 
 int	rl_hook(void)

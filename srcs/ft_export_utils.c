@@ -15,7 +15,6 @@
 void	get_key_and_value(char *arg, char **key, char **value)
 {
 	int		h;
-	char	*copy;
 
 	h = 0;
 	*value = NULL;
@@ -24,15 +23,14 @@ void	get_key_and_value(char *arg, char **key, char **value)
 	if (arg[h] == '=')
 	{
 		*key = ft_substr(arg, 0, h);
+		if (!key)
+			return ((void)(catch()->error_msg = "Substr failed"));
 		*value = ft_strdup(arg + h + 1);
+		if (!value)
+			return (free(key), (void)(catch()->error_msg = "Strdup failed"));
 	}
 	else
-	{
-		*key = ft_strdup(arg);
-		copy = find_value(ms()->env_lst, *key);
-		if (copy)
-			*value = ft_strdup(copy);
-	}
+		no_value(arg, key, value);
 }
 
 int	is_valid_key(char *key)
@@ -65,13 +63,16 @@ void	update_or_add_env_key(t_env **env, char *key, char *value)
 				if (temp->value)
 					free(temp->value);
 				temp->value = ft_strdup(value);
+				if (!temp->value)
+					return ((void)(catch()->error_msg = "Substr failed"));
 			}
 			temp->invis = 0;
 			return ;
 		}
 		temp = temp->next;
 	}
-	add_env_key(env, key, value);
+	if (catch()->error_msg == NULL)
+		add_env_key(env, key, value);
 }
 
 void	add_env_key(t_env **env, char *key, char *value)
@@ -82,9 +83,15 @@ void	add_env_key(t_env **env, char *key, char *value)
 	if (!new_node)
 		return ((void)(catch()->error_msg = "Error adding new env key\n"));
 	new_node->key = ft_strdup(key);
+	if (!new_node->key)
+		return (free(new_node), (void)(catch()->error_msg
+			= "Strdup failed"));
 	if (value)
 	{
 		new_node->value = ft_strdup(value);
+		if (!new_node->value)
+			return (free(new_node->key), free(new_node),
+				(void)(catch()->error_msg = "Substr failed"));
 		new_node->invis = 0;
 	}
 	else
