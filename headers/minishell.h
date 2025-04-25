@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 21:32:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 16:57:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define HEREDOC 2
 # define OUT 1
 # define IN 1
+// # define malloc(...) NULL
 
 typedef struct s_redir
 {
@@ -68,6 +69,11 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
+typedef struct s_catch
+{
+	char			*error_msg;
+}				t_catch;
+
 typedef struct s_dummy
 {
 	t_redir			redir;
@@ -102,15 +108,15 @@ int		verify_input(char *input);
 
 /* parse_input.c */
 char	*new_str(char *str, int *i);
-void	new_arg(char *str);
+void	new_arg(char **str);
 void	new_cmd(void);
 void	parse_input(char *str);
 void	input_check(char *input);
 
 /* parse_expansions.c */
 int		final_len(char *str, int len, int quotes);
-char	*final_str(char *str, char *arg, int i, int quotes);
-char	*expand_str(char *str);
+void	final_str(char *str, char *arg, int i, int quotes);
+char	**expand_str(char *str);
 
 /* parse_expansions_utils.c */
 char	*convert_exit_status(void);
@@ -262,6 +268,7 @@ void	init(char **env);
 t_ms	*ms(void);
 t_parse	*parse(void);
 t_dummy	*dummy(void);
+t_catch *catch(void);
 
 /* list_functions.c */
 size_t	get_offset(void *struct_ptr, void *member_ptr);

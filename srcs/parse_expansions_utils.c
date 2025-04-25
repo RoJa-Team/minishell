@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:35:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:25:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:07:49 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*convert_exit_status(void)
 	static char	exit_status[10];
 
 	str = ft_itoa(ms()->exit_status);
+	if (!str)
+		return (catch()->error_msg = "Memory allocation error: convert_exit_status\n", NULL);
 	i = 0;
 	while (exit_status[i] != '\0')
 	{
