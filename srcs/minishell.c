@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:41:28 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:57:03 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	main(int argc, char **argv, char **env)
 		setup_signals();
 		input = readline("$minishell> ");
 		if (!input)
+		{
+			ft_printf("exit\n");
 			return (clean_structs(), 0);
+		}
 		if (input[0] != ' ' && input[0] != '\0')
 			add_history(input);
 		if (input[0] != '\0')
