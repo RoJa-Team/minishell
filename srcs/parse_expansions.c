@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 21:25:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:29:38 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	**expand_str(char *str)
 	{
 		str_arr = split_expansion(arg, 0, 0, 0);
 		if (str_arr)
-			str_arr = remove_quotes(str_arr, 0, 0);
+			str_arr = remove_quotes(str_arr, 0);
 	}
 	return (free(str), str_arr);
 }
