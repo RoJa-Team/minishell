@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 21:57:03 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/26 00:00:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 	input = NULL;
 	while (1)
 	{
-		setup_signals();
+		setup_parse();
 		input = readline("$minishell> ");
 		if (!input)
 		{

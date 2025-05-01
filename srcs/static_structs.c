@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:09:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 16:56:50 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:29:43 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ t_dummy	*dummy(void)
 	return (&dummy);
 }
 
-t_catch *catch(void)
+t_catch	*catch(void)
 {
 	static t_catch	catch;
-	
+
 	return (&catch);
 }

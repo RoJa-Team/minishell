@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:44:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:22:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:50:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ void	exec_signal(int signal)
 	if (signal == SIGQUIT)
 		ms()->exit_status = 131;
 	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
 		ms()->exit_status = 130;
-	}
 }
 
 int	rl_hook(void)

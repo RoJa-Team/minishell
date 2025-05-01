@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:18:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:33:49 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	token_to_array(void)
 	last_cmd->arg = malloc(sizeof(char *) * (get_list_size(parse()->arg_ll, \
 	get_offset(&dummy()->arg, &dummy()->arg.next)) + 1));
 	if (!last_cmd->arg)
-		deallocate("Memory allocation error: token_to_array\n");
+		return (catch()->error_msg = \
+		"Memory allocation error: token_to_array\n", (void) NULL);
 	i = 0;
 	while (parse()->arg_ll != NULL)
 	{
@@ -47,7 +48,8 @@ void	cmd_to_array(void)
 	ms()->cmd = malloc(sizeof(t_cmd *) * (get_list_size(parse()->cmd_ll, \
 	get_offset(&dummy()->cmd, &dummy()->cmd.next)) + 1));
 	if (!ms()->cmd)
-		deallocate("Memory allocation error: cmd_to_array\n");
+		return (catch()->error_msg = \
+		"Memory allocation error: cmd_to_array\n", (void) NULL);
 	temp_cmd = parse()->cmd_ll;
 	i = 0;
 	while (temp_cmd != NULL)

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:08:53 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 19:35:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:31:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*get_del(char *str, int *i, int len, int quotes)
 	len = file_len(&str[*i]);
 	del = malloc(sizeof(char) * len + 1);
 	if (!del)
-		deallocate("Memory allocation error: get_del\n");
+		return (catch()->error_msg = "Memory allocation error: get_del\n", del);
 	j = 0;
 	while (j < len && str[*i])
 	{
@@ -93,7 +93,8 @@ char	*get_file(char *str, int *i, int len, int quotes)
 	len = file_len(&str[*i]);
 	file = malloc(sizeof(char) * len + 1);
 	if (!file)
-		deallocate("Memory allocation error: get_file\n");
+		return (catch()->error_msg = "Memory allocation error: get_file\n", \
+		NULL);
 	j = 0;
 	while (j < len && str[*i])
 	{

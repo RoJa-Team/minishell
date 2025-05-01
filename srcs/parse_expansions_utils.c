@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:35:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 17:07:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:04:45 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*convert_exit_status(void)
 
 	str = ft_itoa(ms()->exit_status);
 	if (!str)
-		return (catch()->error_msg = "Memory allocation error: convert_exit_status\n", NULL);
+		return (catch()->error_msg = \
+		"Memory allocation error: convert_exit_status\n", NULL);
 	i = 0;
 	while (exit_status[i] != '\0')
 	{
@@ -41,7 +42,7 @@ char	*find_env_value(char *str, int i, int key_len)
 {
 	t_env	*temp;
 
-	if (!ft_strncmp(&str[i], "?", key_len))
+	if (key_len > 0 && !ft_strncmp(&str[i], "?", key_len))
 		return (convert_exit_status());
 	temp = ms()->env_lst;
 	while (temp != NULL)
@@ -53,12 +54,13 @@ char	*find_env_value(char *str, int i, int key_len)
 	}
 	if (temp && temp->value)
 		return (temp->value);
-	return ("");
+	return (NULL);
 }
 
-char	*expansion_value(char *str, int *i)
+char	*expansion_value(char *str, int *i, int flag)
 {
-	int	len;
+	int		len;
+	char	*env_value;
 
 	(*i)++;
 	len = 0;
@@ -71,5 +73,8 @@ char	*expansion_value(char *str, int *i)
 		str[*i + len] == '_'))
 			len++;
 	*i = *i + len;
-	return (find_env_value(str, *i - len, len));
+	env_value = find_env_value(str, *i - len, len);
+	if (flag == 1 && env_value == NULL)
+		return ("");
+	return (env_value);
 }

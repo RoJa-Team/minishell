@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 19:08:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:24:55 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,16 @@ int	handle_heredoc(int quote, char *delimiter)
 	static int	fds[2];
 
 	if (catch()->error_msg)
-		return (-1);
+		return (0);
 	fds[0] = check_existing_heredoc();
 	if (fds[0] != 0)
 		close(fds[0]);
 	if (pipe(fds) == -1)
-		return (catch()->error_msg = "Pipe creation error: handle_heredoc\n", 0);
+		return (catch()->error_msg = "Pipe creation error: handle_heredoc\n"\
+		, 0);
 	setup_heredoc();
 	receive_content(delimiter, fds[1], quote);
-	setup_signals();
+	setup_parse();
 	close(fds[1]);
 	if (ms()->here_sig)
 	{

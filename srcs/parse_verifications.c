@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:42:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 21:56:19 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:03:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	verify_redirections(char *input)
 			i = i + len;
 			while (input[i] && input[i] == ' ')
 				i++;
-			if (len > 2 || check_metachar(input[i]) || input[i] == '\0')
+			if (len > 2 || check_metachar(input[i]))
 				return (bad_input("Syntax error: invalid redirection!", \
 					2), 1);
 		}

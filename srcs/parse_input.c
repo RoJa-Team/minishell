@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 17:15:39 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/26 00:03:11 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ char	*new_str(char *str, int *i)
 		return (NULL);
 	new_str = malloc(sizeof(char) * len + 1);
 	if (!new_str)
-		return (catch()->error_msg = "Memory allocation error: new_str\n", NULL);
+		return (catch()->error_msg = "Memory allocation error: new_str\n"\
+		, NULL);
 	j = 0;
 	while (j < len && str[*i])
 		new_str[j++] = str[(*i)++];
@@ -50,7 +51,8 @@ void	new_arg(char **str_arr)
 	{
 		new_arg = malloc(sizeof(t_arg));
 		if (!new_arg)
-			return (catch()->error_msg = "Memory allocation error: new_arg\n", (void)NULL);
+			return (catch()->error_msg = "Memory allocation error: new_arg\n"\
+			, (void) NULL);
 		new_arg->word = str_arr[i];
 		new_arg->next = NULL;
 		if (parse()->arg_ll)
@@ -69,7 +71,8 @@ void	new_cmd(void)
 
 	new_cmd = malloc(sizeof(t_cmd));
 	if (!new_cmd)
-		deallocate("Memory allocation error: init_cmd\n");
+		return (catch()->error_msg = "Memory allocation error: new_cmd\n"\
+		, (void) NULL);
 	new_cmd->arg = NULL;
 	new_cmd->fd_in = NULL;
 	new_cmd->fd_out = NULL;
@@ -86,10 +89,10 @@ void	parse_input(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0' && !ms()->here_sig)
+	while (str[i] != '\0' && !ms()->here_sig && catch()->error_msg == NULL)
 	{
 		new_cmd();
-		while (str[i] != '\0' && !ms()->here_sig)
+		while (str[i] != '\0' && !ms()->here_sig && catch()->error_msg == NULL)
 		{
 			while (ft_isspace(str[i]))
 				i++;
@@ -103,10 +106,11 @@ void	parse_input(char *str)
 			else
 				new_arg(expand_str(new_str(str, &i)));
 		}
-		if (parse()->arg_ll)
+		if (parse()->arg_ll && catch()->error_msg == NULL)
 			token_to_array();
 	}
-	cmd_to_array();
+	if (catch()->error_msg == NULL)
+		cmd_to_array();
 }
 
 void	input_check(char *input)
@@ -114,15 +118,14 @@ void	input_check(char *input)
 	if (verify_input(input) == 0)
 	{
 		parse_input(input);
+		free(input);
 		if (catch()->error_msg != NULL)
-		{
-			free(input);
 			deallocate(catch()->error_msg);
-		}
 		if (!ms()->here_sig)
 			exec_cmd();
 		ms()->here_sig = 0;
 		clean_cmd();
 	}
-	free(input);
+	else
+		free(input);
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/23 19:34:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:28:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,13 @@ void	new_input(char *file, int type)
 	t_redir	*new_redir;
 	t_cmd	*last_cmd;
 
+	if (!file)
+		return (catch()->error_msg = "Memory allocation error: new_input\n", \
+		(void) NULL);
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-		deallocate("Memory allocation error: new_redir\n");
+		return (catch()->error_msg = "Memory allocation error: new_input\n", \
+		(void) NULL);
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;
@@ -37,9 +41,13 @@ void	new_output(char *file, int type)
 	t_redir	*new_redir;
 	t_cmd	*last_cmd;
 
+	if (!file)
+		return (catch()->error_msg = "Memory allocation error: new_output\n", \
+		(void) NULL);
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-		deallocate("Memory allocation error: new_redir\n");
+		return (catch()->error_msg = "Memory allocation error: new_output\n", \
+		(void) NULL);
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;

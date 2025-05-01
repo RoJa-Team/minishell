@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 19:25:52 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:53:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,18 @@ int		final_len(char *str, int len, int quotes);
 void	final_str(char *str, char *arg, int i, int quotes);
 char	**expand_str(char *str);
 
+/* parse_expansions_split.c */
+char	**allocate_split(char *arg);
+char	**allocate_strs(char **split_arg, char *arg, int n_str, int quotes);
+char	**split_expansion(char *arg, int quotes);
+
+/* parse_expansions_quotes.c */
+char	**remove_quotes(char **split_arg, int quotes);
+
 /* parse_expansions_utils.c */
 char	*convert_exit_status(void);
 char	*find_env_value(char *str, int i, int key_len);
-char	*expansion_value(char *str, int *i);
+char	*expansion_value(char *str, int *i, int flag);
 
 /* parse_redirections.c */
 void	new_input(char *file, int type);
@@ -250,6 +258,7 @@ void	ft_exit(int i);
 
 /* init_ms.c */
 void	copy_env(char **env);
+void	new_env(t_env **env_node, int i);
 void	create_env_lst(void);
 void	init(char **env);
 
@@ -257,13 +266,13 @@ void	init(char **env);
 t_ms	*ms(void);
 t_parse	*parse(void);
 t_dummy	*dummy(void);
-t_catch *catch(void);
+t_catch	*catch(void);
 
 /* signals.c */
 void	setup_parse(void);
 void	setup_exec(void);
 void	setup_heredoc(void);
-void	setup_signal(int signum, void (* sig_handler)(int), int flag);
+void	setup_signal(int signum, void (*sig_handler)(int), int flag);
 
 /* signals_utils.c */
 void	heredoc_signal(int signal);
@@ -277,14 +286,20 @@ int		get_list_size(void *node, size_t next_offset);
 void	*get_last_node(void *node, size_t next_offset);
 
 /* error.c */
+void	free_array(char **split_arg);
 void	bad_input(char *message, int error);
 void	deallocate(char *message);
 
 /* cleaner.c */
 void	clean_env_lst(void);
-void	clean_env(void);
+void	clean_ms_env(void);
 void	clean_redir(void);
 void	clean_cmd(void);
 void	clean_structs(void);
+
+/* cleaner_ll.c */
+void	clean_arg_ll(void);
+void	clean_redir_ll(t_cmd *cmd_temp);
+void	clean_parse(void);
 
 #endif

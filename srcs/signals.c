@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:33:30 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:22:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:57:43 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void	setup_heredoc(void)
 	rl_event_hook = rl_hook;
 }
 
-void	setup_signal(int signum, void (* sig_handler)(int), int flag)
+void	setup_signal(int signum, void (*sig_handler)(int), int flag)
 {
 	struct sigaction	sa;
 
 	sa.sa_handler = sig_handler;
 	sa.sa_flags = flag;
-	if (sigemptyset(&sig.sa_mask) != 0)
-		return (catch()->error_msg = "Failed setting up signals");
+	if (sigemptyset(&sa.sa_mask) != 0)
+		return ((void)(catch()->error_msg = "Failed setting up signals"));
 	if (sigaction(signum, &sa, NULL) != 0)
-		return (catch()->error_msg = "Failed setting up signals");
+		return ((void)(catch()->error_msg = "Failed setting up signals"));
 }

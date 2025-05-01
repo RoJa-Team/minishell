@@ -6,32 +6,40 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 21:14:19 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/22 20:41:27 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:21:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	clean_env(void)
+void	clean_env_lst(void)
 {
-	int		i;
 	t_env	*temp;
 
 	while (ms()->env_lst != NULL)
 	{
 		temp = ms()->env_lst;
 		ms()->env_lst = temp->next;
-		free(temp->key);
-		free(temp->value);
+		if (temp->key)
+			free(temp->key);
+		if (temp->value)
+			free(temp->value);
 		free(temp);
 	}
+}
+
+void	clean_ms_env(void)
+{
+	int	i;
+
 	i = 0;
 	while (ms()->ms_env && ms()->ms_env[i])
 	{
 		free(ms()->ms_env[i]);
 		i++;
 	}
-	free(ms()->ms_env);
+	if (ms()->ms_env)
+		free(ms()->ms_env);
 	ms()->ms_env = NULL;
 }
 
@@ -86,7 +94,11 @@ void	clean_cmd(void)
 
 void	clean_structs(void)
 {
-	clean_env();
+	clean_parse();
+	if (ms()->env_lst)
+		clean_env_lst();
+	if (ms()->ms_env)
+		clean_ms_env();
 	if (ms()->cmd)
 		clean_cmd();
 	if (ms()->exec)
