@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:41:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:21:54 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 22:02:53 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,18 @@ int	is_ll_overflow(const char *str)
 	return (0);
 }
 
+void	numeric_message(int i)
+{
+	ft_putstr_fd("exit: ", STDERR_FILENO);
+	ft_putstr_fd(ms()->cmd[i]->arg[1], STDERR_FILENO);
+	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+	clean_structs();
+}
+
 void	ft_exit(int i)
 {
+	if (ms()->exec->prev_fd != -1)
+		return ;
 	if (!ms()->cmd[i]->arg[1])
 		ft_putendl_fd("exit", STDERR_FILENO);
 	if (ms()->cmd[i]->arg[1])
@@ -63,10 +73,7 @@ void	ft_exit(int i)
 		if (!is_numeric(ms()->cmd[i]->arg[1])
 			|| is_ll_overflow(ms()->cmd[i]->arg[1]))
 		{
-			ft_putstr_fd("exit: ", STDERR_FILENO);
-			ft_putstr_fd(ms()->cmd[i]->arg[1], STDERR_FILENO);
-			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-			clean_structs();
+			numeric_message(i);
 			exit(2);
 		}
 		else if (ms()->cmd[i]->arg[2])
