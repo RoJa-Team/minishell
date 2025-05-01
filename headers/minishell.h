@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 20:53:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:30:42 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,12 +191,13 @@ void	child_process(int prev_fd, int *fd, int i);
 /*exec_utils_3.c*/
 void	execute_builtin_or_execve(int i);
 int		is_executable(const char *path);
+void	remove_key(t_env *prev, t_env *temp, char *arg);
 
 /*ft_echo_pwd_env_unset.c*/
 void	ft_echo(int i);
 void	ft_pwd(void);
 void	ft_unset(int i);
-void	remove_key(t_env *prev, t_env *temp, char *arg);
+int	check_n_flag(char **arg);
 void	ft_env(int i);
 
 /*ft_cd.c*/
