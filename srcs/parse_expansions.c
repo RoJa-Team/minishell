@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 21:29:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:52:32 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	final_len(char *str, int len, int quotes)
 	{
 		check_quotes(str[i], &quotes);
 		if (str[i] == '$' && (quotes == 2 || quotes == 0) && \
-		!check_metachar(str[i + 1]))
+		(ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
 			len = len + ft_strlen(expansion_value(str, &i, 1));
 		else
 		{
@@ -52,8 +52,8 @@ void	final_str(char *str, char *arg, int i, int quotes)
 	while (str[i] && catch()->error_msg == NULL)
 	{
 		check_quotes(str[i], &quotes);
-		if (str[i] == '$' && (quotes == 2 || quotes == 0) \
-		&& !check_metachar(str[i + 1]))
+		if (str[i] == '$' && (quotes == 2 || quotes == 0) && \
+		(ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
 			copy_exp_value(str, arg, &i, &j);
 		else
 		{

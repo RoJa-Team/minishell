@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:08:53 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 23:31:41 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 22:35:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ char	*get_del(char *str, int *i, int len, int quotes)
 	char	*del;
 
 	len = file_len(&str[*i]);
-	del = malloc(sizeof(char) * len + 1);
+	del = ft_calloc(sizeof(char), len + 1);
 	if (!del)
 		return (catch()->error_msg = "Memory allocation error: get_del\n", del);
 	j = 0;
 	while (j < len && str[*i])
 	{
+		check_quotes(str[*i], &quotes);
 		if (str[*i] == '\"' || str[*i] == '\'')
 		{
-			check_quotes(str[*i], &quotes);
 			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && \
 				str[*i] == '\"'))
 				del[j++] = str[*i];
@@ -79,7 +79,6 @@ char	*get_del(char *str, int *i, int len, int quotes)
 			del[j++] = str[*i];
 		(*i)++;
 	}
-	del[j] = '\0';
 	while (str[*i] && !check_metachar(str[*i]))
 		(*i)++;
 	return (del);
@@ -91,16 +90,16 @@ char	*get_file(char *str, int *i, int len, int quotes)
 	char	*file;
 
 	len = file_len(&str[*i]);
-	file = malloc(sizeof(char) * len + 1);
+	file = ft_calloc(sizeof(char), len + 1);
 	if (!file)
 		return (catch()->error_msg = "Memory allocation error: get_file\n", \
 		NULL);
 	j = 0;
 	while (j < len && str[*i])
 	{
+		check_quotes(str[*i], &quotes);
 		if (str[*i] == '\"' || str[*i] == '\'')
 		{
-			check_quotes(str[*i], &quotes);
 			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && \
 				str[*i] == '\"'))
 				file[j++] = str[*i];
@@ -109,6 +108,7 @@ char	*get_file(char *str, int *i, int len, int quotes)
 			file[j++] = str[*i];
 		(*i)++;
 	}
-	file[j] = '\0';
+	while (str[*i] && !check_metachar(str[*i]))
+		(*i)++;
 	return (file);
 }
