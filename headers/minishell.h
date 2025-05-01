@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 20:53:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:26:40 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,12 @@ char	**expand_str(char *str);
 /* parse_expansions_split.c */
 char	**allocate_split(char *arg);
 char	**allocate_strs(char **split_arg, char *arg, int n_str, int quotes);
-char	**split_expansion(char *arg, int quotes);
+char	**split_expansion(char *arg, int i, int n_str, int quotes);
 
 /* parse_expansions_quotes.c */
-char	**remove_quotes(char **split_arg, int quotes);
+int		final_str_len(char *split_arg);
+void	no_quotes_str(char *str_arr, char *split_arg);
+char	**remove_quotes(char **split_arg, int n_strs);
 
 /* parse_expansions_utils.c */
 char	*convert_exit_status(void);

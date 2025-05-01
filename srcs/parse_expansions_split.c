@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:33:24 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 20:54:46 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:09:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ char	**allocate_strs(char **split_arg, char *arg, int n_str, int quotes)
 	int	i;
 	int	len;
 
-	if (split_arg == NULL)
-		return (NULL);
 	i = 0;
 	while (arg[i] != '\0')
 	{
@@ -68,19 +66,18 @@ char	**allocate_split(char *arg)
 	return (split_arg);
 }
 
-char	**split_expansion(char *arg, int quotes)
+char	**split_expansion(char *arg, int i, int n_str, int quotes)
 {
-	int		i;
-	int		n_str;
 	int		j;
 	char	**split_arg;
 
-	split_arg = allocate_strs(allocate_split(arg), arg, 0 , 0);
-	if (split_arg == NULL)
+	split_arg = allocate_split(arg);
+	if (!split_arg)
 		return (NULL);
-	i = 0;
+	split_arg = allocate_strs(split_arg, arg, 0, 0);
+	if (!split_arg)
+		return (NULL);
 	j = 0;
-	n_str = 0;
 	while (arg[i] != '\0')
 	{
 		check_quotes(arg[i], &quotes);
