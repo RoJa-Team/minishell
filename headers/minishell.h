@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 21:36:53 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 22:04:35 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,7 @@ void	check_access(t_redir *r, int *res, struct stat st);
 int		is_numeric(const char *str);
 int		is_ll_overflow(const char *str);
 void	ft_exit(int i);
+void	numeric_message(int i);
 
 /*********************************************/
 /*                                           */
