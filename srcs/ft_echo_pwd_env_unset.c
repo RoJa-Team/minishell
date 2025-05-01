@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 20:59:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:31:29 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	ft_echo(int j)
 	arg = ms()->cmd[j]->arg;
 	if (!arg)
 		return ((void)(catch()->error_msg = "Memory allocation failure\n"));
-	n_flag = 0;
-	if (arg[1] && ft_strncmp(arg[1], "-n", 3) == 0)
-		n_flag = 1;
+	n_flag = check_n_flag(arg);
 	i = n_flag + 1;
 	while (arg[i])
 	{
@@ -35,6 +33,21 @@ void	ft_echo(int j)
 	if (!n_flag)
 		ft_putchar_fd('\n', 1);
 	ms()->exit_status = 0;
+}
+
+int	check_n_flag(char **arg)
+{
+	int	i;
+
+	i = 1;
+	if (arg[1] && arg[1][0] == '-')
+	{
+		while (arg[1][i] == 'n' && arg[1][i])
+			i++;
+		if (arg[1][i] == '\0')
+			return (1);
+	}
+	return (0);
 }
 
 void	ft_env(int i)
@@ -91,25 +104,4 @@ void	ft_unset(int i)
 	}
 	update_ms_env();
 	ms()->exit_status = 0;
-}
-
-void	remove_key(t_env *prev, t_env *temp, char *arg)
-{
-	(void)arg;
-	while (temp != NULL)
-	{
-		if (ft_strncmp(arg, temp->key, ft_strlen(temp->key) + 1) == 0)
-		{
-			if (prev)
-				prev->next = temp->next;
-			else
-				ms()->env_lst = temp->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-			return ;
-		}
-		prev = temp;
-		temp = temp->next;
-	}
 }

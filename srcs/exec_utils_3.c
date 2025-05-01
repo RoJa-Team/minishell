@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:00:32 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:21:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:31:06 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,25 @@ int	is_executable(const char *path)
 	if (!S_ISREG(st.st_mode))
 		return (0);
 	return (1);
+}
+
+void	remove_key(t_env *prev, t_env *temp, char *arg)
+{
+	(void)arg;
+	while (temp != NULL)
+	{
+		if (ft_strncmp(arg, temp->key, ft_strlen(temp->key) + 1) == 0)
+		{
+			if (prev)
+				prev->next = temp->next;
+			else
+				ms()->env_lst = temp->next;
+			free(temp->key);
+			free(temp->value);
+			free(temp);
+			return ;
+		}
+		prev = temp;
+		temp = temp->next;
+	}
 }
