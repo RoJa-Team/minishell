@@ -186,7 +186,6 @@ void	close_pipe(int *fd, int *prev_fd, int i);
 /*exec_utils_2.c*/
 void	close_heredoc(int i);
 void	not_found(int i);
-void	invoke_shell(int i, char *path);
 void	execute_execve(int i);
 void	child_process(int prev_fd, int *fd, int i);
 

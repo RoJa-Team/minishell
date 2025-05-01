@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:20:25 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 21:54:04 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/01 23:05:22 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,17 @@ void	invoke_shell(int i, char *path)
 
 void	not_found(int i)
 {
+	struct stat	st;
+
 	if (ms()->cmd[i] && ms()->cmd[i]->arg)
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
+	if (stat(ms()->cmd[i]->arg[0], &st) == 0)
+	{
+		write(2, ": Is a directory\n", 17);
+		ms()->exit_status = 126;
+		clean_structs();
+		exit (126);
+	}
 	write(2, ": command not found\n", 20);
 	ms()->exit_status = 127;
 	clean_structs();
