@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/23 21:19:52 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:43:07 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,7 @@ void	fork_child_process(int *i, int *prev_fd)
 			ms()->exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			ms()->exit_status = 128 + WTERMSIG(status);
+		if (ms()->exit_status == 130)
+			write(1, "\n", 1);
 	}
 }

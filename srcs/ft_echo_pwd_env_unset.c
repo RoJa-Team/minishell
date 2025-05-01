@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/22 19:23:22 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:11:20 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	ft_unset(int i)
 		j++;
 	}
 	update_ms_env();
+	ms()->exit_status = 0;
 }
 
 void	remove_key(t_env *prev, t_env *temp, char *arg)
@@ -106,11 +107,9 @@ void	remove_key(t_env *prev, t_env *temp, char *arg)
 			free(temp->key);
 			free(temp->value);
 			free(temp);
-			ms()->exit_status = 0;
 			return ;
 		}
 		prev = temp;
 		temp = temp->next;
 	}
-	ms()->exit_status = 1;
 }
