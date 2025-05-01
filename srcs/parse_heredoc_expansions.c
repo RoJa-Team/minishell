@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:07:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/18 20:30:54 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:25:04 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	here_len(char *line)
 	while (line[i])
 	{
 		if (line[i] == '$')
-			len = len + ft_strlen(expansion_value(line, &i));
+			len = len + ft_strlen(expansion_value(line, &i, 1));
 		else
 		{
 			len++;
@@ -42,9 +42,12 @@ char	*final_here(char *str, char *arg, int i)
 	{
 		if (str[i] == '$')
 		{
-			val = expansion_value(str, &i);
-			ft_strlcat(&arg[j], val, ft_strlen(arg) + ft_strlen(val) + 1);
-			j = j + ft_strlen(val);
+			val = expansion_value(str, &i, 0);
+			if (val != NULL)
+			{
+				ft_strlcat(&arg[j], val, ft_strlen(arg) + ft_strlen(val) + 1);
+				j = j + ft_strlen(val);
+			}
 		}
 		else
 		{
@@ -64,11 +67,12 @@ char	*expand_here(char *line)
 	if (!line)
 		return (NULL);
 	len = here_len(line);
-	if (len == 0)
+	if (len == 0 || catch()->error_msg != NULL)
 		return (free(line), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);
 	if (!arg)
-		deallocate ("Memory allocation error: expand_here\n");
+		return (catch()->error_msg = "Memory allocation error: expand_here\n"\
+		, NULL);
 	arg = final_here(line, arg, 0);
 	free(line);
 	return (arg);
