@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 20:59:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:04:18 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	exec_cmd(void)
 	int	save_stdin;
 	int	save_stdout;
 
+	if (!ms()->cmd[0]->arg)
+		return ;
 	ms()->exec->prev_fd = -1;
 	if (!ms()->exec->pwd)
 		ms()->exec->pwd = malloc(sizeof(char) * 1024);
