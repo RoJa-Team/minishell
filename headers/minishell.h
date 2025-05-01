@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 21:33:07 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:36:53 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	remove_key(t_env *prev, t_env *temp, char *arg);
 void	ft_echo(int i);
 void	ft_pwd(void);
 void	ft_unset(int i);
-int	check_n_flag(char **arg);
+int		check_n_flag(char **arg);
 void	ft_env(int i);
 
 /*ft_cd.c*/
