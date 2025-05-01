@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 21:04:18 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:59:03 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 		}
 		else
 			execute_builtin(*i);
+		if (*prev_fd != 1)
+		{
+			close(*prev_fd);
+			*prev_fd = -1;
+		}
 		return ;
 	}
 	fork_child_process(i, prev_fd);
