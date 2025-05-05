@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 22:04:35 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:25:09 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_exec
 
 typedef struct s_cmd
 {
+	pid_t			pid;
 	char			**arg;
 	t_redir			*fd_in;
 	t_redir			*fd_out;
