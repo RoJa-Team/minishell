@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/05 18:05:48 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:07:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void	child_process(int prev_fd, int *fd, int i);
 void	execute_builtin_or_execve(int i);
 int		is_executable(const char *path);
 void	remove_key(t_env *prev, t_env *temp, char *arg);
-void	wait_for_childs();
+void	wait_for_childs(void);
 
 /*ft_echo_pwd_env_unset.c*/
 void	ft_echo(int i);

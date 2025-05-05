@@ -68,6 +68,12 @@ void	not_found(int i)
 	if (stat(ms()->cmd[i]->arg[0], &st) == 0)
 	{
 		write(2, ": Is a directory\n", 17);
+		if (ft_strncmp(ms()->cmd[i]->arg[0], ".", 2) == 0)
+		{
+			ms()->exit_status = 2;
+			clean_structs();
+			exit (2);
+		}
 		ms()->exit_status = 126;
 		clean_structs();
 		exit (126);
