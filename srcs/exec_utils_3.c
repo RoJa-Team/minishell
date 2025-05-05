@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:00:32 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 21:31:06 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:05:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,24 @@ void	remove_key(t_env *prev, t_env *temp, char *arg)
 		}
 		prev = temp;
 		temp = temp->next;
+	}
+}
+
+void	wait_for_childs(void)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	(void)status;
+	while (ms()->cmd[i] && waitpid(ms()->cmd[i]->pid, &status, 0) != -1)
+	{
+		if (WIFEXITED(status))
+			ms()->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			ms()->exit_status = 128 + WTERMSIG(status);
+		if (ms()->exit_status == 130)
+			write(1, "\n", 1);
+		i++;
 	}
 }

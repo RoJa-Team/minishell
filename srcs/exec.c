@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/05 17:36:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:05:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	execute_builtin(int i)
 void	exec_cmd(void)
 {
 	int	i;
-	int	status;
 	int	save_stdin;
 	int	save_stdout;
 
@@ -81,18 +80,7 @@ void	exec_cmd(void)
 		i++;
 	}
 	close_heredoc(i);
-	i = 0;
-	status = 0;
-	while (ms()->cmd[i] && waitpid(ms()->cmd[i]->pid, &status, 0) != -1)
-	{
-		if (WIFEXITED(status))
-			ms()->exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			ms()->exit_status = 128 + WTERMSIG(status);
-		if (ms()->exit_status == 130)
-			write(1, "\n", 1);
-		i++;
-	}
+	wait_for_childs();
 	if (catch()->error_msg != NULL)
 		deallocate(catch()->error_msg);
 }
