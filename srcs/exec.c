@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 21:59:03 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:05:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	exec_cmd(void)
 	int	save_stdin;
 	int	save_stdout;
 
-	if (!ms()->cmd[0]->arg)
-		return ;
 	ms()->exec->prev_fd = -1;
 	if (!ms()->exec->pwd)
 		ms()->exec->pwd = malloc(sizeof(char) * 1024);
@@ -82,8 +80,7 @@ void	exec_cmd(void)
 		i++;
 	}
 	close_heredoc(i);
-	while (wait(NULL) > 0)
-		continue ;
+	wait_for_childs();
 	if (catch()->error_msg != NULL)
 		deallocate(catch()->error_msg);
 }
@@ -100,7 +97,7 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 		if (ms()->cmd[*i]->fd_in || ms()->cmd[*i]->fd_out)
 		{
 			save_and_restore_std(save_stdin, save_stdout, 1);
-			if (handle_redirections(ms()->cmd[*i]) == 0)
+			if (handle_redirections(ms()->cmd[*i]) == 0 && ms()->cmd[*i]->arg)
 				execute_builtin(*i);
 			save_and_restore_std(save_stdin, save_stdout, 2);
 		}
@@ -118,25 +115,14 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 
 void	fork_child_process(int *i, int *prev_fd)
 {
-	int		status;
 	int		fd[2];
-	pid_t	pid;
 
 	if (ms()->cmd[*i + 1])
 		pipe(fd);
-	pid = fork();
-	if (pid == -1)
+	ms()->cmd[*i]->pid = fork();
+	if (ms()->cmd[*i]->pid == -1)
 		return ;
-	if (pid == 0)
+	if (ms()->cmd[*i]->pid == 0)
 		child_process(*prev_fd, fd, *i);
 	close_pipe(fd, prev_fd, *i);
-	if (waitpid(pid, &status, 0) != -1)
-	{
-		if (WIFEXITED(status))
-			ms()->exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			ms()->exit_status = 128 + WTERMSIG(status);
-		if (ms()->exit_status == 130)
-			write(1, "\n", 1);
-	}
 }
