@@ -1,0 +1,119 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
+/*   Updated: 2025/04/25 19:21:53 by rafasant         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../headers/minishell.h"
+
+void	assign_to_ms_env(void)
+{
+	t_env	*temp2;
+	char	*temp3;
+	int		i;
+
+	i = 0;
+	temp2 = ms()->env_lst;
+	temp3 = NULL;
+	while (temp2 != NULL && catch()->error_msg == NULL)
+	{
+		if (!temp2->invis)
+		{
+			assign_visible(temp2, temp3, &i);
+			i++;
+		}
+		temp2 = temp2->next;
+	}
+	ms()->ms_env[i] = NULL;
+}
+
+void	assign_visible(t_env *temp2, char *temp3, int *i)
+{
+	if (temp2->value)
+	{
+		temp3 = ft_strjoin(temp2->key, "=");
+		if (!temp3)
+			return ((void)(catch()->error_msg = "Strjoin failed"));
+		(ms()->ms_env[*i]) = ft_strjoin(temp3, temp2->value);
+		if (!ms()->ms_env[*i])
+			return ((void)(catch()->error_msg = "Strjoin failed"));
+		free(temp3);
+	}
+	else
+	{
+		ms()->ms_env[*i] = ft_strdup(temp2->key);
+		if (!ms()->ms_env[*i])
+			return ((void)(catch()->error_msg = "Strdup failed"));
+	}
+}
+
+char	*check_visibility(t_env *temp)
+{
+	char	*value;
+
+	if (temp->invis == 0)
+	{
+		ft_putstr_fd(temp->value, 1);
+		ft_putchar_fd('\n', 1);
+		value = ft_strdup(temp->value);
+		if (!value)
+			return (catch()->error_msg = "memory allocation fail.\n", NULL);
+		return (value);
+	}
+	else
+		return (NULL);
+}
+
+void	ft_cd(int i)
+{
+	t_env	*temp;
+	char	*oldpwd;
+	char	*newpwd;
+	char	**arg;
+	int		count;
+
+	arg = ms()->cmd[i]->arg;
+	count = arg_count(arg);
+	if (count > 2)
+	{
+		ft_printf("cd: too many arguments\n");
+		ms()->exit_status = 1;
+		return ;
+	}
+	temp = ms()->env_lst;
+	newpwd = NULL;
+	oldpwd = ms()->exec->pwd;
+	if (count < 2)
+		newpwd = get_home(temp);
+	else
+		newpwd = get_ab_path(oldpwd, arg[1]);
+	if (newpwd && catch()->error_msg == NULL)
+		change_directory(oldpwd, newpwd, i);
+}
+
+void	change_directory(char *oldpwd, char *newpwd, int i)
+{
+	t_env		*temp;
+
+	temp = ms()->env_lst;
+	if (newpwd && chdir(newpwd) != 0)
+	{
+		ft_printf("cd: %s: No such file or directory\n", ms()->cmd[i]->arg[1]);
+		ms()->exit_status = 1;
+	}
+	else if (newpwd && catch()->error_msg == NULL)
+	{
+		update_env_lst(temp, "OLDPWD", oldpwd);
+		update_env_lst(temp, "PWD", newpwd);
+		update_ms_env();
+		ms()->exit_status = 0;
+	}
+	if (newpwd)
+		free(newpwd);
+}

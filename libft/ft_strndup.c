@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 20:50:48 by rafasant         ###   ########.fr       */
+/*   Created: 2025/01/30 15:43:14 by rafasant          #+#    #+#             */
+/*   Updated: 2025/03/12 21:17:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "libft.h"
 
-void	free_array(char **split_arg)
+char	*ft_strndup(char *str, int len)
 {
-	int	i;
+	int		i;
+	char	*new_str;
 
 	i = 0;
-	while (split_arg[i] != NULL)
+	if (!str)
+		return (NULL);
+	while (str[i] && i < len)
+		i++;
+	new_str = malloc(sizeof(char) * i + 1);
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (str[i] && i < len)
 	{
-		free(split_arg[i]);
+		new_str[i] = str[i];
 		i++;
 	}
-	free(split_arg);
-}
-
-void	bad_input(char *message, int error)
-{
-	ms()->exit_status = error;
-	ft_printf("%s\n", message);
-}
-
-void	deallocate(char *message)
-{
-	clean_structs();
-	exit(ft_printf(message));
+	new_str[i] = '\0';
+	return (new_str);
 }

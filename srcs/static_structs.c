@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   static_structs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 20:50:48 by rafasant         ###   ########.fr       */
+/*   Created: 2025/04/02 19:09:14 by rafasant          #+#    #+#             */
+/*   Updated: 2025/04/25 23:29:43 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	free_array(char **split_arg)
+t_ms	*ms(void)
 {
-	int	i;
+	static t_ms	ms;
 
-	i = 0;
-	while (split_arg[i] != NULL)
-	{
-		free(split_arg[i]);
-		i++;
-	}
-	free(split_arg);
+	return (&ms);
 }
 
-void	bad_input(char *message, int error)
+t_parse	*parse(void)
 {
-	ms()->exit_status = error;
-	ft_printf("%s\n", message);
+	static t_parse	parse;
+
+	return (&parse);
 }
 
-void	deallocate(char *message)
+t_dummy	*dummy(void)
 {
-	clean_structs();
-	exit(ft_printf(message));
+	static t_dummy	dummy;
+
+	return (&dummy);
+}
+
+t_catch	*catch(void)
+{
+	static t_catch	catch;
+
+	return (&catch);
 }

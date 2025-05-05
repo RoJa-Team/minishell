@@ -13,7 +13,7 @@ SRCS = ft_atoi.c ft_isascii.c ft_memcpy.c ft_putnbr_fd.c ft_striteri.c \
 		ft_putendl_fd.c ft_strdup.c ft_strlen.c ft_strtrim.c \
 		ft_lstlast.c ft_lstadd_back.c ft_lstadd_front.c ft_lstmap.c ft_lstclear.c \
 		ft_lstnew.c ft_lstdelone.c ft_lstsize.c ft_lstiter.c \
-		ft_atoi_base.c ft_ltoa.c ft_isspace.c \
+		ft_atoi_base.c ft_ltoa.c ft_isspace.c ft_strndup.c ft_strlen_c.c\
 		ft_printf.c helper_functions.c helper_functions2.c \
 		get_next_line_bonus.c get_next_line_utils_bonus.c
 OBJS =  $(SRCS:.c=.o)

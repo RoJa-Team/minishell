@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/01/13 22:58:09 by rafasant         ###   ########.fr        #
+#    Updated: 2025/05/01 20:52:33 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,22 @@ NAME 	= minishell
 LIBFT 	= libft/libft.a
 SRCS_DIR= srcs/
 OBJS_DIR= objs/
-SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c error.c parse_input.c)
+SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
+			init_ms.c static_structs.c list_functions.c \
+			error.c cleaner.c cleaner_ll.c\
+			parse_verifications.c parse_input.c \
+			parse_expansions.c parse_expansions_utils.c \
+			parse_expansions_split.c parse_expansions_quotes.c\
+			parse_redirections.c parse_redirections_utils.c \
+			parse_heredoc.c parse_heredoc_expansions.c \
+			parse_ll_to_array.c parse_misc.c exec.c \
+			ft_export_utils_2.c exec_utils.c ft_cd_utils.c \
+			exec_utils_2.c ft_cd_utils_2.c signals.c \
+			ft_exit.c ft_echo_pwd_env_unset.c ft_cd.c ft_export.c \
+			ft_export_utils.c exec_redirections.c \
+			signals_utils.c exec_utils_3.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
-RM		= /bin/rm -f
+RM	= /bin/rm -f
 
 ${OBJS_DIR}%.o: ${SRCS_DIR}%.c
 	@${CC} ${CFLAGS} -c $< -o $@
@@ -42,6 +55,15 @@ fclean: clean
 	@${RM} ${NAME}
 	@make fclean -C libft --silent
 	@echo "Cleaned executables!"
+
+v :	$(NAME)
+	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full ./minishell
+
+vf : $(NAME)
+	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
+
+vp : $(NAME)
+	valgrind --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
 
 re: fclean all
 

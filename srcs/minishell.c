@@ -6,29 +6,34 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:22:10 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/13 22:39:30 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/04/26 00:00:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-// echo 123 | cat -e | wc -l
-
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	char	*input;
 
 	(void)argv;
 	if (argc != 1)
 		return (ft_printf("Error: Invalid number of arguments.\n"));
+	init(env);
+	input = NULL;
 	while (1)
 	{
-		input = readline("$minishell>");
-		parse_input(input);
-		ft_printf("input>%s\n", input);
-		add_history(input);
-		//execute();
-		if (!ft_strncmp(input, "exit", 4))
-			break ;
+		setup_parse();
+		input = readline("$minishell> ");
+		if (!input)
+		{
+			ft_printf("exit\n");
+			return (clean_structs(), 0);
+		}
+		if (input[0] != ' ' && input[0] != '\0')
+			add_history(input);
+		if (input[0] != '\0')
+			input_check(input);
 	}
+	return (0);
 }

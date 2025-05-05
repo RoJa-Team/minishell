@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 17:07:15 by rafasant          #+#    #+#             */
-/*   Updated: 2024/06/16 22:38:44 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:26:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-size_t	ft_strlen_c(char *str, char c)
+size_t	gnl_ft_strlen_c(char *str, char c)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ size_t	ft_strlen_c(char *str, char c)
 	return (i);
 }
 
-char	*ft_strndup(char *str, int len)
+char	*gnl_ft_strndup(char *str, int len)
 {
 	char	*s;
 	int		i;
@@ -43,17 +43,17 @@ char	*ft_strndup(char *str, int len)
 	return (s);
 }
 
-char	*ft_strjoin_n(char *s1, char *s2, int len)
+char	*gnl_ft_strjoin_n(char *s1, char *s2, int len)
 {
 	char	*s;
 	int		i;
 	int		j;
 
 	if (!s1)
-		return (ft_strndup(s2, len));
+		return (gnl_ft_strndup(s2, len));
 	if (!s2)
 		return (s1);
-	s = malloc(sizeof(char) * (ft_strlen_c(s1, '\0') + len) + 1);
+	s = malloc(sizeof(char) * (gnl_ft_strlen_c(s1, '\0') + len) + 1);
 	if (!s)
 		return (NULL);
 	i = -1;
@@ -67,7 +67,7 @@ char	*ft_strjoin_n(char *s1, char *s2, int len)
 	return (s);
 }
 
-void	adjust_buffer(char *buffer, int len)
+void	gnl_adjust_buffer(char *buffer, int len)
 {
 	int		i;
 	int		j;
@@ -95,7 +95,7 @@ void	adjust_buffer(char *buffer, int len)
 	}
 }
 
-char	*get_str(int fd, char *buffer, char *str)
+char	*gnl_get_str(int fd, char *buffer, char *str)
 {
 	int		len;
 	int		n_read;
@@ -110,11 +110,11 @@ char	*get_str(int fd, char *buffer, char *str)
 			len++;
 		if (len != BUFFER_SIZE && buffer[len] == '\n')
 			len++;
-		str = ft_strjoin_n(str, buffer, len);
+		str = gnl_ft_strjoin_n(str, buffer, len);
 		if (!str)
 			return (NULL);
-		adjust_buffer(buffer, len);
-		if (str[ft_strlen_c(str, '\n')] == '\n')
+		gnl_adjust_buffer(buffer, len);
+		if (str[gnl_ft_strlen_c(str, '\n')] == '\n')
 			break ;
 		n_read = read(fd, buffer, BUFFER_SIZE);
 	}

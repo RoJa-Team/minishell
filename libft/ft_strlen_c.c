@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_strlen_c.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 20:50:48 by rafasant         ###   ########.fr       */
+/*   Created: 2025/03/12 21:18:30 by rafasant          #+#    #+#             */
+/*   Updated: 2025/03/12 21:18:50 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "libft.h"
 
-void	free_array(char **split_arg)
+size_t	ft_strlen_c(char *str, char c)
 {
 	int	i;
 
 	i = 0;
-	while (split_arg[i] != NULL)
+	if (str)
 	{
-		free(split_arg[i]);
-		i++;
+		while (str[i] != '\0' && str[i] != c)
+			i++;
 	}
-	free(split_arg);
-}
-
-void	bad_input(char *message, int error)
-{
-	ms()->exit_status = error;
-	ft_printf("%s\n", message);
-}
-
-void	deallocate(char *message)
-{
-	clean_structs();
-	exit(ft_printf(message));
+	return (i);
 }
