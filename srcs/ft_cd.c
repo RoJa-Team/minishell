@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:21:53 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:53:05 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,45 +75,54 @@ void	ft_cd(int i)
 	t_env	*temp;
 	char	*oldpwd;
 	char	*newpwd;
-	char	**arg;
 	int		count;
 
-	arg = ms()->cmd[i]->arg;
-	count = arg_count(arg);
+	if (i > 0 || ms()->cmd[i + 1])
+		return ;
+	count = arg_count(ms()->cmd[i]->arg);
 	if (count > 2)
 	{
-		ft_printf("cd: too many arguments\n");
-		ms()->exit_status = 1;
+		write(2, "cd: too many arguments\n", 23);
+		ms()->cmd[i]->exit_status = 1;
 		return ;
 	}
 	temp = ms()->env_lst;
 	newpwd = NULL;
-	oldpwd = ms()->exec->pwd;
+	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+		oldpwd = check_pwd(NULL);
 	if (count < 2)
-		newpwd = get_home(temp);
+		newpwd = get_home(temp, ms()->cmd[i]);
 	else
-		newpwd = get_ab_path(oldpwd, arg[1]);
+		newpwd = get_ab_path(oldpwd, ms()->cmd[i]->arg[1]);
 	if (newpwd && catch()->error_msg == NULL)
 		change_directory(oldpwd, newpwd, i);
 }
 
 void	change_directory(char *oldpwd, char *newpwd, int i)
 {
-	t_env		*temp;
+	t_env	*temp;
 
 	temp = ms()->env_lst;
 	if (newpwd && chdir(newpwd) != 0)
 	{
-		ft_printf("cd: %s: No such file or directory\n", ms()->cmd[i]->arg[1]);
-		ms()->exit_status = 1;
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(ms()->cmd[i]->arg[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		ms()->cmd[i]->exit_status = 1;
 	}
 	else if (newpwd && catch()->error_msg == NULL)
 	{
 		update_env_lst(temp, "OLDPWD", oldpwd);
 		update_env_lst(temp, "PWD", newpwd);
 		update_ms_env();
-		ms()->exit_status = 0;
 	}
-	if (newpwd)
-		free(newpwd);
+	if (ms()->exec->pwd == oldpwd)
+		free(ms()->exec->pwd);
+	else
+	{
+		free(oldpwd);
+		free(ms()->exec->pwd);
+	}
+	ms()->exec->pwd = newpwd;
 }

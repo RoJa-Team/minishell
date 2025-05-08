@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 21:31:29 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:38:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	ft_echo(int j)
 	}
 	if (!n_flag)
 		ft_putchar_fd('\n', 1);
-	ms()->exit_status = 0;
 }
 
 int	check_n_flag(char **arg)
@@ -53,26 +52,28 @@ int	check_n_flag(char **arg)
 void	ft_env(int i)
 {
 	int		j;
-	int		fd;
 	char	**arg;
 
-	fd = STDOUT_FILENO;
 	j = 0;
 	arg = ms()->cmd[i]->arg;
-	if (arg[1])
+	while (arg[j])
 	{
-		ft_printf("env: '%s: No such file or directory\n", arg[1]);
-		ms()->exit_status = 1;
-	}
-	else
-	{
-		while (ms()->ms_env[j])
+		if (ft_strncmp(arg[j], "env", 4) != 0)
 		{
-			ft_putstr_fd(ms()->ms_env[j], fd);
-			ft_putchar_fd('\n', fd);
-			j++;
+			ft_putstr_fd("env: ", 2);
+			ft_putstr_fd(arg[1], 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			ms()->cmd[i]->exit_status = 127;
+			return ;
 		}
-		ms()->exit_status = 0;
+		j++;
+	}
+	j = 0;
+	while (ms()->ms_env[j])
+	{
+		ft_putstr_fd(ms()->ms_env[j], STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		j++;
 	}
 }
 
@@ -80,7 +81,6 @@ void	ft_pwd(void)
 {
 	ft_putstr_fd(ms()->exec->pwd, 1);
 	ft_putchar_fd('\n', 1);
-	ms()->exit_status = 0;
 }
 
 void	ft_unset(int i)
@@ -103,5 +103,4 @@ void	ft_unset(int i)
 		j++;
 	}
 	update_ms_env();
-	ms()->exit_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:49:48 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/26 00:00:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:15:30 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,15 @@ void	init(char **env)
 	ms()->exec = malloc(sizeof(t_exec));
 	if (!ms()->exec)
 	{
-		ft_printf("Memory allocation error: init\n");
+		ft_putstr_fd("Memory allocation error: init\n", 2);
 		exit(1);
 	}
-	ms()->exec->pwd = NULL;
+	(ms()->exec->pwd) = getcwd(NULL, 0);
+	if (!ms()->exec->pwd)
+	{
+		free(ms()->exec);
+		exit(1);
+	}
 	copy_env(env);
 	create_env_lst();
 	parse()->cmd_ll = NULL;

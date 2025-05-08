@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 23:24:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:04:43 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	check_existing_heredoc(void)
 	t_redir	*temp_redir;
 
 	temp_redir = ((t_cmd *)get_last_node(parse()->cmd_ll, \
-	get_offset(&dummy()->cmd, &dummy()->cmd.next)))->fd_in;
+	get_offset(&dummy()->cmd, &dummy()->cmd.next)))->redir;
 	while (temp_redir != NULL)
 	{
-		if (temp_redir->type == HEREDOC)
+		if (temp_redir->type == INPUT && temp_redir->operator == HEREDOC)
 			return (ft_atoi(temp_redir->file));
 		temp_redir = temp_redir->next;
 	}

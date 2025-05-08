@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:21:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:07:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	sort_env(char **env)
 	}
 }
 
-void	add_new_key(char **arg, int j)
+void	add_new_key(char **arg, int j, int i)
 {
 	char	*key;
 	char	*value;
@@ -52,14 +52,13 @@ void	add_new_key(char **arg, int j)
 		get_key_and_value(arg[j], &key, &value);
 		if (!is_valid_key(key))
 		{
-			ft_printf("export: `%s': not a valid identifier\n", arg[j]);
-			ms()->exit_status = 1;
+			ft_putstr_fd("export: ", 2);
+			ft_putstr_fd(arg[j], 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			ms()->cmd[i]->exit_status = 1;
 		}
 		else
-		{
 			update_or_add_env_key(&ms()->env_lst, key, value);
-			ms()->exit_status = 0;
-		}
 		free_key_and_value(key, value);
 		j++;
 	}
@@ -118,5 +117,5 @@ void	ft_export(int i)
 	if (!arg[j])
 		print_export_fd();
 	else
-		add_new_key(arg, j);
+		add_new_key(arg, j, i);
 }

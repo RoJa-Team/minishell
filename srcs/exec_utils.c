@@ -16,40 +16,13 @@ void	close_pipe(int *fd, int *prev_fd, int i)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
-	if (ms()->cmd[i + 1])
+	if (ms()->cmd[i + 1] && fd[1] != -1)
 	{
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
 	else
 		*prev_fd = -1;
-}
-
-void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
-{
-	if (flag == 1)
-	{
-		*save_stdout = dup(STDOUT_FILENO);
-		*save_stdin = dup(STDIN_FILENO);
-		if (*save_stdout == -1 || *save_stdin == -1)
-			return ((void)(catch()->error_msg
-				= "FD duplication error: save_and_restore_std\n"));
-	}
-	else if (flag == 2)
-	{
-		if (*save_stdout != -1)
-		{
-			dup2(*save_stdout, STDOUT_FILENO);
-			close(*save_stdout);
-			*save_stdout = -1;
-		}
-		if (*save_stdin != -1)
-		{
-			dup2(*save_stdin, STDIN_FILENO);
-			close(*save_stdin);
-			*save_stdin = -1;
-		}
-	}
 }
 
 char	*get_value(t_env *env, char *key)
@@ -124,4 +97,31 @@ char	*find_path(t_env *env_lst, char *cmd)
 	}
 	free(path_dir);
 	return (full_path);
+}
+
+void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag)
+{
+	if (flag == 1)
+	{
+		*save_stdout = dup(STDOUT_FILENO);
+		*save_stdin = dup(STDIN_FILENO);
+		if (*save_stdout == -1 || *save_stdin == -1)
+			return ((void)(catch()->error_msg
+				= "FD duplication error: save_and_restore_std\n"));
+	}
+	else if (flag == 2)
+	{
+		if (*save_stdout != -1)
+		{
+			dup2(*save_stdout, STDOUT_FILENO);
+			close(*save_stdout);
+			*save_stdout = -1;
+		}
+		if (*save_stdin != -1)
+		{
+			dup2(*save_stdin, STDIN_FILENO);
+			close(*save_stdin);
+			*save_stdin = -1;
+		}
+	}
 }

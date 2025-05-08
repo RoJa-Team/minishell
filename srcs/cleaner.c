@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 21:14:19 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 22:21:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:24:49 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,10 @@ void	clean_redir(void)
 	i = 0;
 	while (ms()->cmd && ms()->cmd[i])
 	{
-		while (ms()->cmd[i]->fd_in != NULL)
+		while (ms()->cmd[i]->redir != NULL)
 		{
-			temp = ms()->cmd[i]->fd_in;
-			ms()->cmd[i]->fd_in = temp->next;
-			free(temp->file);
-			free(temp);
-		}
-		while (ms()->cmd[i]->fd_out != NULL)
-		{
-			temp = ms()->cmd[i]->fd_out;
-			ms()->cmd[i]->fd_out = temp->next;
+			temp = ms()->cmd[i]->redir;
+			ms()->cmd[i]->redir = temp->next;
 			free(temp->file);
 			free(temp);
 		}
@@ -107,4 +100,5 @@ void	clean_structs(void)
 			free(ms()->exec->pwd);
 		free(ms()->exec);
 	}
+	rl_clear_history();
 }

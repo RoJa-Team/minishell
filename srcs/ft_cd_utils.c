@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/04/25 19:21:52 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:32:13 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 	return (new_ab_path);
 }
 
-char	*get_home(t_env *env)
+char	*get_home(t_env *env, t_cmd *cmd)
 {
 	t_env	*temp;
 	char	*home;
@@ -77,8 +77,8 @@ char	*get_home(t_env *env)
 		}
 		temp = temp->next;
 	}
-	ft_printf("cd: HOME not set\n");
-	ms()->exit_status = 1;
+	ft_putstr_fd("cd: HOME not set\n", 2);
+	cmd->exit_status = 1;
 	return (NULL);
 }
 
@@ -92,11 +92,29 @@ char	*get_pwd(t_env *env)
 		{
 			pwd = ft_strdup(env->value);
 			if (!pwd)
-				return (catch()->error_msg
-					= "Memory allocation failed for ft_getcwd\n", NULL);
+				return (catch()->error_msg \
+				= "Memory allocation failed for ft_getcwd\n", NULL);
 			return (pwd);
 		}
 		env = env->next;
 	}
 	return (NULL);
+}
+
+char	*check_pwd(char *oldpwd)
+{
+	struct stat	st;
+
+	while (!oldpwd)
+	{
+		oldpwd = get_parent_dir(NULL, ms()->exec->pwd);
+		if (catch()->error_msg)
+			deallocate(catch()->error_msg);
+		free(ms()->exec->pwd);
+		ms()->exec->pwd = oldpwd;
+		if (stat(oldpwd, &st) == 0)
+			break ;
+		oldpwd = NULL;
+	}
+	return (oldpwd);
 }

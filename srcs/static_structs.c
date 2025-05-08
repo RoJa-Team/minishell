@@ -39,3 +39,10 @@ t_catch	*catch(void)
 
 	return (&catch);
 }
+
+t_error	*error(void)
+{
+	static t_error	error;
+
+	return (&error);
+}

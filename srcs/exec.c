@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/05 18:05:51 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:22:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ void	exec_cmd(void)
 	int	save_stdout;
 
 	ms()->exec->prev_fd = -1;
-	if (!ms()->exec->pwd)
-		ms()->exec->pwd = malloc(sizeof(char) * 1024);
-	getcwd(ms()->exec->pwd, 1024);
 	i = 0;
 	setup_exec();
 	while (ms()->cmd[i])
@@ -83,18 +80,20 @@ void	exec_cmd(void)
 	wait_for_childs();
 	if (catch()->error_msg != NULL)
 		deallocate(catch()->error_msg);
+	i = 0;
+	while (ms()->cmd[i])
+		ms()->exit_status = ms()->cmd[i++]->exit_status;
 }
 
 void	handle_input(int *i, int *save_stdin, int *save_stdout)
 {
-	int		*prev_fd;
+	int	*prev_fd;
 
-	(void)save_stdin;
-	(void)save_stdout;
 	prev_fd = &ms()->exec->prev_fd;
 	if (is_builtin(*i) == 1 && !ms()->cmd[*i + 1])
 	{
-		if (ms()->cmd[*i]->fd_in || ms()->cmd[*i]->fd_out)
+		if (check_redir_input(ms()->cmd[*i]->redir)
+			|| check_redir_output(ms()->cmd[*i]->redir))
 		{
 			save_and_restore_std(save_stdin, save_stdout, 1);
 			if (handle_redirections(ms()->cmd[*i]) == 0 && ms()->cmd[*i]->arg)
@@ -103,7 +102,7 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 		}
 		else
 			execute_builtin(*i);
-		if (*prev_fd != 1)
+		if (*prev_fd != -1)
 		{
 			close(*prev_fd);
 			*prev_fd = -1;
@@ -115,14 +114,12 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 
 void	fork_child_process(int *i, int *prev_fd)
 {
-	int		fd[2];
-
 	if (ms()->cmd[*i + 1])
-		pipe(fd);
+		pipe(ms()->cmd[*i]->fd);
 	ms()->cmd[*i]->pid = fork();
 	if (ms()->cmd[*i]->pid == -1)
 		return ;
 	if (ms()->cmd[*i]->pid == 0)
-		child_process(*prev_fd, fd, *i);
-	close_pipe(fd, prev_fd, *i);
+		child_process(*prev_fd, ms()->cmd[*i]->fd, *i, -1);
+	close_pipe(ms()->cmd[*i]->fd, prev_fd, *i);
 }

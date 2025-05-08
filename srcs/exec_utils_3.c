@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 20:00:32 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/05 18:05:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:41:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_builtin_or_execve(int i)
 	{
 		execute_builtin(i);
 		clean_structs();
-		exit (0);
+		exit(ms()->cmd[i]->exit_status);
 	}
 	else
 		execute_execve(i);
@@ -64,15 +64,34 @@ void	wait_for_childs(void)
 	int	status;
 
 	i = 0;
-	(void)status;
+	status = 0;
 	while (ms()->cmd[i] && waitpid(ms()->cmd[i]->pid, &status, 0) != -1)
 	{
 		if (WIFEXITED(status))
-			ms()->exit_status = WEXITSTATUS(status);
+			ms()->cmd[i]->exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			ms()->exit_status = 128 + WTERMSIG(status);
-		if (ms()->exit_status == 130)
+			ms()->cmd[i]->exit_status = 128 + WTERMSIG(status);
+		if (ms()->cmd[i]->exit_status == 130)
 			write(1, "\n", 1);
 		i++;
 	}
+}
+
+void	not_found_case(int i)
+{
+	struct stat	st;
+
+	if (access(ms()->cmd[i]->arg[0], F_OK) == -1)
+	{
+		ft_putstr_fd(": No such file or directory\n", 2);
+		clean_structs();
+		exit(127);
+	}
+	else if ((access(ms()->cmd[i]->arg[0], R_OK) == -1
+			|| access(ms()->cmd[i]->arg[0], W_OK) == -1))
+		ft_putstr_fd(": Permission denied\n", 2);
+	else if (!S_ISREG(st.st_mode))
+		ft_putstr_fd(": Is a directory\n", 2);
+	clean_structs();
+	exit (126);
 }

@@ -6,56 +6,55 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:20:25 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 23:05:22 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:42:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	child_process(int prev_fd, int *fd, int i)
+void	child_process(int prev_fd, int *fd, int i, int res)
 {
-	if (ms()->cmd[i]->fd_in || ms()->cmd[i]->fd_out)
+	if (ms()->cmd[i]->redir && \
+	handle_redirections(ms()->cmd[i]) != 0)
+		res = 1;
+	if (res == 1 || !ms()->cmd[i]->arg)
 	{
-		if (handle_redirections(ms()->cmd[i]) != 0 || !ms()->cmd[i]->arg
-			|| !ms()->cmd[i]->arg[0])
-		{
-			clean_structs();
-			exit (1);
-		}
+		if (ms()->cmd[i + 1])
+			close(fd[0]);
+		close_pipe(ms()->cmd[i]->fd, &prev_fd, i);
+		clean_structs();
+		if (res != 1)
+			res = 0;
 	}
-	if (prev_fd != -1 && ms()->cmd[i]->fd_in == NULL)
+	if (res != -1)
+		exit(res);
+	if (prev_fd != -1 && check_redir_input(ms()->cmd[i]->redir) == 0)
 		dup2(prev_fd, STDIN_FILENO);
 	if (prev_fd != -1)
 		close(prev_fd);
-	if (ms()->cmd[i + 1] && ms()->cmd[i]->fd_out == NULL)
-		dup2(fd[1], STDOUT_FILENO);
+	if (ms()->cmd[i + 1] && check_redir_output(ms()->cmd[i]->redir) == 0)
+		check_next_pipe(i, fd);
 	if (ms()->cmd[i + 1])
-	{
-		close(fd[1]);
 		close(fd[0]);
-	}
+	close_pipe(ms()->cmd[i]->fd, &prev_fd, i);
 	close_heredoc(i);
 	execute_builtin_or_execve(i);
 }
 
-void	invoke_shell(int i, char *path)
+void	check_next_pipe(int i, int *fd)
 {
-	pid_t	pid;
-	int		status;
+	int	null_fd;
 
-	pid = fork();
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		execve(path, ms()->cmd[i]->arg, ms()->ms_env);
-		catch()->error_msg = "Error executing execve: execute_execve\n";
-		exit(1);
-	}
+	if (!is_builtin(i + 1))
+		dup2(fd[1], STDOUT_FILENO);
 	else
 	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			catch()->error_msg = "Child process exit with failure";
+		null_fd = open("/dev/null", O_WRONLY);
+		if (null_fd != -1)
+		{
+			dup2(null_fd, STDOUT_FILENO);
+			close(null_fd);
+		}
 	}
 }
 
@@ -65,28 +64,30 @@ void	not_found(int i)
 
 	if (ms()->cmd[i] && ms()->cmd[i]->arg)
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
-	if (stat(ms()->cmd[i]->arg[0], &st) == 0)
+	if (ft_strncmp(ms()->cmd[i]->arg[0], ".", 2) == 0)
+	{
+		ft_putstr_fd(": filename argument required\n", 2);
+		clean_structs();
+		exit (2);
+	}
+	else if (ft_strncmp(ms()->cmd[i]->arg[0], "/", 1) == 0
+		|| ft_strncmp(ms()->cmd[i]->arg[0], "./", 2) == 0)
+		not_found_case(i);
+	else if (stat(ms()->cmd[i]->arg[0], &st) == 0
+		&& ms()->cmd[i]->arg[0][strlen(ms()->cmd[i]->arg[0]) - 1] == '/')
 	{
 		write(2, ": Is a directory\n", 17);
-		if (ft_strncmp(ms()->cmd[i]->arg[0], ".", 2) == 0)
-		{
-			ms()->exit_status = 2;
-			clean_structs();
-			exit (2);
-		}
-		ms()->exit_status = 126;
 		clean_structs();
-		exit (126);
+		exit(126);
 	}
 	write(2, ": command not found\n", 20);
-	ms()->exit_status = 127;
 	clean_structs();
 	exit(127);
 }
 
 void	execute_execve(int i)
 {
-	char				*path;
+	char	*path;
 
 	path = NULL;
 	if (ms()->cmd[i]->arg && ms()->cmd[i]->arg[0]
@@ -111,10 +112,10 @@ void	close_heredoc(int i)
 	i = 0;
 	while (ms()->cmd[i])
 	{
-		r = ms()->cmd[i]->fd_in;
+		r = ms()->cmd[i]->redir;
 		while (r)
 		{
-			if (r->type == 2)
+			if (r->type == INPUT && r->operator == HEREDOC)
 			{
 				fd = ft_atoi(r->file);
 				if (fd >= 0)

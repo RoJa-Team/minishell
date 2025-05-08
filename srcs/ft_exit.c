@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:41:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/01 22:02:53 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:33:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void	numeric_message(int i)
 
 void	ft_exit(int i)
 {
-	if (ms()->exec->prev_fd != -1)
+	if (ms()->exec->prev_fd != -1 || ms()->cmd[i + 1])
 		return ;
 	if (!ms()->cmd[i]->arg[1])
 		ft_putendl_fd("exit", STDERR_FILENO);
-	if (ms()->cmd[i]->arg[1])
+	else if (ms()->cmd[i]->arg[1])
 	{
 		if (!is_numeric(ms()->cmd[i]->arg[1])
 			|| is_ll_overflow(ms()->cmd[i]->arg[1]))
@@ -79,12 +79,12 @@ void	ft_exit(int i)
 		else if (ms()->cmd[i]->arg[2])
 		{
 			ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
-			ms()->exit_status = 1;
+			ms()->cmd[i]->exit_status = 1;
 			return ;
 		}
 		else
 			ms()->exit_status = (unsigned char)ft_atoi(ms()->cmd[i]->arg[1]);
 	}
 	clean_structs();
-	exit (ms()->exit_status);
+	exit(ms()->exit_status);
 }

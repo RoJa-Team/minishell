@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:12:01 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 22:20:47 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:55:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,10 @@ void	clean_redir_ll(t_cmd *cmd_temp)
 {
 	t_redir	*redir_temp;
 
-	while (cmd_temp->fd_in != NULL)
+	while (cmd_temp->redir != NULL)
 	{
-		redir_temp = cmd_temp->fd_in;
-		cmd_temp->fd_in = redir_temp->next;
-		free(redir_temp->file);
-		free(redir_temp);
-	}
-	while (cmd_temp->fd_out != NULL)
-	{
-		redir_temp = cmd_temp->fd_out;
-		cmd_temp->fd_out = redir_temp->next;
+		redir_temp = cmd_temp->redir;
+		cmd_temp->redir = redir_temp->next;
 		free(redir_temp->file);
 		free(redir_temp);
 	}

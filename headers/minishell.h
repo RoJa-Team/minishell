@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/05 18:07:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:18:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <stdio.h>
+# include <errno.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+# define INPUT 0
+# define OUTPUT 1
 # define APPEND 2
 # define HEREDOC 2
 # define OUT 1
@@ -31,6 +34,7 @@
 typedef struct s_redir
 {
 	int				type;
+	int				operator;
 	char			*file;
 	struct s_redir	*next;
 }				t_redir;
@@ -49,10 +53,11 @@ typedef struct s_exec
 
 typedef struct s_cmd
 {
-	pid_t			pid;
+	int				exit_status;
+	int				fd[2];
 	char			**arg;
-	t_redir			*fd_in;
-	t_redir			*fd_out;
+	pid_t			pid;
+	t_redir			*redir;
 	struct s_cmd	*next;
 }				t_cmd;
 
@@ -74,6 +79,11 @@ typedef struct s_catch
 {
 	char			*error_msg;
 }				t_catch;
+
+typedef struct s_error
+{
+	char			*msg;
+}				t_error;
 
 typedef struct s_dummy
 {
@@ -135,8 +145,7 @@ char	*find_env_value(char *str, int i, int key_len);
 char	*expansion_value(char *str, int *i, int flag);
 
 /* parse_redirections.c */
-void	new_input(char *file, int type);
-void	new_output(char *file, int type);
+void	add_redir(char *file, int type, int operator);
 void	new_redir(char *str, int *i);
 
 /* parse_redirections_utils.c */
@@ -180,21 +189,25 @@ void	execute_builtin(int i);
 /*exec_utils.c*/
 char	*get_value(t_env *env, char *key);
 char	*find_path(t_env *env_lst, char *cmd);
-void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 char	*get_full_path(char *path_dir, char *cmd);
 void	close_pipe(int *fd, int *prev_fd, int i);
+void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 
 /*exec_utils_2.c*/
+int		check_redir_input(t_redir *redir);
+int		check_redir_output(t_redir *redir);
 void	close_heredoc(int i);
 void	not_found(int i);
 void	execute_execve(int i);
-void	child_process(int prev_fd, int *fd, int i);
+void	child_process(int prev_fd, int *fd, int i, int res);
+void	check_next_pipe(int i, int *fd);
 
 /*exec_utils_3.c*/
 void	execute_builtin_or_execve(int i);
 int		is_executable(const char *path);
 void	remove_key(t_env *prev, t_env *temp, char *arg);
 void	wait_for_childs(void);
+void	not_found_case(int i);
 
 /*ft_echo_pwd_env_unset.c*/
 void	ft_echo(int i);
@@ -212,9 +225,10 @@ void	assign_visible(t_env *temp2, char *temp3, int *i);
 
 /*ft_cd_utils.c*/
 char	*get_pwd(t_env *env);
-char	*get_home(t_env *env);
+char	*get_home(t_env *env, t_cmd *cmd);
 char	*get_parent_dir(char *temp, char *ab_path);
 char	*get_ab_path(char *ab_path, char *next_dir);
+char	*check_pwd(char *oldpwd);
 
 /*ft_cd_utils_2.c*/
 void	update_env_lst(t_env *env, char *key, char *new_value);
@@ -225,7 +239,7 @@ void	no_value(char *arg, char **key, char **value);
 
 /*ft_export.c*/
 void	ft_export(int i);
-void	add_new_key(char **arg, int j);
+void	add_new_key(char **arg, int j, int i);
 void	print_export_fd(void);
 void	execute_export(int fd, char *line);
 void	sort_env(char **env);
@@ -249,7 +263,11 @@ int		handle_redirections(t_cmd *cmd);
 void	handle_input_r(t_cmd *cmd, t_redir *r, int *res);
 void	handle_output_r(t_cmd *cmd, t_redir *r, int *res);
 void	execute_heredoc(t_cmd *cmd, t_redir *r, int *res, struct stat st);
-void	check_access(t_redir *r, int *res, struct stat st);
+void	check_access(t_cmd *cmd, t_redir *r, int *res, struct stat st);
+
+/*exec_redirections_utils.c*/
+int		check_redir_input(t_redir *redir);
+int		check_redir_output(t_redir *redir);
 
 /*ft_exit.c*/
 int		is_numeric(const char *str);
@@ -274,6 +292,7 @@ t_ms	*ms(void);
 t_parse	*parse(void);
 t_dummy	*dummy(void);
 t_catch	*catch(void);
+t_error	*error(void);
 
 /* signals.c */
 void	setup_parse(void);
