@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/07 21:18:47 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:42:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_redir
 {
 	int				type;
 	int				operator;
-	char			*file;
+	char			**file;
 	struct s_redir	*next;
 }				t_redir;
 
@@ -53,10 +53,11 @@ typedef struct s_exec
 
 typedef struct s_cmd
 {
-	int				exit_status;
+	int				cmd_status;
+	int				pid;
 	int				fd[2];
+	char			*error_msg;
 	char			**arg;
-	pid_t			pid;
 	t_redir			*redir;
 	struct s_cmd	*next;
 }				t_cmd;
@@ -79,11 +80,6 @@ typedef struct s_catch
 {
 	char			*error_msg;
 }				t_catch;
-
-typedef struct s_error
-{
-	char			*msg;
-}				t_error;
 
 typedef struct s_dummy
 {
@@ -145,19 +141,20 @@ char	*find_env_value(char *str, int i, int key_len);
 char	*expansion_value(char *str, int *i, int flag);
 
 /* parse_redirections.c */
-void	add_redir(char *file, int type, int operator);
+t_redir	*alloc_redir(int type, int operator);
+void	add_redir(char *str, int *i, int type, int operator);
 void	new_redir(char *str, int *i);
 
 /* parse_redirections_utils.c */
 int		heredoc_quote(char *str);
-int		file_len(char *str);
-char	*get_del(char *str, int *i, int len, int quotes);
-char	*get_file(char *str, int *i, int len, int quotes);
+int		heredoc_del_final_len(char *str);
+void	heredoc_del_final_str(char *str, char *final_del);
+char	*remove_quotes_heredoc(char *str);
 
 /* parse_heredoc.c */
 void	receive_content(char *del, int here, int quote);
 int		check_existing_heredoc(void);
-int		handle_heredoc(int quote, char *delimiter);
+char	**handle_heredoc(int quote, char *delimiter);
 
 /* parse_heredoc_expansions.c */
 int		here_len(char *line);
@@ -219,7 +216,6 @@ void	ft_env(int i);
 /*ft_cd.c*/
 void	ft_cd(int i);
 void	assign_to_ms_env(void);
-char	*check_visibility(t_env *temp);
 void	change_directory(char *oldpwd, char *newpwd, int i);
 void	assign_visible(t_env *temp2, char *temp3, int *i);
 
@@ -266,6 +262,7 @@ void	execute_heredoc(t_cmd *cmd, t_redir *r, int *res, struct stat st);
 void	check_access(t_cmd *cmd, t_redir *r, int *res, struct stat st);
 
 /*exec_redirections_utils.c*/
+void	ambiguous_redirect(t_cmd *cmd, int *res);
 int		check_redir_input(t_redir *redir);
 int		check_redir_output(t_redir *redir);
 
@@ -292,7 +289,6 @@ t_ms	*ms(void);
 t_parse	*parse(void);
 t_dummy	*dummy(void);
 t_catch	*catch(void);
-t_error	*error(void);
 
 /* signals.c */
 void	setup_parse(void);

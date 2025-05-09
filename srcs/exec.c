@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 21:22:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:47:23 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	exec_cmd(void)
 		deallocate(catch()->error_msg);
 	i = 0;
 	while (ms()->cmd[i])
-		ms()->exit_status = ms()->cmd[i++]->exit_status;
+		ms()->exit_status = ms()->cmd[i++]->cmd_status;
 }
 
 void	handle_input(int *i, int *save_stdin, int *save_stdout)
@@ -107,9 +107,9 @@ void	handle_input(int *i, int *save_stdin, int *save_stdout)
 			close(*prev_fd);
 			*prev_fd = -1;
 		}
-		return ;
 	}
-	fork_child_process(i, prev_fd);
+	else
+		fork_child_process(i, prev_fd);
 }
 
 void	fork_child_process(int *i, int *prev_fd)

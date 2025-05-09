@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/07 16:04:43 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:09:09 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,32 +47,41 @@ int	check_existing_heredoc(void)
 	while (temp_redir != NULL)
 	{
 		if (temp_redir->type == INPUT && temp_redir->operator == HEREDOC)
-			return (ft_atoi(temp_redir->file));
+		{
+			if (!temp_redir->file)
+				break ;
+			return (ft_atoi(temp_redir->file[0]));
+		}
 		temp_redir = temp_redir->next;
 	}
 	return (0);
 }
 
-int	handle_heredoc(int quote, char *delimiter)
+char	**handle_heredoc(int quote, char *delimiter)
 {
+	char		**file;
 	static int	fds[2];
 
 	if (catch()->error_msg)
-		return (0);
+		return (NULL);
 	fds[0] = check_existing_heredoc();
 	if (fds[0] != 0)
 		close(fds[0]);
 	if (pipe(fds) == -1)
 		return (catch()->error_msg = "Pipe creation error: handle_heredoc\n"\
-		, 0);
+		, NULL);
 	setup_heredoc();
 	receive_content(delimiter, fds[1], quote);
 	setup_parse();
 	close(fds[1]);
+	file = ft_calloc(sizeof(char *), 2);
+	if (!file)
+		return (catch()->error_msg = \
+		"Memory allocation error: handle_heredoc\n", NULL);
 	if (ms()->here_sig)
 	{
 		close(fds[0]);
-		return (0);
+		return (file[0] = ft_itoa(0), file);
 	}
-	return (fds[0]);
+	return (file[0] = ft_itoa(fds[0]), file);
 }

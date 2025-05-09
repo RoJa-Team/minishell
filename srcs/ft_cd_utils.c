@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 20:32:13 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:15:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*get_home(t_env *env, t_cmd *cmd)
 		temp = temp->next;
 	}
 	ft_putstr_fd("cd: HOME not set\n", 2);
-	cmd->exit_status = 1;
+	cmd->cmd_status = 1;
 	return (NULL);
 }
 

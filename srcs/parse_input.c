@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/07 21:20:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:50:09 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,14 @@ void	new_cmd(void)
 	if (!new_cmd)
 		return (catch()->error_msg = "Memory allocation error: new_cmd\n"\
 		, (void) NULL);
-	new_cmd->exit_status = 0;
-	new_cmd->arg = NULL;
-	new_cmd->redir = NULL;
-	new_cmd->next = NULL;
+	new_cmd->cmd_status = 0;
 	new_cmd->pid = -1;
 	new_cmd->fd[0] = -1;
 	new_cmd->fd[1] = -1;
+	new_cmd->error_msg = NULL;
+	new_cmd->arg = NULL;
+	new_cmd->redir = NULL;
+	new_cmd->next = NULL;
 	if (parse()->cmd_ll)
 		((t_cmd *)get_last_node(parse()->cmd_ll, get_offset(&dummy()->cmd, \
 		&dummy()->cmd.next)))->next = new_cmd;

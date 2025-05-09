@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirections_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:22:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 19:22:18 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:48:05 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+void	ambiguous_redirect(t_cmd *cmd, int *res)
+{
+	cmd->cmd_status = 1;
+	*res = 1;
+	cmd->error_msg = ft_strdup("ambiguous redirect\n");
+	if (!cmd->error_msg)
+		return (catch()->error_msg = "ft_strdup failed", (void) NULL);
+}
 
 int	check_redir_input(t_redir *redir)
 {

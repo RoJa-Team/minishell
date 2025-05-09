@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/05/01 20:52:33 by rafasant         ###   ########.fr        #
+#    Updated: 2025/05/08 20:37:39 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,12 @@ SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
 			exec_utils_2.c ft_cd_utils_2.c signals.c \
 			ft_exit.c ft_echo_pwd_env_unset.c ft_cd.c ft_export.c \
 			ft_export_utils.c exec_redirections.c \
-			signals_utils.c exec_utils_3.c)
+			signals_utils.c exec_utils_3.c exec_redirections_utils.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM	= /bin/rm -f
 
 ${OBJS_DIR}%.o: ${SRCS_DIR}%.c
+	@mkdir -p objs
 	@${CC} ${CFLAGS} -c $< -o $@
 
 all: ${LIBFT} ${NAME}
@@ -48,6 +49,7 @@ ${NAME} : ${OBJS}
 
 clean: 
 	@${RM} ${OBJS}
+	@rm -rf objs
 	@make clean -C libft --silent
 	@echo "Cleaned object files!"
 

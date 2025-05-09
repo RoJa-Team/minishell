@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 21:14:19 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/07 20:24:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:13:45 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	clean_ms_env(void)
 void	clean_redir(void)
 {
 	int		i;
+	int		j;
 	t_redir	*temp;
 
 	i = 0;
@@ -53,8 +54,11 @@ void	clean_redir(void)
 	{
 		while (ms()->cmd[i]->redir != NULL)
 		{
+			j = 0;
 			temp = ms()->cmd[i]->redir;
 			ms()->cmd[i]->redir = temp->next;
+			while (temp->file[j])
+				free(temp->file[j++]);
 			free(temp->file);
 			free(temp);
 		}

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 20:53:05 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:12:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,6 @@ void	assign_visible(t_env *temp2, char *temp3, int *i)
 	}
 }
 
-char	*check_visibility(t_env *temp)
-{
-	char	*value;
-
-	if (temp->invis == 0)
-	{
-		ft_putstr_fd(temp->value, 1);
-		ft_putchar_fd('\n', 1);
-		value = ft_strdup(temp->value);
-		if (!value)
-			return (catch()->error_msg = "memory allocation fail.\n", NULL);
-		return (value);
-	}
-	else
-		return (NULL);
-}
-
 void	ft_cd(int i)
 {
 	t_env	*temp;
@@ -83,7 +66,7 @@ void	ft_cd(int i)
 	if (count > 2)
 	{
 		write(2, "cd: too many arguments\n", 23);
-		ms()->cmd[i]->exit_status = 1;
+		ms()->cmd[i]->cmd_status = 1;
 		return ;
 	}
 	temp = ms()->env_lst;
@@ -109,7 +92,7 @@ void	change_directory(char *oldpwd, char *newpwd, int i)
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(ms()->cmd[i]->arg[1], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		ms()->cmd[i]->exit_status = 1;
+		ms()->cmd[i]->cmd_status = 1;
 	}
 	else if (newpwd && catch()->error_msg == NULL)
 	{

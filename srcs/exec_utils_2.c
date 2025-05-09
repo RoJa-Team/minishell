@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:20:25 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 21:42:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:04:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	close_heredoc(int i)
 		{
 			if (r->type == INPUT && r->operator == HEREDOC)
 			{
-				fd = ft_atoi(r->file);
+				fd = ft_atoi(r->file[0]);
 				if (fd >= 0)
 					close(fd);
 			}

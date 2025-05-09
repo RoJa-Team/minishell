@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:41:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 21:33:47 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:15:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	ft_exit(int i)
 		else if (ms()->cmd[i]->arg[2])
 		{
 			ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
-			ms()->cmd[i]->exit_status = 1;
+			ms()->cmd[i]->cmd_status = 1;
 			return ;
 		}
 		else

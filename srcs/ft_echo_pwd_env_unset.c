@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 03:08:15 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 21:38:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:15:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	ft_env(int i)
 			ft_putstr_fd("env: ", 2);
 			ft_putstr_fd(arg[1], 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
-			ms()->cmd[i]->exit_status = 127;
+			ms()->cmd[i]->cmd_status = 127;
 			return ;
 		}
 		j++;

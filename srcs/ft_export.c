@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:05:51 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/07 21:07:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:14:39 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	add_new_key(char **arg, int j, int i)
 			ft_putstr_fd("export: ", 2);
 			ft_putstr_fd(arg[j], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
-			ms()->cmd[i]->exit_status = 1;
+			ms()->cmd[i]->cmd_status = 1;
 		}
 		else
 			update_or_add_env_key(&ms()->env_lst, key, value);

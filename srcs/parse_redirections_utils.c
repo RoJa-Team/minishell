@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:08:53 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 22:35:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:45:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	heredoc_quote(char *str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -29,86 +29,72 @@ int	heredoc_quote(char *str)
 	return (0);
 }
 
-int	file_len(char *str)
+int	heredoc_del_final_len(char *str)
 {
 	int	i;
-	int	wq;
 	int	len;
+	int	quotes;
 
 	i = 0;
 	len = 0;
-	while (str[i])
+	quotes = 0;
+	while (str[i] != '\0')
 	{
-		if (str[i] == '\"' || str[i] == '\'')
+		check_quotes(str[i], &quotes);
+		if (str[i] == '$' && (str[i + 1] == '\"' || str[i + 1] == '\'') \
+		&& quotes == 0)
+			;
+		else if (str[i] == '\"' || str[i] == '\'')
 		{
-			wq = within_quotes(&str[i]);
-			i = i + wq;
-			len = len + wq - 2;
+			if ((quotes == 2 && str[i] == '\'') || \
+			(quotes == 1 && str[i] == '\"'))
+				len++;
 		}
-		else if (check_metachar(str[i]))
-			break ;
 		else
-		{
-			i++;
 			len++;
-		}
+		i++;
 	}
 	return (len);
 }
 
-char	*get_del(char *str, int *i, int len, int quotes)
+void	heredoc_del_final_str(char *str, char *final_del)
 {
-	int		j;
-	char	*del;
+	int	i;
+	int	len;
+	int	quotes;
 
-	len = file_len(&str[*i]);
-	del = ft_calloc(sizeof(char), len + 1);
-	if (!del)
-		return (catch()->error_msg = "Memory allocation error: get_del\n", del);
-	j = 0;
-	while (j < len && str[*i])
+	i = 0;
+	len = 0;
+	quotes = 0;
+	while (str[i] != '\0')
 	{
-		check_quotes(str[*i], &quotes);
-		if (str[*i] == '\"' || str[*i] == '\'')
+		check_quotes(str[i], &quotes);
+		if (str[i] == '$' && (str[i + 1] == '\"' || str[i + 1] == '\'') \
+		&& quotes == 0)
+			;
+		else if (str[i] == '\"' || str[i] == '\'')
 		{
-			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && \
-				str[*i] == '\"'))
-				del[j++] = str[*i];
+			if ((quotes == 2 && str[i] == '\'') || \
+			(quotes == 1 && str[i] == '\"'))
+				final_del[len++] = str[i];
 		}
 		else
-			del[j++] = str[*i];
-		(*i)++;
+			final_del[len++] = str[i];
+		i++;
 	}
-	while (str[*i] && !check_metachar(str[*i]))
-		(*i)++;
-	return (del);
 }
 
-char	*get_file(char *str, int *i, int len, int quotes)
+char	*remove_quotes_heredoc(char *str)
 {
-	int		j;
-	char	*file;
+	char	*final_del;
 
-	len = file_len(&str[*i]);
-	file = ft_calloc(sizeof(char), len + 1);
-	if (!file)
-		return (catch()->error_msg = "Memory allocation error: get_file\n", \
-		NULL);
-	j = 0;
-	while (j < len && str[*i])
-	{
-		check_quotes(str[*i], &quotes);
-		if (str[*i] == '\"' || str[*i] == '\'')
-		{
-			if ((quotes == 2 && str[*i] == '\'') || (quotes == 1 && \
-				str[*i] == '\"'))
-				file[j++] = str[*i];
-		}
-		else
-			file[j++] = str[*i];
-		(*i)++;
-	}
-	while (str[*i] && !check_metachar(str[*i]))
-		(*i)++;
-	return (file);
+	if (!str)
+		return (NULL);
+	final_del = ft_calloc(sizeof(char), heredoc_del_final_len(str) + 1);
+	if (!final_del)
+		return (catch()->error_msg = \
+		"Memory allocation error: remove_quotes_heredoc\n", NULL);
+	heredoc_del_final_str(str, final_del);
+	free(str);
+	return (final_del);
 }
