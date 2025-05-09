@@ -191,8 +191,6 @@ void	close_pipe(int *fd, int *prev_fd, int i);
 void	save_and_restore_std(int *save_stdin, int *save_stdout, int flag);
 
 /*exec_utils_2.c*/
-int		check_redir_input(t_redir *redir);
-int		check_redir_output(t_redir *redir);
 void	close_heredoc(int i);
 void	not_found(int i);
 void	execute_execve(int i);
@@ -222,7 +220,7 @@ void	assign_visible(t_env *temp2, char *temp3, int *i);
 /*ft_cd_utils.c*/
 char	*get_pwd(t_env *env);
 char	*get_home(t_env *env, t_cmd *cmd);
-char	*get_parent_dir(char *temp, char *ab_path);
+char	*get_parent_dir(char *ab_path);
 char	*get_ab_path(char *ab_path, char *next_dir);
 char	*check_pwd(char *oldpwd);
 
@@ -232,6 +230,10 @@ void	update_ms_env(void);
 void	free_args(char **arg);
 int		arg_count(char **arg);
 void	no_value(char *arg, char **key, char **value);
+
+/*ft_cd_utils_3.c*/
+char	*cd_no_file(char *oldpwd, char *newpwd, int i);
+char	*cd_cases(char **split_path, char *ab_path, char *temp, int i);
 
 /*ft_export.c*/
 void	ft_export(int i);

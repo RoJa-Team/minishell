@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 21:37:16 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/08 21:12:41 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:57:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_cd(int i)
 	if (count < 2)
 		newpwd = get_home(temp, ms()->cmd[i]);
 	else
-		newpwd = get_ab_path(oldpwd, ms()->cmd[i]->arg[1]);
+		newpwd = get_ab_path(ft_strdup(oldpwd), ms()->cmd[i]->arg[1]);
 	if (newpwd && catch()->error_msg == NULL)
 		change_directory(oldpwd, newpwd, i);
 }
@@ -88,12 +88,7 @@ void	change_directory(char *oldpwd, char *newpwd, int i)
 
 	temp = ms()->env_lst;
 	if (newpwd && chdir(newpwd) != 0)
-	{
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(ms()->cmd[i]->arg[1], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		ms()->cmd[i]->cmd_status = 1;
-	}
+		newpwd = cd_no_file(oldpwd, newpwd, i);
 	else if (newpwd && catch()->error_msg == NULL)
 	{
 		update_env_lst(temp, "OLDPWD", oldpwd);

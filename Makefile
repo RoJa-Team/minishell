@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/05/08 20:37:39 by rafasant         ###   ########.fr        #
+#    Updated: 2025/05/09 21:57:28 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS 	= $(addprefix ${SRCS_DIR}, minishell.c \
 			ft_export_utils_2.c exec_utils.c ft_cd_utils.c \
 			exec_utils_2.c ft_cd_utils_2.c signals.c \
 			ft_exit.c ft_echo_pwd_env_unset.c ft_cd.c ft_export.c \
-			ft_export_utils.c exec_redirections.c \
+			ft_export_utils.c exec_redirections.c ft_cd_utils_3.c \
 			signals_utils.c exec_utils_3.c exec_redirections_utils.c)
 OBJS	= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 RM	= /bin/rm -f
@@ -62,7 +62,7 @@ v :	$(NAME)
 	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full ./minishell
 
 vf : $(NAME)
-	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
+	valgrind --suppressions=/home/joafern2/sgoinfre/minishell/read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
 
 vp : $(NAME)
 	valgrind --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
