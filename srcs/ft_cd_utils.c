@@ -12,9 +12,10 @@
 
 #include "../headers/minishell.h"
 
-char	*get_parent_dir(char *temp, char *ab_path)
+char	*get_parent_dir(char *ab_path)
 {
 	int		i;
+	char	*temp;
 
 	temp = ft_strdup(ab_path);
 	if (!temp)
@@ -22,36 +23,40 @@ char	*get_parent_dir(char *temp, char *ab_path)
 	i = ft_strlen(temp);
 	while (i > 0 && temp[i] != '/')
 		i--;
+	if (i == 0)
+	{
+		free(temp);
+		temp = ft_calloc(sizeof(char), 2);
+		temp[i] = '/';
+		i++;
+	}
 	temp[i] = '\0';
 	return (temp);
 }
 
 char	*get_ab_path(char *ab_path, char *next_dir)
 {
-	char	*new_ab_path;
 	char	*temp;
+	char	**split_path;
+	int		i;
 
+	i = 0;
 	temp = NULL;
-	new_ab_path = NULL;
 	if (next_dir[ft_strlen(next_dir) - 1] == '/')
 		next_dir[ft_strlen(next_dir) - 1] = '\0';
 	if (next_dir[0] == '/')
-		new_ab_path = ft_strdup(next_dir);
-	else if (ft_strncmp(next_dir, "..", 3) == 0)
-		new_ab_path = get_parent_dir(temp, ab_path);
-	else if (ft_strncmp(next_dir, ".", 2) == 0)
-		new_ab_path = ft_strdup(ab_path);
-	else if (ab_path[ft_strlen(ab_path) - 1] != '/')
+		ab_path = ft_strdup(next_dir);
+	else
 	{
-		temp = ft_strjoin(ab_path, "/");
-		if (!temp)
-			return (catch()->error_msg = "Strdup failed", NULL);
-		new_ab_path = ft_strjoin(temp, next_dir);
-		free(temp);
+		split_path = ft_split(next_dir, '/');
+		if (strncmp(ab_path, "/", 2) == 0 && ft_strncmp(next_dir, ".", 2) != 0)
+			ab_path[0] = '\0';
+		ab_path = cd_cases(split_path, ab_path, temp, i);
+		free(split_path);
 	}
-	if (!new_ab_path)
+	if (!ab_path)
 		return (catch()->error_msg = "memory allocation fail\n", NULL);
-	return (new_ab_path);
+	return (ab_path);
 }
 
 char	*get_home(t_env *env, t_cmd *cmd)
@@ -107,7 +112,7 @@ char	*check_pwd(char *oldpwd)
 
 	while (!oldpwd)
 	{
-		oldpwd = get_parent_dir(NULL, ms()->exec->pwd);
+		oldpwd = get_parent_dir(ms()->exec->pwd);
 		if (catch()->error_msg)
 			deallocate(catch()->error_msg);
 		free(ms()->exec->pwd);
