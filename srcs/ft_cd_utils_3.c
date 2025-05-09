@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 21:07:36 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/08 21:07:40 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:58:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*cd_no_file(char *oldpwd, char *newpwd, int i)
 	ft_putstr_fd("cd: ", 2);
 	ft_putstr_fd(ms()->cmd[i]->arg[1], 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
-	ms()->cmd[i]->exit_status = 1;
+	ms()->cmd[i]->cmd_status = 1;
 	return (newpwd);
 }
 
