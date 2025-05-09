@@ -40,6 +40,8 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 	char	**split_path;
 	int		i;
 
+	if (!ab_path)
+			return (catch()->error_msg = "memory allocation fail.\n", NULL);
 	i = 0;
 	temp = NULL;
 	if (next_dir[ft_strlen(next_dir) - 1] == '/')
