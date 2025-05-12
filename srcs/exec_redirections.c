@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:05:28 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/09 21:41:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:40:38 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	handle_redirections(t_cmd *cmd)
 	r = cmd->redir;
 	while (r && cmd->error_msg == NULL)
 	{
-		if (r->file[1] != NULL)
+		if (!r->file || (r->file && r->file[1] != NULL))
 		{
 			ambiguous_redirect(cmd, &res);
 			break ;
