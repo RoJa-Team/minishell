@@ -14,9 +14,10 @@
 
 void	child_process(int prev_fd, int *fd, int i, int res)
 {
-	if (ms()->cmd[i]->redir && \
-	handle_redirections(ms()->cmd[i]) != 0)
+	if (ms()->cmd[i]->redir && handle_redirections(ms()->cmd[i]) != 0)
 		res = 1;
+	if (catch()->error_msg != NULL)
+		deallocate();
 	if (res == 1 || !ms()->cmd[i]->arg)
 	{
 		if (ms()->cmd[i + 1])
@@ -28,14 +29,7 @@ void	child_process(int prev_fd, int *fd, int i, int res)
 	}
 	if (res != -1)
 		exit(res);
-	if (prev_fd != -1 && check_redir_input(ms()->cmd[i]->redir) == 0)
-		dup2(prev_fd, STDIN_FILENO);
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (ms()->cmd[i + 1] && check_redir_output(ms()->cmd[i]->redir) == 0)
-		check_next_pipe(i, fd);
-	if (ms()->cmd[i + 1])
-		close(fd[0]);
+	handle_pipes(prev_fd, i, fd);
 	close_pipe(ms()->cmd[i]->fd, &prev_fd, i);
 	close_heredoc(i);
 	execute_builtin_or_execve(i);
@@ -62,6 +56,8 @@ void	not_found(int i)
 {
 	struct stat	st;
 
+	if (catch()->error_msg != NULL)
+		return ;
 	if (ms()->cmd[i] && ms()->cmd[i]->arg)
 		write(2, ms()->cmd[i]->arg[0], ft_strlen(ms()->cmd[i]->arg[0]));
 	if (ft_strncmp(ms()->cmd[i]->arg[0], ".", 2) == 0)

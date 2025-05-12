@@ -36,28 +36,30 @@ char	*get_parent_dir(char *ab_path)
 
 char	*get_ab_path(char *ab_path, char *next_dir)
 {
-	char	*temp;
 	char	**split_path;
-	int		i;
 
 	if (!ab_path)
 		return (catch()->error_msg = "memory allocation fail.\n", NULL);
-	i = 0;
-	temp = NULL;
 	if (next_dir[ft_strlen(next_dir) - 1] == '/')
 		next_dir[ft_strlen(next_dir) - 1] = '\0';
 	if (next_dir[0] == '/')
+	{
+		free(ab_path);
 		ab_path = ft_strdup(next_dir);
+		if (!ab_path)
+			return (catch()->error_msg = "strdup failed\n", NULL);
+	}
 	else
 	{
 		split_path = ft_split(next_dir, '/');
+		if (!split_path)
+			return (free(ab_path), catch()->error_msg = "split failed\n", NULL);
 		if (strncmp(ab_path, "/", 2) == 0 && ft_strncmp(next_dir, ".", 2) != 0)
 			ab_path[0] = '\0';
-		ab_path = cd_cases(split_path, ab_path, temp, i);
-		free(split_path);
+		ab_path = cd_cases(split_path, ab_path, NULL, 0);
 	}
-	if (!ab_path)
-		return (catch()->error_msg = "memory allocation fail\n", NULL);
+	if (catch()->error_msg != NULL)
+		return (free(ab_path), NULL);
 	return (ab_path);
 }
 
@@ -73,11 +75,12 @@ char	*get_home(t_env *env, t_cmd *cmd)
 		{
 			if (temp->invis == 0)
 			{
+				if (!temp->value)
+					return (NULL);
 				home = ft_strdup(temp->value);
 				if (!home)
-					return (NULL);
-				else
-					return (home);
+					return (catch()->error_msg = "strdup failed\n", NULL);
+				return (home);
 			}
 			else
 				break ;
@@ -86,25 +89,6 @@ char	*get_home(t_env *env, t_cmd *cmd)
 	}
 	ft_putstr_fd("cd: HOME not set\n", 2);
 	cmd->cmd_status = 1;
-	return (NULL);
-}
-
-char	*get_pwd(t_env *env)
-{
-	char	*pwd;
-
-	while (env != NULL)
-	{
-		if (ft_strncmp(env->key, "PWD", 4) == 0)
-		{
-			pwd = ft_strdup(env->value);
-			if (!pwd)
-				return (catch()->error_msg \
-				= "Memory allocation failed for ft_getcwd\n", NULL);
-			return (pwd);
-		}
-		env = env->next;
-	}
 	return (NULL);
 }
 

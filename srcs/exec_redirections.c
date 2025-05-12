@@ -107,7 +107,7 @@ void	check_access(t_cmd *cmd, t_redir *r, int *res, struct stat st)
 	else if (!S_ISREG(st.st_mode) && cmd->error_msg == NULL)
 		cmd->error_msg = ft_strjoin(filename, ": Is a directory\n");
 	if (cmd->error_msg == NULL)
-		catch()->error_msg = "Strjoin failed";
+		catch()->error_msg = "Strjoin failed\n";
 	cmd->cmd_status = 1;
 	*res = 1;
 }

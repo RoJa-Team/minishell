@@ -30,7 +30,7 @@ char	**convert_lst_to_arr(t_env *lst)
 		status = assign_value_to_array(&i, lst, arr);
 		if (status == 0)
 			return (free(arr), catch()->error_msg
-				= "Error allocating memory", NULL);
+				= "Error allocating memory\n", NULL);
 		lst = lst->next;
 		i++;
 	}
@@ -82,6 +82,8 @@ char	*find_value(t_env *env, char *key)
 {
 	t_env	*temp;
 
+	if (catch()->error_msg != NULL)
+		return (NULL);
 	temp = env;
 	while (temp != NULL)
 	{

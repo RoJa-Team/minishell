@@ -50,6 +50,8 @@ void	add_new_key(char **arg, int j, int i)
 	while (arg[j] && catch()->error_msg == NULL)
 	{
 		get_key_and_value(arg[j], &key, &value);
+		if (catch()->error_msg != NULL)
+			return ;
 		if (!is_valid_key(key))
 		{
 			ft_putstr_fd("export: ", 2);
@@ -77,6 +79,8 @@ void	print_export_fd(void)
 	env_lst = ms()->env_lst;
 	env_arr = NULL;
 	env_arr = convert_lst_to_arr(env_lst);
+	if (catch()->error_msg != NULL)
+		return ;
 	sort_env(env_arr);
 	i = 0;
 	while (env_arr[i])

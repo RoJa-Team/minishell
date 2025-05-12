@@ -39,23 +39,17 @@ void	assign_visible(t_env *temp2, char *temp3, int *i)
 	{
 		temp3 = ft_strjoin(temp2->key, "=");
 		if (!temp3)
-			return ((void)(catch()->error_msg = "Strjoin failed"));
+			return ((void)(catch()->error_msg = "Strjoin failed\n"));
 		(ms()->ms_env[*i]) = ft_strjoin(temp3, temp2->value);
 		if (!ms()->ms_env[*i])
-			return ((void)(catch()->error_msg = "Strjoin failed"));
+			return (free(temp3), (void)(catch()->error_msg
+				= "Strjoin failed/n"));
 		free(temp3);
-	}
-	else
-	{
-		ms()->ms_env[*i] = ft_strdup(temp2->key);
-		if (!ms()->ms_env[*i])
-			return ((void)(catch()->error_msg = "Strdup failed"));
 	}
 }
 
 void	ft_cd(int i)
 {
-	t_env	*temp;
 	char	*oldpwd;
 	char	*newpwd;
 	int		count;
@@ -69,17 +63,18 @@ void	ft_cd(int i)
 		ms()->cmd[i]->cmd_status = 1;
 		return ;
 	}
-	temp = ms()->env_lst;
 	newpwd = NULL;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 		oldpwd = check_pwd(NULL);
 	if (count < 2)
-		newpwd = get_home(temp, ms()->cmd[i]);
+		newpwd = get_home(ms()->env_lst, ms()->cmd[i]);
 	else
 		newpwd = get_ab_path(ft_strdup(oldpwd), ms()->cmd[i]->arg[1]);
 	if (newpwd && catch()->error_msg == NULL)
 		change_directory(oldpwd, newpwd, i);
+	else
+		free(oldpwd);
 }
 
 void	change_directory(char *oldpwd, char *newpwd, int i)
