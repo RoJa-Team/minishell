@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/12 11:56:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:01:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	**expand_str(char *str)
 	if (!str || catch()->error_msg != NULL)
 		return (NULL);
 	len = final_len(str, 0, 0);
-	if (len == 0)
+	if (len == 0 || catch()->error_msg != NULL)
 		return (free(str), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);
 	if (!arg)

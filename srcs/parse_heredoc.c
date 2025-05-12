@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/12 10:37:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:58:29 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	receive_content(char *del, int here, int quote)
 {
 	char	*line;
-	char	*expanded;
 
 	while (1)
 	{
@@ -25,19 +24,20 @@ void	receive_content(char *del, int here, int quote)
 			return (free(line), free(del));
 		if (quote == 0)
 		{
-			expanded = expand_here(line);
-			if (expanded)
+			line = expand_here(line);
+			if (line == NULL && catch()->error_msg != NULL)
+				return (free(del));
+			if (line)
 			{
-				write(here, expanded, ft_strlen(expanded));
-				free(expanded);
+				ft_putendl_fd(line, here);
+				free(line);
 			}
 		}
 		else
 		{
-			write(here, line, ft_strlen(line));
+			ft_putendl_fd(line, here);
 			free(line);
 		}
-		write(here, "\n", 1);
 	}
 }
 
@@ -60,31 +60,51 @@ int	check_existing_heredoc(void)
 	return (0);
 }
 
+char	**alloc_heredoc_file(int fd)
+{
+	char	**file;
+
+	file = ft_calloc(sizeof(char *), 2);
+	if (!file)
+		return (close(fd), catch()->error_msg = \
+		"Memory allocation error: alloc_heredoc_file\n", NULL);
+	if (ms()->here_sig)
+	{
+		close(fd);
+		file[0] = ft_itoa(0);
+		if (!file[0])
+			return (free(file), catch()->error_msg = \
+			"Memory allocation error: ft_itoa - alloc_heredoc_file\n", NULL);
+		return (file);
+	}
+	file[0] = ft_itoa(fd);
+	if (!file[0])
+		return (free(file), close(fd), catch()->error_msg = \
+		"Memory allocation error: ft_itoa - alloc_heredoc_file\n", NULL);
+	return (file);
+}
+
 char	**handle_heredoc(int quote, char *delimiter)
 {
-	char		**file;
 	static int	fds[2];
 
-	if (catch()->error_msg)
+	if (catch()->error_msg != NULL)
 		return (NULL);
 	fds[0] = check_existing_heredoc();
 	if (fds[0] != 0)
 		close(fds[0]);
 	if (pipe(fds) == -1)
-		return (catch()->error_msg = "Pipe creation error: handle_heredoc\n"\
-		, NULL);
+		return (free(delimiter), catch()->error_msg = \
+		"Pipe creation error: handle_heredoc\n", NULL);
 	setup_heredoc();
+	if (catch()->error_msg != NULL)
+		return (free(delimiter), close(fds[0]), close(fds[1]), NULL);
 	receive_content(delimiter, fds[1], quote);
+	if (catch()->error_msg != NULL)
+		return (close(fds[0]), close(fds[1]), NULL);
 	setup_parse();
+	if (catch()->error_msg != NULL)
+		return (close(fds[0]), close(fds[1]), NULL);
 	close(fds[1]);
-	file = ft_calloc(sizeof(char *), 2);
-	if (!file)
-		return (catch()->error_msg = \
-		"Memory allocation error: handle_heredoc\n", NULL);
-	if (ms()->here_sig)
-	{
-		close(fds[0]);
-		return (file[0] = ft_itoa(0), file);
-	}
-	return (file[0] = ft_itoa(fds[0]), file);
+	return (alloc_heredoc_file(fds[0]));
 }

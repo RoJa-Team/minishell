@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/12 11:14:07 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:22:39 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_ab_path(char *ab_path, char *next_dir)
 	int		i;
 
 	if (!ab_path)
-			return (catch()->error_msg = "memory allocation fail.\n", NULL);
+		return (catch()->error_msg = "memory allocation fail.\n", NULL);
 	i = 0;
 	temp = NULL;
 	if (next_dir[ft_strlen(next_dir) - 1] == '/')

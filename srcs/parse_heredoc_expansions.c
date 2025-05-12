@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:07:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/04/25 23:25:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:02:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,11 @@ char	*expand_here(char *line)
 		return (free(line), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);
 	if (!arg)
-		return (catch()->error_msg = "Memory allocation error: expand_here\n"\
-		, NULL);
+		return (free(line), catch()->error_msg = \
+		"Memory allocation error: expand_here\n", NULL);
 	arg = final_here(line, arg, 0);
+	if (catch()->error_msg != NULL)
+		return (free(line), free(arg), NULL);
 	free(line);
 	return (arg);
 }
