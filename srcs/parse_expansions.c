@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:55:57 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 21:52:32 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:56:38 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,15 @@ char	**expand_str(char *str)
 	if (!str || catch()->error_msg != NULL)
 		return (NULL);
 	len = final_len(str, 0, 0);
-	if (len == 0 || catch()->error_msg != NULL)
+	if (len == 0)
 		return (free(str), NULL);
 	arg = ft_calloc(sizeof(char), len + 1);
 	if (!arg)
 		return (free(str), catch()->error_msg = \
 		"Memory allocation error: expand_str\n", NULL);
 	final_str(str, arg, 0, 0);
+	if (catch()->error_msg != NULL)
+		return (free(str), free(arg), NULL);
 	str_arr = NULL;
 	if (arg)
 	{

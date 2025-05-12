@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/09 21:09:09 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:37:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ void	receive_content(char *del, int here, int quote)
 		if (quote == 0)
 		{
 			expanded = expand_here(line);
-			write(here, expanded, ft_strlen(expanded));
-			free(expanded);
+			if (expanded)
+			{
+				write(here, expanded, ft_strlen(expanded));
+				free(expanded);
+			}
 		}
 		else
 		{

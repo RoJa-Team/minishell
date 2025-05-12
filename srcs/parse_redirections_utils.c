@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:08:53 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/09 21:45:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:23:23 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*remove_quotes_heredoc(char *str)
 		return (NULL);
 	final_del = ft_calloc(sizeof(char), heredoc_del_final_len(str) + 1);
 	if (!final_del)
-		return (catch()->error_msg = \
+		return (free(str), catch()->error_msg = \
 		"Memory allocation error: remove_quotes_heredoc\n", NULL);
 	heredoc_del_final_str(str, final_del);
 	free(str);

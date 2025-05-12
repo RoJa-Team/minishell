@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:42:42 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/08 18:50:09 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:46:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	new_arg(char **str_arr)
 	{
 		new_arg = malloc(sizeof(t_arg));
 		if (!new_arg)
-			return (catch()->error_msg = "Memory allocation error: new_arg\n"\
-			, (void) NULL);
+			return (free_array(str_arr), catch()->error_msg = \
+			"Memory allocation error: new_arg\n", (void) NULL);
 		new_arg->word = str_arr[i];
 		new_arg->next = NULL;
 		if (parse()->arg_ll)
@@ -71,8 +71,8 @@ void	new_cmd(void)
 
 	new_cmd = malloc(sizeof(t_cmd));
 	if (!new_cmd)
-		return (catch()->error_msg = "Memory allocation error: new_cmd\n"\
-		, (void) NULL);
+		return ((void)(catch()->error_msg = \
+		"Memory allocation error: new_cmd\n"));
 	new_cmd->cmd_status = 0;
 	new_cmd->pid = -1;
 	new_cmd->fd[0] = -1;
@@ -124,7 +124,7 @@ void	input_check(char *input)
 		parse_input(input);
 		free(input);
 		if (catch()->error_msg != NULL)
-			deallocate(catch()->error_msg);
+			deallocate();
 		if (!ms()->here_sig)
 			exec_cmd();
 		ms()->here_sig = 0;

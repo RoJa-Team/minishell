@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/09 21:42:08 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:13:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ void	numeric_message(int i);
 
 /* init_ms.c */
 void	copy_env(char **env);
-void	new_env(t_env **env_node, int i);
+t_env	*new_env(int i);
 void	create_env_lst(void);
 void	init(char **env);
 
@@ -312,7 +312,7 @@ void	*get_last_node(void *node, size_t next_offset);
 /* error.c */
 void	free_array(char **split_arg);
 void	bad_input(char *message, int error);
-void	deallocate(char *message);
+void	deallocate(void);
 
 /* cleaner.c */
 void	clean_env_lst(void);

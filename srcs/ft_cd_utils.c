@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 02:55:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/08 21:15:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:14:07 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	*check_pwd(char *oldpwd)
 	{
 		oldpwd = get_parent_dir(ms()->exec->pwd);
 		if (catch()->error_msg)
-			deallocate(catch()->error_msg);
+			deallocate();
 		free(ms()->exec->pwd);
 		ms()->exec->pwd = oldpwd;
 		if (stat(oldpwd, &st) == 0)

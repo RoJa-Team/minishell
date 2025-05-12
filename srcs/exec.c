@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 22:12:08 by joafern2          #+#    #+#             */
-/*   Updated: 2025/05/09 21:47:23 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:14:02 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	exec_cmd(void)
 	close_heredoc(i);
 	wait_for_childs();
 	if (catch()->error_msg != NULL)
-		deallocate(catch()->error_msg);
+		deallocate();
 	i = 0;
 	while (ms()->cmd[i])
 		ms()->exit_status = ms()->cmd[i++]->cmd_status;

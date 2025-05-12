@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:33:24 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 21:09:42 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:08:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ char	**split_expansion(char *arg, int i, int n_str, int quotes)
 
 	split_arg = allocate_split(arg);
 	if (!split_arg)
-		return (NULL);
+		return (free(arg), NULL);
 	split_arg = allocate_strs(split_arg, arg, 0, 0);
 	if (!split_arg)
-		return (NULL);
+		return (free(arg), NULL);
 	j = 0;
 	while (arg[i] != '\0')
 	{

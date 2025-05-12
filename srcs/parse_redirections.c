@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:52:54 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/09 21:39:26 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:17:23 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	add_redir(char *str, int *i, int type, int operator)
 
 	new_redir = alloc_redir(type, operator);
 	if (!new_redir)
-		return ;
+		return ((void)(catch()->error_msg = \
+		"Memory allocation error: add_redir\n"));
 	if (type == INPUT && operator == HEREDOC)
 		new_redir->file = handle_heredoc(heredoc_quote(&str[*i]), \
 			remove_quotes_heredoc(new_str(str, i)));
@@ -53,8 +54,8 @@ void	add_redir(char *str, int *i, int type, int operator)
 		free(temp_redir), (void) NULL);
 	if (!new_redir->file)
 		return (temp_redir = new_redir, temp_redir = NULL, \
-		free(new_redir), catch()->error_msg = \
-		"Memory allocation error: ft_itoa\n", (void) NULL);
+		free(new_redir), (void)(catch()->error_msg = \
+		"Memory allocation error: ft_itoa\n"));
 }
 
 void	new_redir(char *str, int *i)

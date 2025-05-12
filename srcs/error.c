@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:36:25 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/07 21:53:25 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:13:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	bad_input(char *message, int error)
 	write(2, "\n", 1);
 }
 
-void	deallocate(char *message)
+void	deallocate(void)
 {
 	clean_structs();
-	ft_putstr_fd(message, 2);
+	ft_putstr_fd(catch()->error_msg, 2);
 	exit(1);
 }
