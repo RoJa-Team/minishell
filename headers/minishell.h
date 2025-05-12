@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:32:34 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/12 11:13:42 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:12:14 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ void	no_value(char *arg, char **key, char **value);
 char	*cd_no_file(char *oldpwd, char *newpwd, int i);
 char	*cd_cases(char **split_path, char *ab_path, char *temp, int i);
 char	*case_parent(char **split_path, char *ab_path, char *temp, int i);
-char *case_input(char **split_path, char *ab_path, char *temp, int i);
+char	*case_input(char **split_path, char *ab_path, char *temp, int i);
 
 /*ft_export.c*/
 void	ft_export(int i);
