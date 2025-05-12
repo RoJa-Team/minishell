@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/12 13:58:29 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:17:27 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,8 @@ char	**alloc_heredoc_file(int fd)
 	if (ms()->here_sig)
 	{
 		close(fd);
-		file[0] = ft_itoa(0);
-		if (!file[0])
-			return (free(file), catch()->error_msg = \
-			"Memory allocation error: ft_itoa - alloc_heredoc_file\n", NULL);
-		return (file);
+		free(file);
+		return (NULL);
 	}
 	file[0] = ft_itoa(fd);
 	if (!file[0])
