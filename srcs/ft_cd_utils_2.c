@@ -16,6 +16,8 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 {
 	t_env	*temp;
 
+	if (catch()->error_msg != NULL)
+		return ;
 	temp = env;
 	if (!env)
 		return ;
@@ -26,7 +28,7 @@ void	update_env_lst(t_env *env, char *key, char *new_value)
 			free(temp->value);
 			temp->value = ft_strdup(new_value);
 			if (!temp->value)
-				return ((void)(catch()->error_msg = "Strdup failed"));
+				return ((void)(catch()->error_msg = "Strdup failed\n"));
 			return ;
 		}
 		temp = temp->next;
@@ -38,6 +40,8 @@ void	update_ms_env(void)
 	int		count;
 	t_env	*temp1;
 
+	if (catch()->error_msg != NULL)
+		return ;
 	count = 0;
 	temp1 = ms()->env_lst;
 	free_args(ms()->ms_env);
@@ -46,9 +50,9 @@ void	update_ms_env(void)
 		count++;
 		temp1 = temp1->next;
 	}
-	ms()->ms_env = malloc(sizeof(char *) * (count + 1));
+	ms()->ms_env = ft_calloc(sizeof(char *), (count + 1));
 	if (!ms()->ms_env)
-		return ((void)(catch()->error_msg = "malloc failed"));
+		return ((void)(catch()->error_msg = "malloc failed\n"));
 	if (catch()->error_msg == NULL)
 		assign_to_ms_env();
 }
@@ -81,14 +85,14 @@ void	no_value(char *arg, char **key, char **value)
 	char	*copy;
 
 	*key = ft_strdup(arg);
-	if (!key)
-		return ((void)(catch()->error_msg = "Strdup failed"));
+	if (!*key)
+		return ((void)(catch()->error_msg = "Strdup failed\n"));
 	copy = find_value(ms()->env_lst, *key);
 	if (copy)
 	{
 		*value = ft_strdup(copy);
-		if (!value)
-			return (free(key), (void)(catch()->error_msg
-				= "strdup failed"));
+		if (!*value)
+			return (free(*key), (void)(catch()->error_msg
+				= "strdup failed\n"));
 	}
 }

@@ -218,7 +218,6 @@ void	change_directory(char *oldpwd, char *newpwd, int i);
 void	assign_visible(t_env *temp2, char *temp3, int *i);
 
 /*ft_cd_utils.c*/
-char	*get_pwd(t_env *env);
 char	*get_home(t_env *env, t_cmd *cmd);
 char	*get_parent_dir(char *ab_path);
 char	*get_ab_path(char *ab_path, char *next_dir);
@@ -234,6 +233,8 @@ void	no_value(char *arg, char **key, char **value);
 /*ft_cd_utils_3.c*/
 char	*cd_no_file(char *oldpwd, char *newpwd, int i);
 char	*cd_cases(char **split_path, char *ab_path, char *temp, int i);
+char	*case_parent(char **split_path, char *ab_path, char *temp, int i);
+char *case_input(char **split_path, char *ab_path, char *temp, int i);
 
 /*ft_export.c*/
 void	ft_export(int i);
@@ -267,6 +268,7 @@ void	check_access(t_cmd *cmd, t_redir *r, int *res, struct stat st);
 void	ambiguous_redirect(t_cmd *cmd, int *res);
 int		check_redir_input(t_redir *redir);
 int		check_redir_output(t_redir *redir);
+void	handle_pipes(int prev_fd, int i, int *fd);
 
 /*ft_exit.c*/
 int		is_numeric(const char *str);

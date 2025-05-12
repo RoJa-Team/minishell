@@ -21,7 +21,7 @@ void	copy_env(char **env)
 		return ;
 	while (env[i])
 		i++;
-	ms()->ms_env = malloc(sizeof(char *) * (i + 1));
+	ms()->ms_env = ft_calloc(sizeof(char *), (i + 1));
 	if (!ms()->ms_env)
 		return ((void)(catch()->error_msg = \
 		"Memory allocation error: copy_env\n"));

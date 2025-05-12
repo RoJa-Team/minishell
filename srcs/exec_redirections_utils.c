@@ -52,3 +52,15 @@ int	check_redir_output(t_redir *redir)
 	}
 	return (0);
 }
+
+void	handle_pipes(int prev_fd, int i, int *fd)
+{
+	if (prev_fd != -1 && check_redir_input(ms()->cmd[i]->redir) == 0)
+		dup2(prev_fd, STDIN_FILENO);
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (ms()->cmd[i + 1] && check_redir_output(ms()->cmd[i]->redir) == 0)
+		check_next_pipe(i, fd);
+	if (ms()->cmd[i + 1])
+		close(fd[0]);
+}

@@ -58,11 +58,11 @@ char	*get_full_path(char *path_dir, char *cmd)
 
 	temp = ft_strjoin(path_dir, "/");
 	if (!temp)
-		return (catch()->error_msg = "Memory allocation error\n");
+		return (catch()->error_msg = "Memory allocation error\n", NULL);
 	full_path = ft_strjoin(temp, cmd);
 	if (!full_path)
 		return (free(temp), catch()->error_msg
-			= "Memory allocation error: get_full_path\n");
+			= "Memory allocation error: get_full_path\n", NULL);
 	free(temp);
 	if (is_executable(full_path) == 1)
 		return (full_path);
@@ -77,19 +77,19 @@ char	*find_path(t_env *env_lst, char *cmd)
 	char	*full_path;
 	int		i;
 
-	(void)env_lst;
 	i = 0;
+	full_path = NULL;
 	path_env = get_value(env_lst, "PATH");
 	if (!path_env)
 		return (catch()->error_msg = "Missing PATH env var", NULL);
 	path_dir = ft_split(path_env, ':');
 	free(path_env);
 	if (!path_dir)
-		return (catch()->error_msg
-			= "Memory allocation error: find_path\n", NULL);
+		return (catch()->error_msg = "allocation error: find_path\n", NULL);
 	while (path_dir[i])
 	{
-		full_path = get_full_path(path_dir[i], cmd);
+		if (catch()->error_msg == NULL)
+			full_path = get_full_path(path_dir[i], cmd);
 		if (full_path != NULL)
 			break ;
 		free(path_dir[i]);
