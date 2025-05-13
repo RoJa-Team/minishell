@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:18:59 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/12 17:17:27 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:25:29 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,12 @@ void	receive_content(char *del, int here, int quote)
 			if (line == NULL && catch()->error_msg != NULL)
 				return (free(del));
 			if (line)
-			{
-				ft_putendl_fd(line, here);
-				free(line);
-			}
+				write(here, line, ft_strlen(line));
 		}
 		else
-		{
-			ft_putendl_fd(line, here);
-			free(line);
-		}
+			write(here, line, ft_strlen(line));
+		free(line);
+		write(here, "\n", 1);
 	}
 }
 

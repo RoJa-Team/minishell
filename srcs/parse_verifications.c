@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:42:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/05/01 17:03:51 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:03:13 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ int	verify_redirections(char *input)
 			while (input[i] && input[i] == ' ')
 				i++;
 			if (len > 2 || check_metachar(input[i]))
-				return (bad_input("Syntax error: invalid redirection!", \
-					2), 1);
+				return (bad_input("Syntax error: invalid redirection!", 2), 1);
 		}
 		else
 			i++;
@@ -93,6 +92,10 @@ int	verify_pipes(char *input)
 	int	i;
 
 	i = 0;
+	while (input[i] != '\0' && input[i] != '|' && ft_isspace(input[i]))
+		i++;
+	if (input[i] == '|')
+		return (bad_input("Syntax error: invalid pipe!", 2), 1);
 	while (input[i])
 	{
 		if (input[i] == '\"' || input[i] == '\'')
@@ -100,11 +103,10 @@ int	verify_pipes(char *input)
 		else if (input[i] == '|')
 		{
 			i++;
-			while (input[i] && input[i] == ' ')
+			while (input[i] && ft_isspace(input[i]))
 				i++;
 			if (input[i] == '|' || input[i] == '\0')
-				return (bad_input("Syntax error: invalid pipe!", \
-					2), 1);
+				return (bad_input("Syntax error: invalid pipe!", 2), 1);
 		}
 		else
 			i++;

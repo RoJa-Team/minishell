@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/09 19:02:07 by rafasant          #+#    #+#              #
-#    Updated: 2025/05/09 21:57:28 by rafasant         ###   ########.fr        #
+#    Updated: 2025/05/12 10:29:01 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ v :	$(NAME)
 	valgrind --suppressions=read.supp --show-leak-kinds=all --leak-check=full ./minishell
 
 vf : $(NAME)
-	valgrind --suppressions=/home/joafern2/sgoinfre/minishell/read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
+	valgrind --suppressions=/home/rafasant/sgoinfre/42Cursus2024/minishell/read.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell
 
 vp : $(NAME)
 	valgrind --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./minishell

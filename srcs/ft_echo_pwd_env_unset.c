@@ -38,8 +38,8 @@ int	check_n_flag(char **arg)
 {
 	int	i;
 
-	i = 1;
-	if (arg[1] && arg[1][0] == '-')
+	i = 2;
+	if (arg[1] && arg[1][0] == '-' && arg[1][1] == 'n')
 	{
 		while (arg[1][i] == 'n' && arg[1][i])
 			i++;
