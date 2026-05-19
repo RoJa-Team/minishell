@@ -126,7 +126,7 @@ minishell/
 
 ## Authors
 
-- [@<shishudy>](https://github.com/<username1>) 
-- [@<joafern22>](https://github.com/<username2>)
+- [@shishudy](https://github.com/<username1>) — `shishudy`
+- [@joafern22](https://github.com/<username2>) — `joafern22`
 
 Developed at [42 Lisboa](https://www.42lisboa.com/).
