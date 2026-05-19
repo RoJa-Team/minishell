@@ -83,7 +83,7 @@ minishell$
 
 ```sh
 minishell$ echo "Hello, $USER!"
-Hello, rapepas!
+Hello, joafern22!
 
 minishell$ ls -la | grep minishell > result.txt
 
@@ -126,7 +126,7 @@ minishell/
 
 ## Authors
 
-- [@<username1>](https://github.com/<username1>) — `<login1>`
-- [@<username2>](https://github.com/<username2>) — `<login2>`
+- [@<username1>](https://github.com/<username1>) — `@shishudy`
+- [@<username2>](https://github.com/<username2>) — `@joafern22`
 
 Developed at [42 Lisboa](https://www.42lisboa.com/).
