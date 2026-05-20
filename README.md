@@ -49,7 +49,7 @@ This implementation covers the mandatory part of the subject only.
 Clone the repository and run `make`:
 
 ```sh
-git clone https://github.com/<your-username>/minishell.git
+git clone https://github.com/RoJa-Team/minishell
 cd minishell
 make
 ```
